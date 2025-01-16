@@ -1,0 +1,135 @@
+/* sidebar.css */
+.container-fluid {
+  display: flex;
+}
+
+.sidebar {
+  background: #000;
+  color: #fff;
+  height: 100vh;
+  transition: width 0.5s;
+  width: 240px; /* Default width for open sidebar */
+}
+
+.sidebar.closed {
+  width: 50px; /* Adjust this width for closed state */
+}
+
+.main {
+  flex: 1; /* Make the main take the remaining space */
+  padding: 5px;
+  transition: padding 0.5s; /* Add transition for padding */
+  overflow: auto; /* Ensure the content does not overflow */
+}
+
+/* Provide additional styles for larger screens */
+@media (min-width: 992px) {
+  .main {
+    padding: 2px; /* Default padding for larger screens */
+  }
+}
+
+/* Adjustments for smaller screens */
+@media (max-width: 576px) {
+  .main {
+    padding: 2px; /* Reduce padding for smaller screens */
+  }
+}
+
+.sidebar.open + .main {
+  margin-left: 2px; /* Match the open sidebar width for large or medium screens */
+}
+
+.sidebar.closed + .main {
+  margin-left: 2px; /* Match the closed sidebar width */
+}
+
+@media (max-width: 768px) {
+  
+  .sidebar.open + .main {
+    margin-left: 2px; /* Consider mobile width when sidebar is open */
+  }
+
+  .sidebar.closed + .main {
+    margin-left: 2px; /* Match the mobile closed state */
+  }
+}
+
+
+.top_section {
+  display: flex;
+  align-items: center;
+  padding: 20px 15px;
+}
+
+.logo {
+  font-size: 30px;
+}
+
+.bars {
+  display: flex;
+  font-size: 25px;
+  margin-left: auto;
+  cursor: pointer; /* Add cursor pointer for clarity */
+}
+
+.link {
+  display: flex;
+  color: #fff;
+  padding: 10px 15px;
+  gap: 15px;
+  transition: all 0.5s;
+  text-decoration: none; /* No underline */
+}
+
+.link:hover {
+  background: lightskyblue;
+  color: #000;
+  text-decoration: none; /* No underline on hover */
+}
+
+.active {
+  background: lightskyblue;
+  color: #000;
+  text-decoration: none; /* No underline on active */
+}
+
+.icon,
+.link_text {
+  font-size: 20px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .sidebar {
+      width: 5px; /* Adjust this width for mobile closed state */
+  }
+
+  .sidebar.closed {
+      width: 45px; /* Ensure it's the same for closed state */
+  }
+
+  .sidebar.open {
+      width: 150px; /* Set desired width when opened in mobile view */
+  }
+
+  .sidebar.open + .main {
+      margin-left: 5px; /* Match this with sidebar open width */
+  }
+
+  .sidebar.closed + .main {
+      margin-left: 5px; /* Match this with sidebar closed width */
+  }
+
+  .logo {
+      display: none; /* Hide logo on mobile */
+  }
+
+  .link_text {
+      display: none; /* Hide link text on mobile */
+  }
+
+  .icon {
+      justify-content: center; /* Center the icons */
+  }
+}
