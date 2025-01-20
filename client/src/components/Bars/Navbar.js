@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import "../CSS/navbar.css";
 import { FaBars } from "react-icons/fa";
-import image1 from "../Images/logo.jpg";
+import image1 from "../Images/logo.png";
 
 
 
@@ -14,9 +14,15 @@ function NavBar() {
     <>
       <nav className="navbar mb-3">
         <div className="nav-container">
-        <img src={image1} width={50} height={50} alt="Logo" />
+        <img 
+  src={image1} 
+  width={80} 
+  height={80} 
+  alt="Logo" 
+  
+/>
           <NavLink exact to="/" className="nav-logo">
-            <span>Falah Institute Of Nursing <br/>And Allied Health Sciences</span>
+            <span>FALAH<br/> Institute Of Nursing <br/>And Allied Health Sciences</span>
             {/* <i className="fas fa-code"></i> */}
             </NavLink>
 
@@ -32,17 +38,7 @@ function NavBar() {
                 Home
               </NavLink>
             </li>
-            <li className="nav-item">
-              <NavLink
-                exact
-                to="/about"
-                activeClassName="active"
-                className="nav-links"
-                onClick={handleClick}
-              >
-                About
-              </NavLink>
-            </li>
+           
             <li className="nav-item">
               <NavLink
                 exact
@@ -57,7 +53,7 @@ function NavBar() {
             <li className="nav-item">
               <NavLink
                 exact
-                to="/"
+                to="/programs"
                 activeClassName="active"
                 className="nav-links"
                 onClick={handleClick}

@@ -38,7 +38,7 @@ export default function StudentList() {
     const confirmDelete = window.confirm("Are you sure you want to delete this record?");
     if (confirmDelete) {
       try {
-        await axios.delete(`http://theoaksserver.theoaksschool.xyz/students/${admNo}`, {
+        await axios.delete(`${process.env.REACT_APP_API_URL}/${admNo}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

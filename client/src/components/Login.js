@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import userContext from './context/UserContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import bgImage from './Images/bg.jpg';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -31,23 +30,16 @@ const Login = () => {
   };
 
   return (
-    <div style={{
-      backgroundImage: `url(${bgImage})`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      height: '100vh',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center'
-    }}>
+    <div style={{ height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
       <div className="login-card" style={{
-        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+        backgroundColor: 'rgba(132, 159, 248, 0.8)',
         padding: '20px',
         borderRadius: '10px',
+        width: "400px",
         boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)'
       }}>
         <h2 className="card-title text-center">Welcome! Please Login</h2>
-        <form onSubmit={handleLogin} style={{width:"400px", height:"200px"}} className='mt-4'>
+        <form onSubmit={handleLogin} style={{ width: "100%" }} className='mt-4'>
           <div>
             <label className="form-label " htmlFor="username">Username:</label>
             <input className="form-input form-control" placeholder='username here...' type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} required />
@@ -57,7 +49,7 @@ const Login = () => {
             <input className="form-input form-control" type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
           </div>
           {error && <p className="error-message">{error}</p>}
-          <br/>
+          <br />
           <button type="submit" className="btn btn-primary">Login</button>
         </form>
       </div>
