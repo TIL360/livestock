@@ -1,11 +1,15 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import { useNavigate } from "react-router-dom";
 import logo from './Images/logo.png';
 import fontfile from './Fonts/Trick.ttf';
 
 
 const Home = () => {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate('/applyonline');
+}
   return (
     <>
       <style>
@@ -28,9 +32,11 @@ const Home = () => {
   className="text-center mx-auto d-block" 
   style={{ 
     width: '20%', 
-    borderRadius: '60%' 
+    borderRadius: '50%', // Change to 50% for a perfect circle
+    boxShadow: '10px 10px 14px rgba(0, 0, 0, 0.2)', // Add shadow effect
   }} 
 />
+
 <br/>
 <hr/>
             <h1
@@ -47,10 +53,10 @@ const Home = () => {
             <h2 style={{ fontSize: '40px', color:"#03045e", backgroundColor:"white" }}>
               Falah Institute Of Nursing And Allied Health Sciences
             </h2>
-            <button className='btn btn-primary'> Apply Online</button>
+            <button className='btn btn-primary'  onClick={handleClick}> Apply Online</button>
           </div>
           
-        </div>
+        </div> 
       </div>
     </>
   );

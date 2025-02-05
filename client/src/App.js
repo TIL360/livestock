@@ -37,26 +37,23 @@ const App = () => {
         >
         <Navbar />
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/ApplyOnline" element={<ApplyOnline />} />
-          <Route path="/programs" element={<Programs />} />
-          <Route path="/programe1" element={<Programe1 />} />
-          <Route path="/programe2" element={<Programe2 />} />
-          <Route path="/programe3" element={<Programe3 />} />
-          <Route path="/programe4" element={<Programe4 />} />
-          <Route path="/programe5" element={<Programe5 />} />
-          <Route path="/programe6" element={<Programe6 />} />
-          <Route path="/programe7" element={<Programe7 />} />
-          <Route path="/programe8" element={<Programe8 />} />
-          <Route path="/programe9" element={<Programe9 />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/dashboard/*" element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          } />
-        </Routes>
+  <Route path="/" element={<Home />} />
+  <Route path="/about" element={<About />} />
+  <Route path="/ApplyOnline" element={<ApplyOnline />} />
+  <Route path="/programs" element={<Programs />} />
+  <Route path="/programe1" element={<Programe1 />} />
+  <Route path="/programe2" element={<Programe2 />} />
+  <Route path="/programe3" element={<Programe3 />} />
+  <Route path="/programe4" element={<Programe4 />} />
+  <Route path="/programe5" element={<Programe5 />} />
+  <Route path="/programe6" element={<Programe6 />} />
+  <Route path="/programe7" element={<Programe7 />} />
+  <Route path="/programe8" element={<Programe8 />} />
+  <Route path="/programe9" element={<Programe9 />} />
+  <Route path="/login" element={<Login />} />
+  <Route path="/dashboard/*" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+</Routes>
+
         <br/>
         <Footer/>
         </div>

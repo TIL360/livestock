@@ -197,6 +197,7 @@ const handlePendResult = async (e) => {
 
   return (
     <>
+    <div style={{background:"white"}}>
       <div>
         <h1 className="text-center">
           <u>EXAMINATION</u>
@@ -476,6 +477,7 @@ const handlePendResult = async (e) => {
         </form>
 
 <hr/>
+      </div>
       </div>
     </>
   );

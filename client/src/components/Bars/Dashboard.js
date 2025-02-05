@@ -23,6 +23,7 @@ import ResultPrep from "../Result/ResultPrep";
 import Result from "../Result/Result";
 import ResultObtMarks from "../Result/ResultObtMarks";
 import PRPdf from "../Result/PRPdf";
+import Applications from "../Pages/Applications";
 
 const Dashboard = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -38,7 +39,7 @@ const Dashboard = () => {
             <Route path="studentcreate" element={<StudentCreate />} />
             <Route path="studentedit/:id" element={<StudentEdit />} />
             <Route path="feedetail" element={<FeeDetail />} />
-            <Route path="feecollection/:idf" element={<FeeCollection />} />
+            <Route path="feecollection" element={<FeeCollection />} />
             <Route path="feepaid" element={<FeePaid />} />
             <Route path="unpaidfee" element={<UnpaidFee />} />
             <Route path="standards" element={<Standards />} />
@@ -55,6 +56,7 @@ const Dashboard = () => {
             <Route path="result" element={<Result />} />
             <Route path="resultobtmarks/:resultid" element={<ResultObtMarks />} />
             <Route path="PRPdf/:resultid" element={<PRPdf />} />
+            <Route path="applications" element={<Applications />} />
           </Routes>
         </div>
       </div>

@@ -29,7 +29,7 @@ function NavBar() {
           <ul className={click ? "nav-menu active" : "nav-menu"}>
             <li className="nav-item">
               <NavLink
-                exact
+                
                 to="/"
                 activeClassName="active"
                 className="nav-links"
@@ -41,7 +41,7 @@ function NavBar() {
            
             <li className="nav-item">
               <NavLink
-                exact
+                
                 to="/login"
                 activeClassName="active"
                 className="nav-links"
@@ -52,7 +52,7 @@ function NavBar() {
             </li>
             <li className="nav-item">
               <NavLink
-                exact
+                
                 to="/programs"
                 activeClassName="active"
                 className="nav-links"
@@ -63,7 +63,7 @@ function NavBar() {
             </li>
             <li className="nav-item">
               <NavLink
-                exact
+                
                 to="/applyonline"
                 style={{background:"green", color:"white"}}
                 activeClassName="active"

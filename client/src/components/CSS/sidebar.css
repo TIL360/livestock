@@ -4,7 +4,7 @@
 }
 
 .sidebar {
-  background: #000;
+  background: #003049;
   color: #fff;
   height: 100vh;
   transition: width 0.5s;
@@ -79,20 +79,25 @@
   padding: 10px 15px;
   gap: 15px;
   transition: all 0.5s;
+  border: 1px solid white; /* Updated this line */
   text-decoration: none; /* No underline */
 }
+
 
 .link:hover {
   background: lightskyblue;
   color: #000;
+  border: 1px solid lightskyblue; /* Change border color on hover */
   text-decoration: none; /* No underline on hover */
 }
 
 .active {
   background: lightskyblue;
   color: #000;
+  border: 1px solid lightskyblue; /* Change border color for active state */
   text-decoration: none; /* No underline on active */
 }
+
 
 .icon,
 .link_text {

@@ -16,11 +16,13 @@ export default function UnpaidFee() {
   useEffect(() => {
     const fetchFeePaidDetails = async () => {
       try {
-        const response = await axios.get("${process.env.REACT_APP_API_URL}/unpaid", {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/unpaid`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
+        
+        
 
         if (response.data && Array.isArray(response.data.data)) {
           setFeePaidDetails(response.data.data);
@@ -88,7 +90,8 @@ export default function UnpaidFee() {
   });
 
   return (
-    <div className="container">
+    <div className="container" style={{background:"white"
+    }}>
       <h2 className="text-center">Unpaid Fee Detail</h2>
       {error && <div className="alert alert-danger">{error}</div>}
 
@@ -148,8 +151,10 @@ export default function UnpaidFee() {
             <th>Id</th>
             <th>Adm No</th>
             <th>Name</th>
-            <th>Standard</th>
-            <th>Collection</th>
+            <th>Class</th>
+            <th>Fee M/Y</th>
+            <th>Fee</th>
+            <th>Arrears</th>
             <th>Total Fee</th>
         
           </tr>
@@ -166,7 +171,9 @@ export default function UnpaidFee() {
                 <td>{detail.fee_adm_no}</td>
                 <td>{detail.name}</td>
                 <td>{detail.FeeStandard}</td>
-                <td>{detail.collection}</td>
+                <td>{detail.fmonth} / {detail.fyear}  </td>
+                <td>{detail.monthly_fee_feetbl}</td>
+                <td>{detail.total_arrears}</td>
                 <td>{detail.total_fee}</td>
                
               </tr>

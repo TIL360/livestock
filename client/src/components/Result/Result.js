@@ -82,6 +82,7 @@ export default function Result() {
 
   return (
     <>
+    <div style={{background:"white"}}>
       <div>
         <h1 className="text-center">Result</h1>
       </div>
@@ -221,6 +222,7 @@ export default function Result() {
             )}
           </tbody>
         </table>
+      </div>
       </div>
     </>
   );

@@ -4,7 +4,7 @@ import userContext from './context/UserContext';
 
 const ProtectedRoute = ({ children }) => { 
     const { token } = useContext(userContext);
-    console.log('ProtectedRoute Token:', token); // Add this line
+  
 
     return token ? children : <Navigate to="/login" />;
 };

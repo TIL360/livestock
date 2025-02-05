@@ -2,6 +2,11 @@ const express = require('express');
 const router = express.Router();
 const mysql = require('mysql');
 const checkAuth = require('../middleware/check-atuh');
+require('dotenv').config();
+
+
+
+
 
 
 const multer = require('multer');
@@ -33,6 +38,7 @@ const upload = multer({
   fileFilter: fileFilter
 
 });
+
 
 
 // MySQL connection

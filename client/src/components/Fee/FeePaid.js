@@ -110,7 +110,7 @@ export default function FeePaid() {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="container">
+    <div className="container" style={{background:"white"}}>
       <h2 className="text-center">Fee Paid Detail</h2>
       {error && <div className="alert alert-danger">{error}</div>}
 

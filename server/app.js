@@ -8,7 +8,7 @@ require('dotenv').config();
 
 // Allow only techinfolab360.xyz
 const corsOptions = {
-      origin: ['http://localhost:3000'],
+      origin: 'http://localhost:3000',
       methods: 'GET,POST,PATCH,DELETE',
     credentials: true, // Include if you need to send cookies or authentication headers
 
@@ -61,6 +61,7 @@ const countRoutes = require('./api/routes/counter/count');
 const tasksRoutes = require('./api/routes/tasking/tasks');
 const invoiceRoutes = require('./api/routes/fee/invoicefee');
 const expRoutes = require('./api/routes/expenses/expenses');
+const applyRoutes = require('./api/routes/students/apply');
 
 
 
@@ -84,6 +85,7 @@ app.use('/feestats', feestatsRoutes);
 app.use('/count', countRoutes);
 app.use('/invoicefee', invoiceRoutes);
 app.use('/expenses', expRoutes);
+app.use('/apply', applyRoutes);
 
 
 app.use((req, res, next) => {

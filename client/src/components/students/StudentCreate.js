@@ -30,16 +30,14 @@ export default function StudentCreate() {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/classes`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
-        console.log(response.data); // Check what data you're receiving
+        console.log(response.data); // Check data received
         setStandards(response.data); // Set standards to state
       } catch (err) {
         console.error("Error fetching standards:", err);
       }
     };
     fetchStandards();
-}, [token]);
-
-  
+  }, [token]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -64,14 +62,16 @@ export default function StudentCreate() {
           'Authorization': `Bearer ${token}`
         }
       });
-      navigate('/studentlist');
+      navigate('/dashboard/studentlist');
     } catch (err) {
       console.error("Error creating student:", err);
     }
   };
-  const handleback = (e) => {
-    navigate('/dashboard/studentList');
-}
+
+  const handleBack = () => {
+    navigate('/dashboard/studentlist');
+  };
+
   return (
     <>
       <div className="card col-md-8 mx-auto">
@@ -89,6 +89,7 @@ export default function StudentCreate() {
                   placeholder="Adm No..."
                   onChange={(e) => setAdmNo(e.target.value)}
                   autoComplete="off"
+                  required
                 />
               </div>
               <div className="col-md-6">
@@ -99,6 +100,7 @@ export default function StudentCreate() {
                   placeholder="Student Name..."
                   onChange={(e) => setName(e.target.value)}
                   autoComplete="off"
+                  required
                 />
               </div>
             </div>
@@ -108,6 +110,7 @@ export default function StudentCreate() {
                 <label><b>Standard</b></label>
                 <select
                   className="form-control"
+                  required
                   onChange={(e) => setStandard(e.target.value)}
                   value={standard}
                 >
@@ -125,6 +128,7 @@ export default function StudentCreate() {
                   type="file"
                   className="form-control"
                   onChange={(e) => setImage(e.target.files[0])}
+                  accept="image/*" // Allow only image files
                 />
               </div>
             </div>
@@ -134,6 +138,7 @@ export default function StudentCreate() {
                 <label><b>Monthly Fee</b></label>
                 <input
                   type="text"
+                  required
                   className="form-control"
                   placeholder="Monthly Fee..."
                   onChange={(e) => setMonthlyFee(e.target.value)}
@@ -142,13 +147,16 @@ export default function StudentCreate() {
               </div>
               <div className="col-md-6">
                 <label><b>Status</b></label>
-                <input
-                  type="text"
+                <select
                   className="form-control"
-                  placeholder="Status..."
+                  required
                   onChange={(e) => setStatus(e.target.value)}
-                  autoComplete="off"
-                />
+                  value={status}
+                >
+                  <option value="">Select Status...</option>
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+                </select>
               </div>
             </div>
 
@@ -157,6 +165,7 @@ export default function StudentCreate() {
                 <label><b>Father's Name</b></label>
                 <input
                   type="text"
+                  required
                   className="form-control"
                   placeholder="Father's Name..."
                   onChange={(e) => setFather(e.target.value)}
@@ -167,9 +176,9 @@ export default function StudentCreate() {
                 <label><b>Admission Date</b></label>
                 <input
                   type="date"
+                  required
                   className="form-control"
                   onChange={(e) => setAdmDate(e.target.value)}
-                  autoComplete="off"
                 />
               </div>
             </div>
@@ -179,6 +188,7 @@ export default function StudentCreate() {
                 <label><b>Admission Standard</b></label>
                 <select
                   className="form-control"
+                  required
                   onChange={(e) => setAdmStandard(e.target.value)}
                   value={admStandard}
                 >
@@ -194,6 +204,7 @@ export default function StudentCreate() {
                 <label><b>Mobile</b></label>
                 <input
                   type="text"
+                  required
                   className="form-control"
                   placeholder="Mobile..."
                   onChange={(e) => setMobile(e.target.value)}
@@ -226,8 +237,8 @@ export default function StudentCreate() {
             </div>
             
             <div className="mt-3">
-              <button className="btn btn-primary">Add Record</button>
-              <button type="submit" className="btn btn-secondary ml-1" onClick={handleback}>Back</button>
+              <button type="submit" className="btn btn-primary">Add Record</button>
+              <button type="button" className="btn btn-secondary ml-1" onClick={handleBack}>Back</button>
             </div>
           </form>
         </div>

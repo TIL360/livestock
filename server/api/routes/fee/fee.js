@@ -235,7 +235,7 @@ router.patch("/:idf", checkAuth, async (req, res) => {
   });
 });
 
-
+ 
 
 // Get data by idf
 router.get("/:idf", checkAuth, async (req, res) => {
@@ -245,7 +245,7 @@ router.get("/:idf", checkAuth, async (req, res) => {
     SELECT fee_tbl.*, basicinfo.*
     FROM fee_tbl
     JOIN basicinfo ON fee_tbl.fee_adm_no = basicinfo.adm_no
-    WHERE fee_tbl.idf = ?`;
+    WHERE fee_tbl.fee_adm_no = ?`;
 
   db.query(query, [idf], (error, result) => {
     if (error) {

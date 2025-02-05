@@ -26,7 +26,7 @@ const Programs = () => {
             <button className='btn' style={{
               width: "90%",
               marginTop: "10px",
-              backgroundColor:"#126df7",
+              backgroundColor:"#003049",
               color: "#f0ebd8",
               fontSize: "18px",
               border: "1px Solid White",
@@ -40,7 +40,7 @@ const Programs = () => {
             <button className='btn btn-success' style={{
               width: "90%",
               marginTop: "10px",
-              backgroundColor:"#126df7",
+              backgroundColor:"#003049",
               color: "#f0ebd8",
               fontSize: "18px",
               border: "1px Solid White",
@@ -54,7 +54,7 @@ const Programs = () => {
             <button className='btn btn-success' style={{
               width: "90%",
               marginTop: "10px",
-              backgroundColor:"#126df7",
+              backgroundColor:"#003049",
               color: "#f0ebd8",
               fontSize: "18px",
               border: "1px Solid White",
@@ -68,7 +68,7 @@ const Programs = () => {
             <button className='btn btn-success' style={{
               width: "90%",
               marginTop: "10px",
-              backgroundColor:"#126df7",
+              backgroundColor:"#003049",
               color: "#f0ebd8",
               fontSize: "18px",
               border: "1px Solid White",
@@ -82,7 +82,7 @@ const Programs = () => {
             <button className='btn btn-success' style={{
               width: "90%",
               marginTop: "10px",
-              backgroundColor:"#126df7",
+              backgroundColor:"#003049",
               color: "#f0ebd8",
               fontSize: "18px",
               border: "1px Solid White",
@@ -97,7 +97,7 @@ const Programs = () => {
             <button className='btn btn-success' style={{
               width: "90%",
               marginTop: "10px",
-              backgroundColor:"#126df7",
+              backgroundColor:"#003049",
               color: "#f0ebd8",
               fontSize: "18px",
               border: "1px Solid White",
@@ -111,7 +111,7 @@ const Programs = () => {
             <button className='btn btn-success' style={{
               width: "90%",
               marginTop: "10px",
-              backgroundColor:"#126df7",
+              backgroundColor:"#003049",
               color: "#f0ebd8",
               fontSize: "18px",
               border: "1px Solid White",
@@ -125,7 +125,7 @@ const Programs = () => {
             <button className='btn btn-success' style={{
               width: "90%",
               marginTop: "10px",
-              backgroundColor:"#126df7",
+              backgroundColor:"#003049",
               color: "#f0ebd8",
               fontSize: "18px",
               border: "1px Solid White",
@@ -139,7 +139,7 @@ const Programs = () => {
             <button className='btn btn-success' style={{
               width: "90%",
               marginTop: "10px",
-              backgroundColor:"#126df7",
+              backgroundColor:"#003049",
               color: "#f0ebd8",
               fontSize: "18px",
               border: "1px Solid White",

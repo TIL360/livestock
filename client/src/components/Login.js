@@ -22,7 +22,7 @@ const Login = () => {
       });
       setUser({ username });
       setToken(response.data.token);
-      console.log('Token received:', response.data.token);
+     
       navigate('/dashboard');
     } catch (err) {
       setError(err.response ? err.response.data.message : 'Login failed. Please try again.');

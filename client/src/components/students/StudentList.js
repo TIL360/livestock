@@ -34,25 +34,27 @@ export default function StudentList() {
     navigate("/dashboard/studentcreate");
   };
 
-  const handleDelete = async (admNo) => {
+  const handleDelete = async (id) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this record?");
     if (confirmDelete) {
       try {
-        await axios.delete(`${process.env.REACT_APP_API_URL}/${admNo}`, {
+        await axios.delete(`${process.env.REACT_APP_API_URL}/students/del/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        setStudents(students.filter((student) => student.adm_no !== admNo));
+        setStudents(students.filter((student) => student.id !== id));
       } catch (error) {
         console.error("Error deleting student:", error);
       }
     }
   };
+  
 
-  const handleEdit = (admNo) => {
-    navigate(`/dashboard/studentedit/${admNo}`);
-  };
+  const handleEdit = (id) => {
+    navigate(`/dashboard/studentedit/${id}`); // Fixed the string interpolation
+};
+
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
@@ -128,22 +130,23 @@ export default function StudentList() {
                 <td className="d-flex justify-content-center align-items-center" style={{ height: "70px" }}>
                   {student.image && (
                     <img
-                      src={`http://theoaksserver.theoaksschool.xyz/${student.image}`}
+                    src={`${process.env.REACT_APP_API_URL}/${student.image}`}
                       alt={student.name}
                       style={{ width: "70px", height: "70px" }}
                     />
                   )}
                 </td>
+                
                 <td>
                   <button
                     className="btn btn-primary"
-                    onClick={() => handleEdit(student.adm_no)}
+                    onClick={() => handleEdit(student.id)}
                   >
                     Edit
                   </button>
                   <button
                     className="btn btn-danger"
-                    onClick={() => handleDelete(student.adm_no)}
+                    onClick={() => handleDelete(student.id)}
                   >
                     Delete
                   </button>
