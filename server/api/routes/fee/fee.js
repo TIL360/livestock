@@ -169,6 +169,25 @@ router.post("/insert-fees", checkAuth, async (req, res) => {
   });
 });
 
+// Get data by idf
+router.get("/editfee/:idf", checkAuth, async (req, res) => {
+  const idf = req.params.idf;
+  const query = ` 
+    SELECT fee_tbl.*, basicinfo.* 
+    FROM fee_tbl 
+    JOIN basicinfo 
+    ON fee_tbl.fee_adm_no = basicinfo.adm_no 
+    WHERE fee_tbl.idf = ? 
+  `;
+  db.query(query, [idf], (error, result) => {
+    if (error) {
+      console.error("Database query error:", error);
+      return res.status(500).json({ error: "Database query failed" });
+    }
+    res.status(200).json({ success: true, data: result[0] });
+  });
+});
+
 
 // Update data by idf
 router.patch("/:idf", checkAuth, async (req, res) => {
@@ -237,15 +256,44 @@ router.patch("/:idf", checkAuth, async (req, res) => {
 
  
 
+// search data by adm no
+// Search fees by admission number for the current and next month
+router.get("/search/:admno", checkAuth, async (req, res) => {
+  const admno = req.params.admno;
+  const currentYear = new Date().getFullYear();
+  const currentMonth = new Date().getMonth() + 1; // Current month (1-12)
+  const nextMonth = currentMonth === 12 ? 1 : currentMonth + 1;
+  const nextYear = currentMonth === 12 ? currentYear + 1 : currentYear;
+
+  const query = `
+      SELECT fee_tbl.*, basicinfo.*
+      FROM fee_tbl
+      JOIN basicinfo ON fee_tbl.fee_adm_no = basicinfo.adm_no
+      WHERE fee_tbl.fee_adm_no = ?
+      AND ( (fee_tbl.fyear = ? AND fee_tbl.fmonth = ?)
+            OR (fee_tbl.fyear = ? AND fee_tbl.fmonth = ?) )
+  `;
+
+  db.query(query, [admno, currentYear, currentMonth, nextYear, nextMonth], (error, results) => {
+      if (error) {
+          console.error("Database query error:", error);
+          return res.status(500).json({ error: "Database query failed" });
+      }
+
+      return res.status(200).json({ success: true, data: results });
+  });
+});
+
+
 // Get data by idf
-router.get("/:idf", checkAuth, async (req, res) => {
+router.get("/collect/:idf", checkAuth, async (req, res) => {
   const idf = req.params.idf;
   // Assuming 'id' is the common field to join on in both tables
   const query = `
     SELECT fee_tbl.*, basicinfo.*
     FROM fee_tbl
     JOIN basicinfo ON fee_tbl.fee_adm_no = basicinfo.adm_no
-    WHERE fee_tbl.fee_adm_no = ?`;
+    WHERE fee_tbl.idf = ?`;
 
   db.query(query, [idf], (error, result) => {
     if (error) {
@@ -298,21 +346,154 @@ WHERE
   });
 });
 
+router.patch("/update/:idf", checkAuth, async (req, res) => {
+  const { idf } = req.params;
+  const { collection, adm_collection, exam_collection, fine_collection, collection_by } = req.body;
 
-router.patch("/update", checkAuth, async (req, res) => {
-  const { amount, fee_type, standard } = req.body;
-  const query = `UPDATE fee_tbl SET ${fee_type} = ? WHERE standard = ?`;
-  db.query(query, [amount, standard], (error) => {
+  // Check if payment_at is already set
+  db.query(`SELECT payment_at FROM fee_tbl WHERE idf = ?`, [idf], (error, results) => {
+    if (error) {
+      console.error("Error checking payment_at:", error);
+      return res.status(500).json({ error: "Database query failed" });
+    }
+
+    if (results[0].payment_at !== null) {
+      return res.status(400).json({ error: "Fee has already been collected for this student. No changes can be made at this stage." });
+    }
+
+    const updates = [];
+    const values = [];
+
+    if (collection !== undefined) {
+      updates.push(`collection = ?`);
+      values.push(collection);
+    }
+    if (adm_collection !== undefined) {
+      updates.push(`adm_collection = ?`);
+      values.push(adm_collection);
+    }
+    if (exam_collection !== undefined) {
+      updates.push(`exam_collection = ?`);
+      values.push(exam_collection);
+    }
+    if (fine_collection !== undefined) {
+      updates.push(`fine_collection = ?`);
+      values.push(fine_collection);
+    }
+    if (collection_by !== undefined) {
+      updates.push(`collection_by = ?`);
+      values.push(collection_by);
+    }
+
+    // Set payment_at to current date
+    updates.push(`payment_at = ?`);
+    values.push(new Date());
+
+    if (updates.length === 0) {
+      return res.status(400).json({ error: "No fields provided to update" });
+    }
+
+    const query = `UPDATE fee_tbl SET ${updates.join(', ')} WHERE idf = ?`;
+    values.push(idf);
+
+    console.log("Query:", query);
+    console.log("Values:", values);
+
+    db.query(query, values, (error, results) => {
+      if (error) {
+        console.error("Error updating fee:", error);
+        return res.status(500).json({ error: "Database query failed" });
+      }
+
+      console.log("Update results:", results);
+      res.status(200).json({ success: true, message: "Fee updated successfully" });
+    });
+  });
+});
+
+router.patch("/edit/update/:idf", checkAuth, async (req, res) => {
+  const { idf } = req.params;
+  const {
+    monthly_fee,
+    arrears,
+    adm_fee,
+    adm_arrears,
+    fine_fee,
+    fine_arrears,
+    exam_fee,
+    exam_arrears,
+    updated_at
+  } = req.body;
+
+  const updates = [];
+  const values = [];
+
+  if (monthly_fee !== undefined) {
+    updates.push(`monthly_fee_feetbl = ?`);
+    values.push(monthly_fee);
+  }
+
+  if (arrears !== undefined) {
+    updates.push(`arrears = ?`);
+    values.push(arrears);
+  }
+
+  if (adm_fee !== undefined) {
+    updates.push(`adm_fee = ?`);
+    values.push(adm_fee);
+  }
+
+  if (adm_arrears !== undefined) {
+    updates.push(`adm_arrears = ?`);
+    values.push(adm_arrears);
+  }
+
+  if (fine_fee !== undefined) {
+    updates.push(`fine_fee = ?`);
+    values.push(fine_fee);
+  }
+
+  if (fine_arrears !== undefined) {
+    updates.push(`fine_arrears = ?`);
+    values.push(fine_arrears);
+  }
+
+  if (exam_fee !== undefined) {
+    updates.push(`exam_fee = ?`);
+    values.push(exam_fee);
+  }
+
+  if (exam_arrears !== undefined) {
+    updates.push(`exam_arrears = ?`);
+    values.push(exam_arrears);
+  }
+
+  updates.push(`updated_at = ?`);
+  values.push(updated_at);
+
+  if (updates.length === 0) {
+    return res.status(400).json({ error: "No fields provided to update" });
+  }
+
+  const query = `UPDATE fee_tbl SET ${updates.join(', ')} WHERE idf = ?`;
+  values.push(idf);
+
+  console.log("Query:", query);
+  console.log("Values:", values);
+
+  db.query(query, values, (error, results) => {
     if (error) {
       console.error("Error updating fee:", error);
       return res.status(500).json({ error: "Database query failed" });
     }
-    res.status(200).json({ success: true, message: `${fee_type} updated successfully` });
+
+    console.log("Update results:", results);
+    res.status(200).json({ success: true, message: "Fee updated successfully" });
   });
 });
 
 
-// New endpoint for fetching standards
+
 // New endpoint for fetching standards
 router.get("/standards", checkAuth, (req, res) => {
   const query = "SELECT DISTINCT FeeStandard FROM fee_tbl";
@@ -514,6 +695,31 @@ router.get("/salary/total", checkAuth, (req, res) => {
       }
       res.status(200).json({ success: true, total: results[0].total });
   });
+});
+
+router.delete("/:idf", checkAuth, async (req, res) => {
+  const { idf } = req.params;
+
+  try {
+    const query = `DELETE FROM fee_tbl WHERE idf = ?`;
+    const values = [idf];
+
+    db.query(query, values, (error, results) => {
+      if (error) {
+        console.error("Error deleting fee record:", error);
+        return res.status(500).json({ success: false, error: "Database query failed" });
+      }
+
+      if (results.affectedRows > 0) {
+        res.status(200).json({ success: true, message: "Fee record deleted successfully" });
+      } else {
+        res.status(404).json({ success: false, error: "Fee record not found" });
+      }
+    });
+  } catch (error) {
+    console.error("Error deleting fee record:", error);
+    res.status(500).json({ success: false, error: "Internal server error" });
+  }
 });
 
 

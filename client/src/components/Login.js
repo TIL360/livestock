@@ -9,7 +9,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { setUser, setToken } = useContext(userContext);
+  const { setUser, setToken, setUsertype } = useContext(userContext);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -22,8 +22,8 @@ const Login = () => {
       });
       setUser({ username });
       setToken(response.data.token);
-     
-      navigate('/dashboard');
+      setUsertype(response.data.user.usertype); // Access the correct property
+      navigate('/dashboard/dynamicdb');
     } catch (err) {
       setError(err.response ? err.response.data.message : 'Login failed. Please try again.');
     }

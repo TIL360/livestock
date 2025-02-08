@@ -24,6 +24,11 @@ import Result from "../Result/Result";
 import ResultObtMarks from "../Result/ResultObtMarks";
 import PRPdf from "../Result/PRPdf";
 import Applications from "../Pages/Applications";
+import FeeSearch from "../Fee/FeeSearch";
+import FeeEdit from "../Fee/FeeEdit";
+import Registration from "../User/Registration";
+import UpdateUser from "../User/UpdateUser";
+import DynamicDB from "./DynamicDB";
 
 const Dashboard = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -39,7 +44,9 @@ const Dashboard = () => {
             <Route path="studentcreate" element={<StudentCreate />} />
             <Route path="studentedit/:id" element={<StudentEdit />} />
             <Route path="feedetail" element={<FeeDetail />} />
-            <Route path="feecollection" element={<FeeCollection />} />
+            <Route path="feecollection/:idf" element={<FeeCollection />} />
+            <Route path="feesearch" element={<FeeSearch />} />
+            <Route path="feeedit/:idf" element={<FeeEdit />} />
             <Route path="feepaid" element={<FeePaid />} />
             <Route path="unpaidfee" element={<UnpaidFee />} />
             <Route path="standards" element={<Standards />} />
@@ -57,6 +64,9 @@ const Dashboard = () => {
             <Route path="resultobtmarks/:resultid" element={<ResultObtMarks />} />
             <Route path="PRPdf/:resultid" element={<PRPdf />} />
             <Route path="applications" element={<Applications />} />
+            <Route path="registration" element={<Registration />} />
+            <Route path="updateuser" element={<UpdateUser />} />
+            <Route path="dynamicdb" element={<DynamicDB />} />
           </Routes>
         </div>
       </div>

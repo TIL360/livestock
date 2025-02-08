@@ -55,11 +55,16 @@
   }
 }
 
+.welcome-text {
+  margin-right: 0;            /* Pushes the text to the left */
+  font-weight: bold;             /* Optional: Make it bold */
+}
 
 .top_section {
   display: flex;
-  align-items: center;
-  padding: 20px 15px;
+  justify-content: space-between; /* This ensures space between items */
+  align-items: center;            /* Center items vertically */
+  padding: 10px;                 /* Add some padding */
 }
 
 .logo {
@@ -68,7 +73,8 @@
 
 .bars {
   display: flex;
-  font-size: 25px;
+  font-size: 20px;
+  
   margin-left: auto;
   cursor: pointer; /* Add cursor pointer for clarity */
 }
@@ -78,7 +84,7 @@
   color: #fff;
   padding: 10px 15px;
   gap: 15px;
-  transition: all 0.5s;
+   transition: all 0.5s;
   border: 1px solid white; /* Updated this line */
   text-decoration: none; /* No underline */
 }
