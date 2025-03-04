@@ -2,14 +2,8 @@ const express = require('express');
 const router = express.Router();
 const mysql = require('mysql');
 const checkAuth = require('../middleware/check-atuh');
+
 require('dotenv').config();
-
-
-
-
-
-
-
 const multer = require('multer');
 const path = require('path');
 const storage = multer.diskStorage({
@@ -41,21 +35,20 @@ const upload = multer({
 });
 
 
-
 // MySQL connection
 const db = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME
-});
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME
+  });
 
 db.connect((err) => {
-if (err) {
-  console.error('Database connection failed:', err);
-  return;
-}
-//console.log('Connected to MySQL database');
+  if (err) {
+    console.error('Database connection failed:', err);
+    return;
+  }
+  //console.log('Connected to MySQL database');
 });
 
 
@@ -64,13 +57,14 @@ if (err) {
 // New endpoint for profile or verification
 router.get("/", checkAuth, (req, res) => {
   const query = 'SELECT * FROM basicinfo';
-  db.query(query, (error, results) => {
-    if (error) {
-      console.error('Database query error:', error);
-      return res.status(500).json({ error: 'Database query failed' });
-    }
-    res.json(results);
-  });
+
+    db.query(query, (error, results) => {
+        if (error) {
+            console.error('Database query error:', error);
+            return res.status(500).json({ error: 'Database query failed' });
+        }
+        res.json(results);
+});
 
 
 
@@ -103,7 +97,7 @@ router.post('/', checkAuth, upload.single('image'), (req, res, next) => {
 
 
 // Handling GET by admno
-router.get('/edit/:id', checkAuth, (req, res, next) => {
+router.get('/:id', checkAuth, (req, res, next) => {
     const id = req.params.id;
   
     const query = 'SELECT * FROM basicinfo WHERE id = ?';
@@ -153,11 +147,11 @@ router.get('/edit/:id', checkAuth, (req, res, next) => {
 
   
   // Delete record
-  router.delete('/del/:id', checkAuth, (req, res, next) => {
-    const studentId = req.params.id;
+  router.delete('/del/:admno', checkAuth, (req, res, next) => {
+    const studentId = req.params.admno;
     console.log(`Delete request received for adm_no: ${studentId}`);
     
-    const sql = 'DELETE FROM basicinfo WHERE id = ?';
+    const sql = 'DELETE FROM basicinfo WHERE adm_no = ?';
     db.query(sql, [studentId], (err, result) => {
       if (err) {
         console.error('Error deleting student: ', err);

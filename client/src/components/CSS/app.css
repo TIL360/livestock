@@ -1,0 +1,23 @@
+/* styles.css or your relevant CSS file */
+
+html, body {
+    height: 100%;
+    margin: 0;
+  }
+  
+  #root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensures the root takes full height */
+  }
+  
+  main {
+    flex: 1; /* Ensures the content area grows to fill space between header and footer */
+  }
+  
+  footer {
+    background: #f8f9fa; /* Example background color */
+    padding: 1rem; /* Adjust padding as needed */
+    text-align: center; /* Center the text in the footer */
+  }
+  

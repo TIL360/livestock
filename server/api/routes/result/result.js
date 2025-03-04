@@ -114,7 +114,7 @@ router.post('/pend-result', checkAuth, (req, res) => {
 
 
 
-// pUBLISH result
+// pUBLISH result 
 // Publish result
 router.patch('/publish-result', checkAuth, async (req, res) => {
   const { year, month, standard } = req.body;
@@ -170,6 +170,20 @@ router.patch('/publish-result', checkAuth, async (req, res) => {
   }
 });
 
-
+// Fetch results for a given admission number
+router.get('/reportcard/:admNo', (req, res) => {
+  const { admNo } = req.params;
+  db.query(
+    `SELECT * FROM result_tbl INNER JOIN basicinfo ON result_tbl.result_adm_no = basicinfo.adm_no WHERE basicinfo.adm_no = ?`,
+    [admNo],
+    (err, results) => {
+      if (err) return res.status(500).json({ error: 'Error fetching results', details: err });
+      if (results.length === 0) {
+        return res.status(404).json({ message: 'No results found for the given admission number.' });
+      }
+      res.status(200).json(results);
+    }
+  );
+});
 
   module.exports = router;

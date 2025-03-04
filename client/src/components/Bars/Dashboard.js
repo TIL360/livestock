@@ -29,6 +29,21 @@ import FeeEdit from "../Fee/FeeEdit";
 import Registration from "../User/Registration";
 import UpdateUser from "../User/UpdateUser";
 import DynamicDB from "./DynamicDB";
+import Addquestion from "../Qbank/Addquestion";
+import Addqtopaper from "../Qbank/Addqtopaper";
+import Paper from "../Qbank/Paper";
+import Infos from "../Info/Infos";
+import CreateInfo from "../Info/CreateInfo";
+import InfoEdit from "../Info/InfoEdit";
+import DateSheetPrint from "../Result/DateSheetPrint";
+import DateSheet from "../Result/Datesheet";
+import EditPaper from "../Result/EditPaper";
+import Assigntasks from "../Assignments/Assigntasks";
+import TaskCreate from "../Assignments/TaskCreate";
+import TaskEdit from "../Assignments/TaskEdit";
+import DynamicDBUser from "../Bars/DynamicDBUser";
+import Images from "../Web Images/Images";
+import Feemisc from "../Fee/Feemisc";
 
 const Dashboard = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -67,6 +82,21 @@ const Dashboard = () => {
             <Route path="registration" element={<Registration />} />
             <Route path="updateuser" element={<UpdateUser />} />
             <Route path="dynamicdb" element={<DynamicDB />} />
+            <Route path="addquestion" element={<Addquestion />} />
+            <Route path="addqtopaper" element={<Addqtopaper />} />
+            <Route path="paper" element={<Paper />} />
+            <Route path="infos" element={<Infos />} />
+            <Route path="createinfo" element={<CreateInfo />} />
+            <Route path="infoedit/:id" element={<InfoEdit />} />
+            <Route path="datesheetprint" element={<DateSheetPrint />} />
+            <Route path="datesheet" element={<DateSheet />} />
+            <Route path="editpaper/:id" element={<EditPaper />} />
+            <Route path="assigntasks" element={<Assigntasks />} />
+            <Route path="taskcreate" element={<TaskCreate />} />
+            <Route path="taskedit/:syllabus_id" element={<TaskEdit />} />
+            <Route path="dynamicdbuser" element={<DynamicDBUser />} />
+            <Route path="images" element={<Images />} />
+            <Route path="feemisc" element={<Feemisc />} />
           </Routes>
         </div>
       </div>

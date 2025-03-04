@@ -56,7 +56,7 @@ export default function LeavesEdit() {
     if (loading) return <div>Loading...</div>;
 
     return (
-        <div className="container">
+        <div className="container" style={{background:"white"}}>
             <h1 className="text-center"><b>Update Leaves</b></h1>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">

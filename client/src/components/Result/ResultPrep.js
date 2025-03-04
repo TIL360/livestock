@@ -146,15 +146,15 @@ const handleback = (e)=>{
  navigate('/dashboard/result');
 }
 
-
 const handlePublishResult = async (e) => {
   e.preventDefault();
   try {
-    const response = await axios.post(
+    const response = await axios.patch(
       `${process.env.REACT_APP_API_URL}/result/publish-result`,
       {
-        year: examYear, // Use selected exam year
-        month: examName, // Use selected exam name
+        year: examYear,   // Use selected exam year
+        month: examName,  // Use selected exam name
+        standard: standard // Include the selected standard
       },
       {
         headers: { Authorization: `Bearer ${token}` },
@@ -169,6 +169,7 @@ const handlePublishResult = async (e) => {
     alert("Error occurred while publishing result: " + errorMsg);
   }
 };
+
 
 const handlePendResult = async (e) => {
   e.preventDefault();
@@ -193,6 +194,13 @@ const handlePendResult = async (e) => {
   }
 };
 
+const handleBackToDashboard = () => {
+  navigate('/dashboard/result');
+};
+
+const handleDatesheet = () => {
+  navigate('/dashboard/datesheetprint');
+};
 
 
   return (
@@ -205,13 +213,13 @@ const handlePendResult = async (e) => {
         <hr />
       </div>
       <div className="row mb-5 align-items-center text-center">
-        <div className="col-md-3">
-          <h4 className="text-center text-primary">Prepare New Examination</h4>
+        <div className="col-md-2">
+          <h4 className="text-center text-primary">New Exam</h4>
         </div>
         <form onSubmit={handleSubmit} className="col-md-6">
           {/* Year and Month Input */}
           <div className="row">
-            <div className="col-md-5">
+            <div className="col-md-3">
               <input
                 type="text"
                 value={year}
@@ -223,7 +231,7 @@ const handlePendResult = async (e) => {
                 autoComplete="off"
               />
             </div>
-            <div className="col-md-5">
+            <div className="col-md-3">
               <input
                 type="text"
                 value={month}
@@ -238,12 +246,23 @@ const handlePendResult = async (e) => {
             <div className="col-md-2">
               <button
                 type="submit"
-                className="btn btn-primary btn-sm mb-1 shadow p-3 rounded-pill col"
+                className="btn btn-warning btn-sm mb-1 shadow p-3 rounded-pill col"
               >
                 <strong>New Exam</strong>
               </button>
             </div>
+            <div className="col-md-2">
+                <button type="button" className="btn btn-success btn-sm mb-1 shadow p-3 rounded-pill col" onClick={handleDatesheet}>
+                  <strong>Date Sheet</strong>
+                </button>
+              </div>
+              <div className="col-md-2">
+                <button type="button" className="btn btn-warning btn-sm mb-1 shadow p-3 rounded-pill col" onClick={handleBackToDashboard}>
+                  <strong>Exam Report</strong>
+                </button>
+              </div>
           </div>
+            
         </form>
         <hr />
         <div className="row ">

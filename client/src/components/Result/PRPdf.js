@@ -1,24 +1,27 @@
 import React from 'react';
-import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
+import { Page, Text, View, Document, StyleSheet, Image } from '@react-pdf/renderer';
+import logo from '../Images/logo.png'; // Adjust the path to your logo image
 
 const styles = StyleSheet.create({
     page: {
         flexDirection: 'column',
-        padding: 20, // Reduced padding for better fit
-        fontSize: 10, // Global font size adjustment
+        padding: 20,
+        fontSize: 10,
         lineHeight: 1.2,
+        position: 'relative',
+    },
+    headerContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 10,
     },
     header: {
         fontSize: 14,
         textAlign: 'center',
         textDecoration: 'underline',
         fontWeight: 'bold',
-        marginBottom: 5,
-    },
-    subHeader: {
-        fontSize: 10,
-        textAlign: 'center',
-        marginBottom: 5,
+        marginLeft: 5,
     },
     title: {
         fontSize: 14,
@@ -26,42 +29,51 @@ const styles = StyleSheet.create({
         textDecoration: 'underline',
         marginBottom: 10,
     },
+    logo: {
+        width: 50, // Adjust logo size as needed
+        height: 50,
+    },
+    watermark: {
+        position: 'absolute',
+        top: '30%', // Adjust vertical position as needed
+        left: '30%', // Adjust horizontal position as needed
+        width: '50%', // Adjust size as needed
+        opacity: 0.1, // Adjust opacity for watermark effect
+        zIndex: -1,
+    },
     table: {
         width: '100%',
         border: '1px solid black',
         marginBottom: 10,
-        borderCollapse: 'collapse', // Ensures no double borders
+        borderCollapse: 'collapse',
     },
     tableRow: {
         flexDirection: 'row',
-        borderBottom: '1px solid black', // Adds a border to separate rows
+        borderBottom: '1px solid black',
     },
     tableCell: {
         border: '1px solid black',
-        padding: 3, // Reduced padding for better fit
+        padding: 3,
         flex: 1,
-        textAlign: 'center', // Center content in the cells
-    },
-    marksTable: {
-        marginTop: 10,
-    },
-    section: {
-        marginBottom: 5,
+        textAlign: 'center',
     },
     remarks: {
         marginTop: 10,
         marginBottom: 5,
-        fontSize: 9, // Smaller font for remarks
+        fontSize: 9,
     },
     signatureSection: {
-        marginTop: 5,
+        position: 'absolute',
+        bottom: 30,
+        left: 0,
+        right: 0,
         flexDirection: 'row',
         justifyContent: 'space-between',
+        fontSize: 10,
+        textAlign: 'center',
     },
     signature: {
         width: '30%',
-        textAlign: 'center',
-        fontSize: 10,
     },
 });
 
@@ -83,77 +95,80 @@ const PRPdf = ({ invoice }) => {
     return (
         <Document>
             <Page size="A4" style={styles.page}>
-                <View style={styles.section}>
-                    <Text style={styles.header}>Islamic Scholar Public School</Text>
-                    <Text style={styles.subHeader}>Registration No: 373420509</Text>
-                    <Text style={styles.subHeader}>Post Office 26 Area C.B 203, Near Gudwal Stop, Wah Cantt</Text>
-                    <Text style={styles.subHeader}>Contact: 0336-5777728, 0345-5611940</Text>
-                    <Text style={styles.title}>Progress Report</Text>
+                <Image src={logo} style={styles.watermark} />
 
-                    <View style={styles.table}>
-                        <View style={styles.tableRow}>
-                            <Text style={styles.tableCell}>Result ID</Text>
-                            <Text style={styles.tableCell}>{invoice.resultid}</Text>
-                            <Text style={styles.tableCell}>Admission No</Text>
-                            <Text style={styles.tableCell}>{invoice.result_adm_no}</Text>
-                        </View>
-                        <View style={styles.tableRow}>
-                            <Text style={styles.tableCell}>Name</Text>
-                            <Text style={styles.tableCell}>{invoice.name}</Text>
-                            <Text style={styles.tableCell}>Father Name</Text>
-                            <Text style={styles.tableCell}>{invoice.father}</Text>
-                        </View>
-                        <View style={styles.tableRow}>
-                            <Text style={styles.tableCell}>Standard</Text>
-                            <Text style={styles.tableCell}>{invoice.result_standard}</Text>
-                            <Text style={styles.tableCell}>Exam</Text>
-                            <Text style={styles.tableCell}>{invoice.month} - {invoice.year}</Text>
-                        </View>
+                <View style={styles.headerContainer}>
+                    <Image style={styles.logo} src={logo} />
+                    <Text style={styles.header}>ISLAMIC SCHOLAR PUBLIC SCHOOL, WAH CANTT, Islamabad</Text>
+                </View>
+
+                <Text style={styles.title}>Progress Report ({invoice.month} - {invoice.year})</Text>
+
+                <View style={styles.table}>
+                    <View style={styles.tableRow}>
+                        <Text style={styles.tableCell}>Result ID</Text>
+                        <Text style={styles.tableCell}>{invoice.resultid}</Text>
+                        <Text style={styles.tableCell}>Admission No</Text>
+                        <Text style={styles.tableCell}>{invoice.result_adm_no}</Text>
+                    </View>
+                    <View style={styles.tableRow}>
+                        <Text style={styles.tableCell}>Name</Text>
+                        <Text style={styles.tableCell}>{invoice.name}</Text>
+                        <Text style={styles.tableCell}>Father Name</Text>
+                        <Text style={styles.tableCell}>{invoice.father}</Text>
+                    </View>
+                    <View style={styles.tableRow}>
+                        <Text style={styles.tableCell}>Standard</Text>
+                        <Text style={styles.tableCell}>{invoice.result_standard}</Text>
+                        <Text style={styles.tableCell}>Position</Text>
+                        <Text style={styles.tableCell}>{invoice.position}</Text>
                     </View>
                 </View>
 
-                <View style={styles.marksTable}>
+                <View style={styles.table}>
                     <Text style={styles.title}>Marks Detail</Text>
-                    <View style={styles.table}>
-                        <View style={styles.tableRow}>
-                            <Text style={styles.tableCell}>Subjects</Text>
-                            <Text style={styles.tableCell}>Total Marks</Text>
-                            <Text style={styles.tableCell}>Obt Marks</Text>
-                            <Text style={styles.tableCell}>Percentage</Text>
-                            <Text style={styles.tableCell}>Grade</Text>
-                        </View>
-                        {['English', 'Urdu', 'Maths', 'Islamiat', 'Pak Study', 'Bio / Comp', 'Physics', 'Chemistry'].map((subject, index) => {
-                            const totalMarks = invoice[`TMS${index + 1}`];
-                            const obtainedMarks = invoice[`OM${index + 1}`];
-                            const percentage = calculatePercentage(obtainedMarks, totalMarks);
-                            return (
-                                <View style={styles.tableRow} key={index}>
-                                    <Text style={styles.tableCell}>{subject}</Text>
-                                    <Text style={styles.tableCell}>{totalMarks}</Text>
-                                    <Text style={styles.tableCell}>{obtainedMarks}</Text>
-                                    <Text style={styles.tableCell}>{percentage.toFixed(2)}%</Text>
-                                    <Text style={styles.tableCell}>{getGrade(percentage)}</Text>
-                                </View>
-                            );
-                        })}
-                        <View style={styles.tableRow}>
-                            <Text style={styles.tableCell}>Total</Text>
-                            <Text style={styles.tableCell}>{invoice.Total_set_marks}</Text>
-                            <Text style={styles.tableCell}>{invoice.Total_obt_marks}</Text>
-                            <Text style={styles.tableCell}>{calculatePercentage(invoice.Total_obt_marks, invoice.Total_set_marks).toFixed(2)}%</Text>
-                            <Text style={styles.tableCell}>{getGrade(calculatePercentage(invoice.Total_obt_marks, invoice.Total_set_marks))}</Text>
-                        </View>
+                    <View style={styles.tableRow}>
+                        <Text style={styles.tableCell}>Subjects</Text>
+                        <Text style={styles.tableCell}>Total Marks</Text>
+                        <Text style={styles.tableCell}>Obt Marks</Text>
+                        <Text style={styles.tableCell}>Percentage</Text>
+                        <Text style={styles.tableCell}>Grade</Text>
+                    </View>
+                    {['English', 'Urdu', 'Maths', 'Islamiat', 'Pak Study', 'Bio / Comp', 'Physics', 'Chemistry'].map((subject, index) => {
+                        const totalMarks = invoice[`TMS${index + 1}`];
+                        const obtainedMarks = invoice[`OM${index + 1}`];
+                        const percentage = calculatePercentage(obtainedMarks, totalMarks);
+                        return (
+                            <View style={styles.tableRow} key={index}>
+                                <Text style={styles.tableCell}>{subject}</Text>
+                                <Text style={styles.tableCell}>{totalMarks}</Text>
+                                <Text style={styles.tableCell}>{obtainedMarks}</Text>
+                                <Text style={styles.tableCell}>{percentage.toFixed(2)}%</Text>
+                                <Text style={styles.tableCell}>{getGrade(percentage)}</Text>
+                            </View>
+                        );
+                    })}
+                    <View style={styles.tableRow}>
+                        <Text style={styles.tableCell}>Total</Text>
+                        <Text style={styles.tableCell}>{invoice.Total_set_marks}</Text>
+                        <Text style={styles.tableCell}>{invoice.Total_obt_marks}</Text>
+                        <Text style={styles.tableCell}>{calculatePercentage(invoice.Total_obt_marks, invoice.Total_set_marks).toFixed(2)}%</Text>
+                        <Text style={styles.tableCell}>{getGrade(calculatePercentage(invoice.Total_obt_marks, invoice.Total_set_marks))}</Text>
                     </View>
                 </View>
 
                 <View style={styles.remarks}>
-                    <Text>Total No. of days attended __________ out of __________.</Text>
-                    <Text>Conduct & Discipline ______________________________________</Text>
-                    
-                    <Text>Class Teacher's Remarks: ____________________________________________________________</Text>
-                    <Text>_________________________________________________________________________________________________________</Text>
-                    <Text>Principal's Remarks: ___________________________</Text>
-                </View>
+                    <Text style={{ marginBottom: 20 }}>Total No. of days attended __________ out of __________.</Text>
+                    <Text style={{ marginBottom: 20, fontWeight: 'bold' }}>Conduct & Discipline: </Text>
+                    <Text style={{ marginBottom: 20 }}>_________________________________________________________________________________________________________</Text>
+                    <Text style={{ marginBottom: 20, fontWeight: 'bold' }}>Class Teacher's Remarks: </Text>
+                    <Text style={{ marginBottom: 20 }}>_________________________________________________________________________________________________________</Text>
+                    <Text style={{ marginBottom: 20 }}>_________________________________________________________________________________________________________</Text>
+                    <Text style={{ marginBottom: 20 }}>_________________________________________________________________________________________________________</Text>
+                    <Text style={{ marginBottom: 20, fontWeight: 'bold' }}>Principal's Remarks: </Text>
+                    <Text style={{ marginBottom: 20 }}>_________________________________________________________________________________________________________</Text>
+                    <Text style={{ marginBottom: 20 }}>_________________________________________________________________________________________________________</Text>
+                    </View>
 
                 <View style={styles.signatureSection}>
                     <View style={styles.signature}>

@@ -2,10 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mysql = require('mysql');
 const checkAuth = require('../middleware/check-atuh');
-
-
-
-
+require('dotenv').config();
 
 
 // MySQL connection
@@ -28,18 +25,32 @@ db.connect((err) => {
 
  
 // New endpoint for profile or verification 
-router.get("/", checkAuth, (req, res) => { const query = 'SELECT * FROM classes';
-
- 
-db.query(query, (error, results) => {
-  if (error) {
+router.get("/", checkAuth, (req, res) => { 
+  const query = 'SELECT standard FROM classes';
+  
+  db.query(query, (error, results) => {
+    if (error) {
       console.error('Database query error:', error);
       return res.status(500).json({ error: 'Database query failed' });
-  }
-  res.json(results);
+    }
+    console.log('Results:', results); // Log the results here
+    res.json(results);
+  });
 });
 
+
+// New endpoint for profile or verification 
+router.get("/usercontext", checkAuth, (req, res) => {
+  const query = 'SELECT * FROM classes';
+  db.query(query, (error, results) => {
+    if (error) {
+      console.error('Database query error:', error);
+      return res.status(500).json({ error: 'Database query failed' });
+    }
+    res.json(results);
+  });
 });
+
 
 // Update a specific standard
 router.put("/:id", checkAuth, (req, res) => {
@@ -62,11 +73,11 @@ router.put("/:id", checkAuth, (req, res) => {
 
 
 // Add this route in classes.js for fetching a specific class
-router.get("/:id", checkAuth, (req, res) => {
-  const { id } = req.params; // Get the ID from the URL parameters
-  const query = 'SELECT * FROM classes WHERE sid = ?'; // Use 'sid' or 'id' based on your database design
+router.get("/fetche/:sid", checkAuth, (req, res) => {
+  const { sid } = req.params; // Get the ID from the URL parameters
+  const query = 'SELECT * FROM classes WHERE sid = ?'; 
 
-  db.query(query, [id], (error, results) => {
+  db.query(query, [sid], (error, results) => {
     if (error) {
       console.error('Database query error:', error);
       return res.status(500).json({ error: 'Database query failed' });

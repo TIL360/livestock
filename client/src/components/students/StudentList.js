@@ -2,6 +2,8 @@ import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import userContext from "../context/UserContext";
+import { FaEdit, FaPlusSquare, FaTrash } from "react-icons/fa";
+import { Modal, Button } from "react-bootstrap"; // Make sure you have react-bootstrap installed
 
 export default function StudentList() {
   const navigate = useNavigate();
@@ -9,18 +11,18 @@ export default function StudentList() {
   const [students, setStudents] = useState([]);
   const [search, setSearch] = useState("");
   const { token } = useContext(userContext);
-
-  // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const recordsPerPage = 10; // items to display per page
+  const recordsPerPage = 10;
+
+  const [showModal, setShowModal] = useState(false);
+  const [selectedDate, setSelectedDate] = useState("");
+  const [currentAdmNo, setCurrentAdmNo] = useState("");
 
   useEffect(() => {
     const fetchStudents = async () => {
       try {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/students`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` }
         });
         setStudents(response.data);
       } catch (error) {
@@ -34,14 +36,16 @@ export default function StudentList() {
     navigate("/dashboard/studentcreate");
   };
 
+  const handleAttendance = () => {
+    navigate("/dashboard/attendance");
+  };
+
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this record?");
     if (confirmDelete) {
       try {
         await axios.delete(`${process.env.REACT_APP_API_URL}/students/del/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` }
         });
         setStudents(students.filter((student) => student.id !== id));
       } catch (error) {
@@ -49,35 +53,58 @@ export default function StudentList() {
       }
     }
   };
-  
 
   const handleEdit = (id) => {
-    navigate(`/dashboard/studentedit/${id}`); // Fixed the string interpolation
-};
-
+    navigate(`/dashboard/studentedit/${id}`);
+  };
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
   };
 
-  const filteredStudents = students.filter((student) => {
-    return (
-      student.adm_no.toString().includes(search) ||
-      student.name.toLowerCase().includes(search.toLowerCase()) ||
-      student.standard.toLowerCase().includes(search.toLowerCase())
-    );
-  });
+  const filteredStudents = students.filter((student) =>
+    student.adm_no.toString().includes(search) ||
+    student.name.toLowerCase().includes(search.toLowerCase()) ||
+    student.standard.toLowerCase().includes(search.toLowerCase())
+  );
 
-  // Calculate total pages for pagination
   const totalPages = Math.ceil(filteredStudents.length / recordsPerPage);
-
-  // Calculate the records to be displayed on the current page
   const startIndex = (currentPage - 1) * recordsPerPage;
   const currentStudents = filteredStudents.slice(startIndex, startIndex + recordsPerPage);
 
-  // Handle page change
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
+  };
+
+  const handleShowModal = (adm_no) => {
+    setCurrentAdmNo(adm_no);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedDate("");
+  };
+
+  const handleGenerateInvoice = async () => {
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/fee/insert-single`,
+        { adm_no: currentAdmNo, selected_date: selectedDate },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (response.data.success) {
+        alert(`Invoice generated for Adm No: ${currentAdmNo}`);
+      } else {
+        alert(response.data.message);
+      }
+    } catch (error) {
+      console.error("Error generating invoice:", error);
+      alert("Failed to generate invoice. Please try again.");
+    } finally {
+      handleCloseModal();
+    }
   };
 
   return (
@@ -91,16 +118,19 @@ export default function StudentList() {
               <button className="btn btn-primary" onClick={handleClick}>
                 Add New
               </button>
+              <button className="btn btn-success ml-1" onClick={handleAttendance}>
+                Attendance
+              </button>
             </div>
             <div className="col-md-9">
-              <label htmlFor="searchInput" className="form-label d-none ">Search here...</label>
-              <input 
-                type="text" 
-                className="form-control border-pill border-3 border-info" 
-                id="searchInput" 
-                value={search} 
-                onChange={handleSearch} 
-                placeholder="Search by Adm No, Name, or Standard" 
+              <label htmlFor="searchInput" className="form-label d-none">Search here...</label>
+              <input
+                type="text"
+                className="form-control border-pill border-3 border-info"
+                id="searchInput"
+                value={search}
+                onChange={handleSearch}
+                placeholder="Search by Adm No, Name, or Standard"
               />
             </div>
           </div>
@@ -130,33 +160,27 @@ export default function StudentList() {
                 <td className="d-flex justify-content-center align-items-center" style={{ height: "70px" }}>
                   {student.image && (
                     <img
-                    src={`${process.env.REACT_APP_API_URL}/${student.image}`}
+                      src={`${process.env.REACT_APP_API_URL}/${student.image}`}
                       alt={student.name}
                       style={{ width: "70px", height: "70px" }}
                     />
                   )}
                 </td>
-                
                 <td>
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => handleEdit(student.id)}
-                  >
-                    Edit
+                  <button className="btn btn-primary" onClick={() => handleEdit(student.id)}>
+                    <FaEdit />
                   </button>
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => handleDelete(student.id)}
-                  >
-                    Delete
+                  <button className="btn btn-danger ml-1" onClick={() => handleDelete(student.id)}>
+                    <FaTrash />
+                  </button>
+                  <button className="btn btn-success ml-1" onClick={() => handleShowModal(student.adm_no)}>
+                    <FaPlusSquare />
                   </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-
-        {/* Pagination Controls */}
         <div className="pagination">
           {Array.from({ length: totalPages }, (_, index) => (
             <button
@@ -169,6 +193,31 @@ export default function StudentList() {
           ))}
         </div>
       </div>
+
+      {/* Modal for Invoice Generation */}
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Generate Invoice</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <label htmlFor="invoiceDate" className="form-label">Select Date:</label>
+          <input
+            type="date"
+            className="form-control"
+            id="invoiceDate"
+            value={selectedDate}
+            onChange={(e) => setSelectedDate(e.target.value)}
+          />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleGenerateInvoice}>
+            Generate Invoice
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }

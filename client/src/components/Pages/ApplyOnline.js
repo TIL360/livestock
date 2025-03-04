@@ -113,11 +113,11 @@ const ApplyOnline = () => {
           <div className='row'>
             <div className='col-md-6'>
               <label>Matric Marks</label>
-              <input required type='number' className='form-control' value={matricmarks} onChange={(e) => setMatricmarks(e.target.value)} />
+              <input required type='number'placeholder='If apply for Teacher, add 0 here' className='form-control' value={matricmarks} onChange={(e) => setMatricmarks(e.target.value)} />
             </div>
             <div className='col-md-6'>
               <label>F.Sc Marks</label>
-              <input required type='number' className='form-control' value={fsc} onChange={(e) => setFsc(e.target.value)} />
+              <input required type='number' placeholder='If apply for Teacher, add 0 here' className='form-control' value={fsc} onChange={(e) => setFsc(e.target.value)} />
             </div>
           </div>
           <div className='row'>
@@ -128,16 +128,21 @@ const ApplyOnline = () => {
             <div className='col-md-6'>
               <label>Select Programe</label>
               <select className='form-control' value={progame} onChange={(e) => setProgame(e.target.value)}>
-                <option value=''>Select Programe</option>
-                <option value='Operation Theater Technician'>Operation Theater Technician</option>
-                <option value='Medical Lab Technician'>Medical Lab Technician</option>
-                <option value='Medical Imaging Technician'>Medical Imaging Technician</option>
-                <option value='Ophthalmology Technician'>Ophthalmology Technician</option>
-                <option value='Nursing Technician'>Nursing Technician</option>
-                <option value='Dental Hygiene Technician'>Dental Hygiene Technician</option>
-                <option value='Physiotherapy Technician'>Physiotherapy Technician</option>
-                <option value='Cardic Technician'>Cardic Technician</option>
-                <option value='Dispenser'>Dispenser</option>
+                <option value=''>Select One</option>
+                <option value='PG'>PG</option>
+                <option value='Nursery'>Nursery</option>
+                <option value='One'>One</option>
+                <option value='2nd'>2nd</option>
+                <option value='3rd'>3rd</option>
+                <option value='4th'>4th</option>
+                <option value='5th'>5th</option>
+                <option value='6th'>6th</option>
+                <option value='7th'>7th</option>
+                <option value='8th'>8th</option>
+                <option value='9th'>9th</option>
+                <option value='10'>10th</option>
+                <option value='Teacher'>Teacher</option>
+               
               </select>
             </div>
           </div>

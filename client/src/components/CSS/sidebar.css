@@ -6,7 +6,7 @@
 .sidebar {
   background: #003049;
   color: #fff;
-  height: 100vh;
+  height: 200vh;
   transition: width 0.5s;
   width: 240px; /* Default width for open sidebar */
 }
@@ -59,13 +59,14 @@
   margin-right: 0;            /* Pushes the text to the left */
   font-weight: bold;             /* Optional: Make it bold */
 }
-
 .top_section {
   display: flex;
-  justify-content: space-between; /* This ensures space between items */
-  align-items: center;            /* Center items vertically */
-  padding: 10px;                 /* Add some padding */
+  align-items: center;          /* Center items vertically */
+  justify-content: flex-end;    /* Align items to the right */
+  padding: 10px;                /* Add some padding */
+  text-align: right;            /* Align text to the right */
 }
+
 
 .logo {
   font-size: 30px;

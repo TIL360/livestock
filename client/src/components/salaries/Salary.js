@@ -75,7 +75,7 @@ export default function Salary() {
         navigate(`/dashboard/leaves/${salaryid}`);
       };
     return (
-        <div className="container">
+        <div className="container" style={{background:"white"}}>
             {error && <div className="alert alert-danger">{error.toString()}</div>}
             <div className="card-body">
                 <h1 className="text-center"><b>SALARY RECORD</b></h1>

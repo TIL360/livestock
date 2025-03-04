@@ -13,11 +13,11 @@ require('dotenv').config();
 
 // MySQL connection
 const db = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME
-});
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME
+  });
 
 db.connect((err) => {
     if (err) {
@@ -75,7 +75,7 @@ router.get("/", verifyToken, (req, res) => {
 // Handling POST requests for signup
 router.post("/signup", (req, res) => {
   const { username, password, usertype } = req.body;
-
+console.log(usertype);
   // Hash the password
   bcrypt.hash(password, 10, (err, hash) => {
     if (err) {

@@ -22,8 +22,16 @@ const Login = () => {
       });
       setUser({ username });
       setToken(response.data.token);
-      setUsertype(response.data.user.usertype); // Access the correct property
-      navigate('/dashboard/dynamicdb');
+      const userType = response.data.user.usertype; // Store usertype in a variable
+      setUsertype(userType);
+      
+      // Navigate based on usertype
+      if (userType === "Section Head") {
+        navigate('/dashboard/dynamicDBuser');
+      } else {
+        navigate('/dashboard/dynamicdb');
+      }
+      
     } catch (err) {
       setError(err.response ? err.response.data.message : 'Login failed. Please try again.');
     }

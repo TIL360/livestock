@@ -8,7 +8,7 @@ require('dotenv').config();
 
 // Allow only techinfolab360.xyz
 const corsOptions = {
-      origin: 'http://localhost:3000',
+      origin: ['http://localhost:3000'],
       methods: 'GET,POST,PATCH,DELETE',
     credentials: true, // Include if you need to send cookies or authentication headers
 
@@ -17,13 +17,14 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 
+
+
 const db = mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME
   });
-
 db.connect((err) => {
     if (err) {
         console.error('Database connection failed:', err);
@@ -62,6 +63,8 @@ const tasksRoutes = require('./api/routes/tasking/tasks');
 const invoiceRoutes = require('./api/routes/fee/invoicefee');
 const expRoutes = require('./api/routes/expenses/expenses');
 const applyRoutes = require('./api/routes/students/apply');
+const imageRoutes = require('./api/routes/webimages/image');
+
 
 
 
@@ -86,6 +89,7 @@ app.use('/count', countRoutes);
 app.use('/invoicefee', invoiceRoutes);
 app.use('/expenses', expRoutes);
 app.use('/apply', applyRoutes);
+app.use('/image', imageRoutes);
 
 
 app.use((req, res, next) => {

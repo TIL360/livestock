@@ -69,7 +69,7 @@ export default function AttReport() {
     setCurrentPage(pageNumber);
   };
   return (
-    <div>
+    <div style={{background:"white"}}>
       <h3 className='text-center'><strong><u>ATTENDANCE REPORT</u></strong></h3>
       <hr/>
       <div className="row mb-3 align-items-center">

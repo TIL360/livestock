@@ -7,9 +7,9 @@ const Footer = () => {
         <div className='col-md-8' style={{
           borderRight: '1px solid white'
         }}>
-          <h6>FINAHS, Rawalpindi</h6>
-          <p>Contact: (051) 5910296 || Website: https://www.finahs.edu.pk</p>
-          <p>Address: Gul-e-iqra Plaza, near Red Onion Murree Road, Saddar, Rawalpindi, Punjab 46000, Pakistan, Rawalpindi, Pakistan</p>
+          <h6>ISPS Wah Cantt, Islamabad</h6>
+          <p>Contact: +92 336 5777728 || Website: https://www.ispschool.xyz</p>
+          <p>Gudwal, Wah Cantt, Islamabad</p>
         </div>
         <div className='col-md-4'>
           <h6>Designed by: Techinfolab360</h6>

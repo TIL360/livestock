@@ -4,6 +4,7 @@ const mysql = require("mysql");
 const checkAuth = require("../middleware/check-atuh"); // correct the spelling typo from check-atuh to check-auth
 const multer = require("multer");
 const path = require("path");
+require('dotenv').config();
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "./uploads/announcements");
@@ -31,7 +32,6 @@ const upload = multer({
   fileFilter: fileFilter,
 });
 
-// MySQL connection
 const db = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
@@ -48,13 +48,12 @@ db.connect((err) => {
 // Create Announcement
 router.post('/add', checkAuth, upload.single('image'), (req, res) => {
   try {
-    const { title, description, created_by } = req.body;
-    console.log(req.body);
+    const { title, description, created_by } = req.body; // Now created_by will come from the frontend
+    console.log(req.body); // This will show if the created_by is being sent correctly
     const imagePath = req.file ? req.file.path : null;
 
     const sql = 'INSERT INTO accouncements (title, description, created_by, image) VALUES (?, ?, ?, ?)';
 
-    
     db.query(sql, [title, description, created_by, imagePath], (err, result) => {
       if (err) {
         console.error('Error inserting announcement:', err);
@@ -67,6 +66,7 @@ router.post('/add', checkAuth, upload.single('image'), (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 
 // Get All Announcements
 router.get('/', (req, res) => {
@@ -83,7 +83,6 @@ router.get('/', (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
 
 
 // Edit Announcement
@@ -114,6 +113,7 @@ router.patch('/:id', checkAuth, upload.single('image'), (req, res) => {
   });
 });
 
+
 // Delete Announcement
 router.delete('/:id', checkAuth, (req, res) => {
   const id = req.params.id;
@@ -131,7 +131,7 @@ router.delete('/:id', checkAuth, (req, res) => {
 });
 
 // Get Announcement by ID
-router.get('/:id', checkAuth, (req, res) => {
+router.get('/edit/:id', checkAuth, (req, res) => {
   const id = (req.params.id);
   
   const sql = 'SELECT * FROM accouncements WHERE id = ?';

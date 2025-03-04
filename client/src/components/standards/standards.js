@@ -2,6 +2,8 @@ import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import userContext from "../context/UserContext";
+import { FaTrash, FaEdit} from "react-icons/fa";
+
 
 export default function Standards() {
   const navigate = useNavigate();
@@ -23,9 +25,10 @@ export default function Standards() {
         });
         setStandards(response.data);
       } catch (error) {
-        console.error("Error fetching standards:", error);
+        console.error("Error fetching standards:", error.response ? error.response.data : error);
       }
     };
+    
     fetchStandards();
   }, [token]);
 
@@ -67,9 +70,9 @@ export default function Standards() {
 
   return (
     <>
-      <div>
-        <h1 className="text-center"><b>STANDARDS</b></h1>
-      </div>
+      <div style={{ background: "white" }}>
+        <h1 className="text-center" ><b>STANDARDS</b></h1>
+      
       <div className="card-body">
         <button className="btn btn-primary" onClick={handlecreate}>
           New Standard
@@ -92,13 +95,13 @@ export default function Standards() {
                     className="btn btn-primary"
                     onClick={() => handleEdit(standard.sid)}
                   >
-                    Edit
+                    <FaEdit/>
                   </button> 
                   <button
-                    className="btn btn-danger"
+                    className="btn btn-danger ml-1"
                     onClick={() => handleDelete(standard.sid)}
                   >
-                    Delete
+                    <FaTrash/>
                   </button>
                 </td>
               </tr>
@@ -117,6 +120,7 @@ export default function Standards() {
             </button>
           ))}
         </div>
+      </div>
       </div>
     </>
   );

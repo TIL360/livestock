@@ -4,7 +4,6 @@ const mysql = require("mysql");
 const checkAuth = require("../middleware/check-atuh"); // correct the spelling typo from check-atuh to check-auth
 const multer = require("multer");
 const path = require("path");
-require('dotenv').config();
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "./uploads");
@@ -49,7 +48,7 @@ db.connect((err) => {
 });
 
 
-
+// New endpoint for profile or verification
 // New endpoint for profile or verification
 router.get("/", checkAuth, async (req, res) => {
   const { collection_by, payment_at, FeeStandard, fmonth, fyear } = req.query;
@@ -69,11 +68,11 @@ router.get("/", checkAuth, async (req, res) => {
   }
 
   if (fmonth) {
-      whereClauses.push(`f.fmonth = ?`);
+      whereClauses.push(`MONTH(f.payment_at) = ?`);
   }
 
   if (fyear) {
-      whereClauses.push(`f.fyear = ?`);
+      whereClauses.push(`YEAR(f.payment_at) = ?`);
   }
 
   const query = `
@@ -83,15 +82,12 @@ router.get("/", checkAuth, async (req, res) => {
       b.name, 
       f.FeeStandard, 
       f.collection, 
-      f.monthly_fee_feetbl, 
+      f.monthly_fee_feetbl AS total_fee, 
       f.collection_by, 
       f.payment_at,
       f.created_at,
-      f.total_arrears,
-      f.total_fee,
-      f.fmonth,
-      f.fyear
-     
+      YEAR(f.payment_at) AS fyear,          -- Added fyear
+      MONTH(f.payment_at) AS fmonth         -- Added fmonth
     FROM 
       fee_tbl f 
     JOIN 
@@ -105,6 +101,7 @@ router.get("/", checkAuth, async (req, res) => {
 
   const values = [
       collection_by,
+      payment_at,
       FeeStandard,
       fmonth,
       fyear

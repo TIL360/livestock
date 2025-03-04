@@ -8,6 +8,7 @@ const FeeEdit = () => {
   const { token } = useContext(userContext);
   const { idf } = useParams();
   const [feedetail, setFeeDetail] = useState({});
+  const [errorMessage, setErrorMessage] = useState(""); // State for error message
 
   useEffect(() => {
     const fetchFeeDetails = async () => {
@@ -19,9 +20,10 @@ const FeeEdit = () => {
         });
         console.log('Fetched fee details:', response.data);
         setFeeDetail(response.data.data);
+        setErrorMessage(""); // Reset error message when data is fetched
       } catch (error) {
         console.error('Error fetching fee details:', error);
-        alert('Error fetching fee details.');
+        setErrorMessage('Error fetching fee details.'); // Set error message
       }
     };
     fetchFeeDetails();
@@ -45,8 +47,9 @@ const FeeEdit = () => {
       exam_arrears: feedetail.exam_arrears,
       updated_at: new Date().toLocaleDateString('en-GB'), // dd-mm-yyyy format
     };
+    
     try {
-      const response = await axios.patch(`${process.env.REACT_APP_API_URL}/fee/edit/update/${idf}`, updatedFields, {
+      const response = await axios.patch(`${process.env.REACT_APP_API_URL}/fee/edit/${idf}`, updatedFields, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -55,17 +58,25 @@ const FeeEdit = () => {
       navigate('/dashboard/feesearch', { state: { message: 'Fee updated successfully!' } });
     } catch (error) {
       console.error('Error updating fee:', error);
-      alert('Error updating fee.');
+      setErrorMessage(error.response.data.error || 'Error updating fee.'); // Set the error message
     }
   };
+  
   const handleBack = () => {
     navigate("/dashboard/feesearch");
   };
+
   return (
     <>
       <div style={{ backgroundColor: "white" }} className="card col-md-8 mx-auto">
         <div className="row">
           <h1 className="text-center">Fee Edit</h1>
+          <p>
+          {errorMessage && (
+            <div className="alert alert-warning" role="alert">
+              {errorMessage}
+            </div>
+          )}</p>
           <div className="col-md-4">
             <div className="form-group">
               <label className="form-label">Monthly Fee</label>
@@ -103,29 +114,25 @@ const FeeEdit = () => {
             </div>
           </div>
           <div className="col-md-4">
-  <div className="form-group">
-    <label className="form-label">Exam Fee</label>
-    <input className="form-control" type="text" name="exam_fee" value={feedetail.exam_fee || 0} onChange={handleInputChange} />
-  </div>
-</div>
-<div className="col-md-4">
-  <div className="form-group">
-    <label className="form-label">Exam Arrears</label>
-    <input className="form-control" type="text" name="exam_arrears" value={feedetail.exam_arrears || 0} onChange={handleInputChange} />
-  </div>
-</div>
-<div className="form-group">
-</div>
-</div>
-<div className='row'>
-
-<button className="btn btn-success col-md-2 ml-3" onClick={(e) => handleUpdate(e)}> Update </button>
-<button className="btn btn-secondary ml-1 col-md-2" onClick={(e) => handleBack(e)}> Back </button>
-
-</div>
-</div>
-</>
-);
+            <div className="form-group">
+              <label className="form-label">Exam Fee</label>
+              <input className="form-control" type="text" name="exam_fee" value={feedetail.exam_fee || 0} onChange={handleInputChange} />
+            </div>
+          </div>
+          <div className="col-md-4">
+            <div className="form-group">
+              <label className="form-label">Exam Arrears</label>
+              <input className="form-control" type="text" name="exam_arrears" value={feedetail.exam_arrears || 0} onChange={handleInputChange} />
+            </div>
+          </div>
+        </div>
+        <div className='row'>
+          <button className="btn btn-success col-md-2 ml-3" onClick={(e) => handleUpdate(e)}> Update </button>
+          <button className="btn btn-secondary ml-1 col-md-2" onClick={(e) => handleBack(e)}> Back </button>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default FeeEdit;

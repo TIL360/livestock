@@ -31,30 +31,35 @@ export default function StandardCreate() {
             setErrorMessage('Error creating standard');
         }
     };
-const handleback = (e) => {
-    navigate('/dashboard/standards');
-}
+
+    const handleBack = (e) => {
+        e.preventDefault(); // Prevent default form submission
+        navigate('/dashboard/standards');
+    };
+
     return (
-        <div className='container-fluid'>
-            <h1 className='text-center'>Create New Standard</h1>
-            {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
-            {successMessage && <div className="alert alert-success">{successMessage}</div>}
-            <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <label htmlFor="standard"><b>Standard</b></label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        name="standard"
-                        value={standard}
-                        onChange={handleChange}
-                        required
-                        autoComplete='off'
-                    />
-                </div>
-                <button type="submit" className="btn btn-success">Create Standard</button>
-                <button type="submit" className="btn btn-secondary ml-1" onClick={handleback}>Back</button>
-            </form>
+        <div className='container-fluid' style={{ background: "white" }}>
+            <div className='container'>
+                <h1 className='text-center'>Create New Standard</h1>
+                {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
+                {successMessage && <div className="alert alert-success">{successMessage}</div>}
+                <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="standard"><b>Standard</b></label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            name="standard"
+                            value={standard}
+                            onChange={handleChange}
+                            required
+                            autoComplete='off'
+                        />
+                    </div>
+                    <button type="submit" className="btn btn-success">Create Standard</button>
+                    <button type="button" className="btn btn-secondary ml-1" onClick={handleBack}>Back</button>
+                </form>
+            </div>
         </div>
     );
 }

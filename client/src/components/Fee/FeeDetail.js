@@ -87,6 +87,12 @@ const FeeDetail = () => {
   const handleUnpaid = () => {
     navigate("/dashboard/unpaidfee");
   };
+  const handlecollection = () => {
+    navigate("/dashboard/feesearch");
+  };
+  const handleaddmore = () => {
+    navigate("/dashboard/feemisc");
+  };
 
   const filteredInvdetails = invdetails.filter((inv) => {
     return (
@@ -133,12 +139,13 @@ const FeeDetail = () => {
 </div>
 <div className="row mb-3 align-items-center">
   <div className="col-md-3">
-    <select value={selectedStandard} onChange={handleStandardChange} className="form-control mx-2 shadow p-2 rounded-pill border-3 border-info">
-      <option value=""><b>Select Standard</b></option>
-      {standards.map((standard) => (
+  <select value={selectedStandard} onChange={handleStandardChange} className="form-control mx-2 shadow p-2 rounded-pill border-3 border-info">
+    <option value=""><b>Select Standard</b></option>
+    {standards.map((standard) => (
         <option key={standard.sid} value={standard.standard}> Class: {standard.standard} </option>
-      ))}
-    </select>
+    ))}
+</select>
+
   </div>
   <div className="col-md-3">
     <select value={selectedYear} onChange={handleYearChange} className="form-control mx-2 shadow p-2 rounded-pill border-3 border-info">
@@ -178,6 +185,13 @@ const FeeDetail = () => {
       Download Report
     </button>
   </PDFDownloadLink>
+  
+  <button className="btn btn-success ml-1 btn-sm mb-1 shadow p-2 rounded" onClick={handlecollection}>
+    <b>Collection</b>
+  </button>
+  <button className="btn btn-success ml-1 btn-sm mb-1 shadow p-2 rounded" onClick={handleaddmore}>
+    <b>Add More</b>
+  </button>
 </div>
 <table className="table table-bordered">
   <thead>

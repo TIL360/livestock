@@ -101,7 +101,7 @@ const Attendance = () => {
 
   return (
     <>
-      <div>
+      <div style={{background:"white"}}>
         <h1 className="text-center">
           <b>ATTENDANCE</b>
         </h1>
@@ -111,7 +111,7 @@ const Attendance = () => {
             className="btn btn-primary btn-sm mb-1 shadow ml-4 rounded"
             onClick={handleInitiateAttendance}
           >
-            <b>Generate Invoices</b>
+            <b>Generate Attendance</b>
           </button>
           
           <div className="ml-2 col-md-6">

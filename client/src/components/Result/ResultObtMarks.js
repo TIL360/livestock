@@ -74,7 +74,7 @@ const ResultObtMarks = () => {
     );
 
     return (
-        <div className="row">
+        <div className="row" style={{background:"white"}}>
             <div className="col-md-12 border-4">
                 <h2>Assign Total Marks</h2>
                 <form onSubmit={handleSubmitMarks}>

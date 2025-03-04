@@ -36,19 +36,19 @@ const Registration = () => {
                 <form onSubmit={handleRegister} style={{ width: "100%" }} className='mt-4'> 
                     <div> 
                         <label className="form-label" htmlFor="username">Username:</label> 
-                        <input className="form-input form-control" placeholder='username here...' type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} required /> 
+                        <input className="form-input form-control" autoComplete='off' placeholder='username here...' type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} required /> 
                     </div> 
                     <div> 
                         <label className="form-label" htmlFor="password">Password:</label> 
-                        <input className="form-input form-control" type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required /> 
+                        <input className="form-input form-control" type="password" autoComplete='new-password' id="password" value={password} onChange={(e) => setPassword(e.target.value)} required /> 
                     </div> 
                     <div> 
                         <label className="form-label" htmlFor="usertype">User Type:</label> 
                         <select className="form-input form-control" id="usertype" value={usertype} onChange={(e) => setUsertype(e.target.value)} required>
                             <option value="">Select User Type</option>
                             <option value="Admin">Admin</option>
-                            <option value="Staff">Staff</option>
-                            <option value="Student">Student</option>
+                            <option value="Accountant">Accountant</option>
+                            <option value="Section Head">Section Head</option>
                         </select>
                     </div> 
                     {error && <p className="error-message">{error}</p>} 

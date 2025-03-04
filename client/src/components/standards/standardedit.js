@@ -11,15 +11,20 @@ export default function StandardEdit() {
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
 
-    useEffect(() => { 
+    useEffect(() => {
         const fetchStandard = async () => {
+            if (!sid) {
+                console.error("SID is undefined");
+                return;
+            }
+            
             try {
-                const response = await axios.get(`${process.env.REACT_APP_API_URL}/classes/${sid}`, {
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/classes/fetche/${sid}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 });
-                console.log("Fetched standard:", response.data); // Log the response data
+                console.log("Fetched standard:", response.data);
                 setStandard(response.data);
             } catch (error) {
                 setErrorMessage("Error fetching the standard");
@@ -28,6 +33,7 @@ export default function StandardEdit() {
         };
         fetchStandard();
     }, [sid, token]);
+    
     
 
     const handleChange = (e) => {

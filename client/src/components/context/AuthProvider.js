@@ -12,27 +12,27 @@ const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const fetchStandards = async () => {
+            // Ensure token is available
+            if (!token) return;
+
             try {
-                const response = await axios.get(`${process.env.REACT_APP_API_URL}/classes`, {
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/classes/usercontext`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 
+                console.log("Fetched Standards:", response.data);  // Check data structure
                 setStandards(response.data);
             } catch (error) {
                 console.error("Error fetching standards:", error);
             }
         };
 
-        if (token) {
-            fetchStandards();
-        }
+        fetchStandards();
     }, [token]);
 
     // Log usertype whenever it changes
     useEffect(() => {
-        console.log("Token:", token);
-        console.log("User :", user);
-        console.log("User type :", usertype);
+       
       }, [token, user, usertype]);
 
     const logout = () => {

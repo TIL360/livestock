@@ -11,6 +11,7 @@ const FeeSearch = () => {
 
     const [message, setMessage] = useState(null);
     const [dataFetched, setDataFetched] = useState(false);
+    const [deleteError, setDeleteError] = useState(""); // New state for delete error message
 
     useEffect(() => {
         if (location.state?.message) {
@@ -31,6 +32,7 @@ const FeeSearch = () => {
             if (response.data.success && response.data.data.length > 0) {
                 setFeeDetail(response.data.data);
                 setDataFetched(true);
+                setDeleteError(""); // Clear delete error message
             } else {
                 alert("No data found for the given admission number.");
                 setDataFetched(false);
@@ -50,10 +52,8 @@ const FeeSearch = () => {
     };
 
     const handleDel = async (idf) => {
-        // Show a confirmation dialog
         const confirmDelete = window.confirm("Are you sure you want to delete this fee record?");
         
-        // If the user clicks "Cancel", exit the function
         if (!confirmDelete) {
             return; // Do nothing
         }
@@ -69,12 +69,14 @@ const FeeSearch = () => {
                 setDataFetched(false);
                 setAdmno("");
                 setFeeDetail([]); // Clear fee detail
+                setDeleteError(""); // Clear delete error message
             } else {
-                alert("Error deleting fee record.");
+                // Set error message if deletion is not successful
+                setDeleteError("Fee already collected for this invoice, hence cannot be deleted.");
             }
         } catch (error) {
             console.error("Error deleting fee record:", error);
-            alert("Error deleting fee record.");
+            setDeleteError("Fee already collected, hence cannot be deleted."); // Set error message
         }
     };
     
@@ -109,11 +111,12 @@ const FeeSearch = () => {
                     </div>
                 </div>
                 <hr />
+                {deleteError && <p style={{ color: "red" }}>{deleteError}</p>} {/* Display delete error message */}
                 {dataFetched && feeDetail.length > 0 && feeDetail.map((fee, index) => (
                     <div key={index} className="row mt-3">
                         <div className="col-md-12">
                             <h3 className="text-center">
-                                Fee Details of Adm No: {fee.fee_adm_no}
+                                Fee Details of Adm No: {fee.fee_adm_no} 
                                 <b style={{ color: "green" }}>
                                     {fee.name}, Class: {fee.FeeStandard} Sec: {fee.sec}
                                 </b>{" "}
@@ -123,33 +126,36 @@ const FeeSearch = () => {
                                 <thead>
                                     <tr>
                                         <th>Fee</th>
-                                        <th>Adm Fee</th>
-                                        <th>Exam Fee</th>
-                                        <th>Fine Fee</th>
                                         <th>Collection</th>
                                         <th>Balance</th>
-                                        <th>Fine Bal</th>
-                                        <th>Fine Arrears</th>
+                                        <th>Adm Fee</th>
+                                        <th>Adm Balance</th>
+                                        <th>Adm Arrears</th>
+                                        <th>Exam Fee</th>
+                                        <th>Exam Fee Balance</th>
+                                        <th>Exam Arrears</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>{fee.monthly_fee}</td>
-                                        <td>{fee.adm_fee}</td>
-                                        <td>{fee.exam_fee}</td>
-                                        <td>{fee.fine_fee}</td>
+                                        <td>{fee.monthly_fee_feetbl}</td>
                                         <td>{fee.collection}</td>
                                         <td>{fee.balance}</td>
-                                        <td>{fee.fine_balance}</td>
-                                        <td>{fee.fine_arrears}</td>
+                                        <td>{fee.adm_fee}</td>
+                                        <td>{fee.adm_balance}</td>
+                                        <td>{fee.adm_arrears}</td>
+                                        <td>{fee.exam_fee}</td>
+                                        <td>{fee.misc_balance}</td>
+                                        <td>{fee.misc_arrears}</td>
                                     </tr>
                                 </tbody>
                                 <thead>
                                     <tr>
-                                        <th>Adm Balance</th>
-                                        <th>Adm Arrears</th>
-                                        <th>Misc Balance</th>
-                                        <th>Misc Arrears</th>
+                                        <th>Fine Fee</th>
+                                        <th>Fine Bal</th>
+                                        <th>Fine Arrears</th>
+                                        <th>Total Fee</th>
+                                        <th>Total Collection</th>
                                         <th>Total Arrears</th>
                                         <th>Total Balance</th>
                                         <th>Action</th>
@@ -157,10 +163,11 @@ const FeeSearch = () => {
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>{fee.adm_balance}</td>
-                                        <td>{fee.adm_arrears}</td>
-                                        <td>{fee.misc_balance}</td>
-                                        <td>{fee.misc_arrears}</td>
+                                        <td>{fee.fine_fee}</td>
+                                        <td>{fee.fine_balance}</td>
+                                        <td>{fee.fine_arrears}</td>
+                                        <td>{fee.total_fee}</td>
+                                        <td>{fee.total_collection}</td>
                                         <td>{fee.total_arrears}</td>
                                         <td>{fee.total_balance}</td>
                                         <td>
@@ -175,12 +182,10 @@ const FeeSearch = () => {
                                             </button>
                                         </td>
                                         <td>
-                                          
-
                                             {fee.collection_by ? 
                                             <button className="btn btn-success">Paid by {fee.collection_by}</button>
-                                            : <button className="btn btn-danger">Unpaid</button>}</td>
-                                          
+                                            : <button className="btn btn-danger">Unpaid</button>}
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>

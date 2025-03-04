@@ -48,8 +48,10 @@ db.connect((err) => {
 });
 
 
-router.get("/", async (req, res) => {
-  const { query } = req.query;
+
+router.get("/:admNo", async (req, res) => {
+  const { admNo } = req.params;
+  
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth() + 1;
 
@@ -60,7 +62,7 @@ router.get("/", async (req, res) => {
     WHERE fee_tbl.fee_adm_no = ? AND fee_tbl.fyear = ? AND fee_tbl.fmonth = ?
   `;
 
-  db.query(sql, [query, currentYear, currentMonth], (error, result) => {
+  db.query(sql, [admNo, currentYear, currentMonth], (error, result) => {
     if (error) {
       console.error("Database query error:", error);
       return res.status(500).json({ error: "Database query failed" });
