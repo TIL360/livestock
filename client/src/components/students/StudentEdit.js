@@ -21,36 +21,26 @@ export default function StudentEdit() {
         email: ""
     });
     const [newImage, setNewImage] = useState(null);
-    const [standards, setStandards] = useState([]);
-    const { token } = useContext(userContext);
+    const [standard, setStandard] = useState([]);
+    const { token, standards } = useContext(userContext);
 
     useEffect(() => {
         const fetchStudent = async () => {
-            try {
-                const response = await axios.get(`${process.env.REACT_APP_API_URL}/students/edit/${id}`, { headers: { Authorization: `Bearer ${token}` } });
-                console.log("Fetched student data:", response.data);
-                setStudent(response.data);
-            } catch (error) {
-                console.error("Error fetching student:", error);
-            }
+          try {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/students/${id}`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+            console.log("Fetched student data:", response.data);
+            console.log('Standards:', standard);
+            setStudent(response.data);
+          } catch (error) {
+            console.error("Error fetching student:", error);
+          }
         };
-
-        const fetchStandards = async () => {
-            try {
-                const response = await axios.get(`${process.env.REACT_APP_API_URL}/classes`, {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
-                console.log(response.data); // Check what data you're receiving
-                setStandards(response.data); // Set standards to state
-            } catch (err) {
-                console.error("Error fetching standards:", err);
-            }
-        };
-
         fetchStudent();
-        fetchStandards();
-    }, [id, token]);
-
+      }, [id, token]);
     const handleChange = (e) => {
         const { name, value } = e.target;
         setStudent((prevState) => ({ ...prevState, [name]: value }));
@@ -227,3 +217,4 @@ export default function StudentEdit() {
         </>
     );
 }
+ 

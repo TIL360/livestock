@@ -26,14 +26,14 @@ db.connect((err) => {
  
 // New endpoint for profile or verification 
 router.get("/", checkAuth, (req, res) => { 
-  const query = 'SELECT standard FROM classes';
+  const query = 'SELECT * FROM classes';
   
   db.query(query, (error, results) => {
     if (error) {
       console.error('Database query error:', error);
       return res.status(500).json({ error: 'Database query failed' });
     }
-    console.log('Results:', results); // Log the results here
+    //console.log('Results:', results); // Log the results here
     res.json(results);
   });
 });
@@ -53,12 +53,12 @@ router.get("/usercontext", checkAuth, (req, res) => {
 
 
 // Update a specific standard
-router.put("/:id", checkAuth, (req, res) => {
-  const { id } = req.params;
+router.patch("/update/:sid", checkAuth, (req, res) => {
+  const { sid } = req.params;
   const { standard } = req.body;
-  console.log("Updating standard:", { id, standard });
+  console.log("Updating standard:", { sid, standard });
   const query = 'UPDATE classes SET standard = ? WHERE sid = ?';
-  db.query(query, [standard, id], (error, results) => {
+  db.query(query, [standard, sid], (error, results) => {
     if (error) {
       console.error('Database update error:', error);
       return res.status(500).json({ error: 'Database update failed' });
@@ -71,24 +71,22 @@ router.put("/:id", checkAuth, (req, res) => {
 });
 
 
-
-// Add this route in classes.js for fetching a specific class
-router.get("/fetche/:sid", checkAuth, (req, res) => {
-  const { sid } = req.params; // Get the ID from the URL parameters
-  const query = 'SELECT * FROM classes WHERE sid = ?'; 
-
+router.get("/fetches/:sid", checkAuth, (req, res) => {
+  const { sid } = req.params;
+  const query = 'SELECT * FROM classes WHERE sid = ?';
   db.query(query, [sid], (error, results) => {
     if (error) {
-      console.error('Database query error:', error);
-      return res.status(500).json({ error: 'Database query failed' });
+      console.error("Error fetching standard:", error);
+      res.status(500).json({ error: "Error fetching standard" });
+    } else if (results.length === 0) {
+      console.log("Standard not found");
+      res.status(404).json({ error: "Standard not found" });
+    } else {
+      console.log("Fetched standard:", results[0]);
+      res.json(results[0]);
     }
-    if (results.length === 0) {
-      return res.status(404).json({ error: 'Standard not found' });
-    }
-    res.json(results[0]); // Return the first result
   });
 });
-
 
  
 // Delete a specific standard

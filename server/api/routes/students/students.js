@@ -94,7 +94,7 @@ router.post('/', checkAuth, upload.single('image'), (req, res, next) => {
       res.status(201).json({ id: result.insertId, admno, name, standard });
   });
 });
-
+ 
 
 // Handling GET by admno
 router.get('/:id', checkAuth, (req, res, next) => {

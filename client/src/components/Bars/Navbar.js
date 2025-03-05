@@ -38,7 +38,7 @@ function NavBar() {
                 className="nav-links"
                 onClick={handleClick}
               >
-                IMS App
+                ISPS App
               </NavLink>
             </li>
             {/* New Pages menu */}
