@@ -99,7 +99,7 @@ const PRPdf = ({ invoice }) => {
 
                 <View style={styles.headerContainer}>
                     <Image style={styles.logo} src={logo} />
-                    <Text style={styles.header}>ISLAMIC SCHOLAR PUBLIC SCHOOL, WAH CANTT, Islamabad</Text>
+                    <Text style={styles.header}>Rahbar Public School</Text>
                 </View>
 
                 <Text style={styles.title}>Progress Report ({invoice.month} - {invoice.year})</Text>

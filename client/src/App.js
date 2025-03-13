@@ -23,6 +23,7 @@ import Taskview from './components/Pages/Taskview';
 import Invoicefee from './components/Pages/Invoicefee';
 import Result from './components/Pages/Result';
 import './components/CSS/app.css';
+import About from './components/Pages/About';
 
 const App = () => {
   return (
@@ -33,6 +34,7 @@ const App = () => {
           <main>
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
               <Route path="/announcementpublished" element={<AnnouncementPublished />} />
               <Route path="/taskview" element={<Taskview />} />
               <Route path="/applyonline" element={<ApplyOnline />} />

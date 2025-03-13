@@ -77,12 +77,11 @@ const PaperPdf = ({ objectiveQuestions, subjectiveQuestions, selectedYear, selec
       <Page style={styles.page}>
         <Image src={logo} style={styles.watermark} />
 
-        <Text style={styles.header}>Islamic Scholar Public School
+        <Text style={styles.header}>Rahbar Public School
 </Text>
-<Text style={{fontSize:"14px", textAlign:"center"}}>
-Wah Cantt, Islamabad</Text>
-        <Text style={styles.title}>Gudwal, Wah Cantt, Islamabad</Text>
-        <Text style={styles.title}>Contact: +92 336 5777728 || Website: https://www.ispschool.xyz</Text>        <br/>
+
+        <Text style={styles.title}>Tehsil Balakot, District Mansehra</Text>
+        <Text style={styles.title}>Contact: +92 333 5002755, +92 3151436832 || Website: https://www.rahbarschool.com</Text>        <br/>
         
         <View style={styles.headerRow}>
           <Text style={{textAlign:'left'}}>{` ${selectedExam } - ${selectedYear } `} </Text>

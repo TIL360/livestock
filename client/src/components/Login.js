@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import userContext from './context/UserContext';
@@ -10,6 +10,13 @@ const Login = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const { setUser, setToken, setUsertype } = useContext(userContext);
+
+  // Clear username and password on component mount
+  useEffect(() => {
+    setUsername('');
+    setPassword('');
+    setError('');
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -49,12 +56,29 @@ const Login = () => {
         <h2 className="card-title text-center">Welcome! Please Login</h2>
         <form onSubmit={handleLogin} style={{ width: "100%" }} className='mt-4'>
           <div>
-            <label className="form-label " htmlFor="username">Username:</label>
-            <input className="form-input form-control" placeholder='username here...' type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} required />
+            <label className="form-label" htmlFor="username">Username:</label>
+            <input 
+              className="form-input form-control" 
+              autoComplete='off' 
+              placeholder='username here...' 
+              type="text" 
+              id="username" 
+              value={username} 
+              onChange={(e) => setUsername(e.target.value)} 
+              required 
+            />
           </div>
           <div>
             <label className="form-label" htmlFor="password">Password:</label>
-            <input className="form-input form-control" type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+            <input 
+  className="form-input form-control" 
+  type="password" 
+  id="password" 
+  value={password} 
+  onChange={(e) => setPassword(e.target.value)} 
+  required 
+  autocomplete="current-password" 
+/>
           </div>
           {error && <p className="error-message">{error}</p>}
           <br />

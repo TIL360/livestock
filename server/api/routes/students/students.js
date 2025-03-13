@@ -74,108 +74,297 @@ router.get("/", checkAuth, (req, res) => {
 //   });
 });
  
-router.post('/', checkAuth, upload.single('image'), (req, res, next) => {
+router.post('/', checkAuth, upload.single('image'), (req, res) => {
   
-  // Destructure the necessary fields from req.body
-  const { admno, name, standard, section, monthly_fee, status, father, adm_date, adm_standard, mobile, address, email, rollno, dob } = req.body;
+  try {
+    const {
+      adm_no, // Make sure this value is not null
+      roll_no,
+      name,
+      father,
+      nameurdu,
+      fatherurdu,
+      monthly_fee,
+      status,
+      adm_date,
+      adm_standard,
+      current_standard,
+      mobile,
+      email,
+      section,
+      dob,
+      address,
+      gender,
+      father_cnic,
+      mother_cnic,
+      father_profession,
+      religion,
+      caste,
+      previous_school,
+      dob_urdu
+    } = req.body;
 
-  // Check if the file was uploaded
-  const imagePath = req.file ? req.file.path : null; // Get image path or set to null if no file
-
-  // Prepare the SQL statement based on whether there is an image
-  const sql = 'INSERT INTO basicinfo (adm_no, name, standard, section, image, monthly_fee, status, father, adm_date, adm_standard, mobile, address, email, roll_no, dob) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)';
-  
-  // Insert data into the database
-  db.query(sql, [admno, name, standard, section, imagePath, monthly_fee, status, father, adm_date, adm_standard, mobile, address, email, rollno, dob], (err, result) => {
-      if (err) {
-          console.error('Error inserting student: ', err);
-          return res.status(500).json({ error: 'Database error' });
-      }
-      res.status(201).json({ id: result.insertId, admno, name, standard });
-  });
-});
- 
-
-// Handling GET by admno
-router.get('/:id', checkAuth, (req, res, next) => {
-    const id = req.params.id;
-  
-    const query = 'SELECT * FROM basicinfo WHERE id = ?';
-    db.query(query, [id], (error, results) => {
-      if (error) {
-        console.error('Database query error:', error);
-        return res.status(500).json({ error: 'Database query failed' });
-      }
-      if (results.length === 0) {
-        return res.status(404).json({ message: 'Student not found' });
-      }
-      res.json(results[0]);
-    });
-  });
-  
-  router.patch('/:id', checkAuth, upload.single('image'), (req, res, next) => {
-    const id = req.params.id;
-    const { admno, name, standard, monthly_fee, status, father, adm_date, adm_standard, mobile, address, email } = req.body;
-
-    // Start constructing the SQL query
-    let sql = 'UPDATE basicinfo SET adm_no = ?, name = ?, standard = ?, monthly_fee = ?, status = ?, father = ?, adm_date = ?, adm_standard = ?, mobile = ?, address = ?, email = ?, updated_at = NOW()';
-    const updateValues = [admno, name, standard, monthly_fee, status, father, adm_date, adm_standard, mobile, address, email];
-
-    if (req.file) { // A new image exists
-        const imagePath = req.file.path; // Use the image path from the uploaded file
-        sql += ', image = ?'; // Append the image update
-        updateValues.push(imagePath); // Add the new image path
+    if (!adm_no) { // Check if adm_no is null or empty
+      console.log('adm_no is empty or null');
+      return res.status(400).json({ error: 'Admission number is required' });
     }
 
-    sql += ' WHERE id = ?'; // Specify the record to update with WHERE clause
-    updateValues.push(id); // The id of the record to identify which student to update
+    const imagePath = req.file ? req.file.path : null;
+    const created_at = new Date();
 
-    // Execute the update query
-    db.query(sql, updateValues, (err, result) => {
-        if (err) {
-            console.error('Error updating student: ', err);
-            return res.status(500).json({ error: 'Database error' });
-        }
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ message: 'Student not found' });
-        }
-        res.status(200).json({ message: 'Student updated successfully' });
+    const sql = `
+      INSERT INTO basicinfo (
+        adm_no,
+        roll_no,
+        name,
+        father,
+        monthly_fee,
+        status,
+        image,
+        created_at,
+        updated_at,
+        standard,
+        section,
+        adm_date,
+        adm_standard,
+        mobile,
+        email,
+        dob,
+        address,
+        gender,
+        father_cnic,
+        mother_cnic,
+        father_profession,
+        religion,
+        caste,
+        previous_school,
+        name_urdu,
+        fname_urdu,
+        dob_urdu
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+    `;
+
+    const values = [
+      adm_no,
+      roll_no,
+      name,
+      father,
+      monthly_fee,
+      status,
+      imagePath,
+      created_at,
+      null, // updated_at
+      current_standard,
+      section,
+      adm_date,
+      adm_standard,
+      mobile,
+      email,
+      dob,
+      address,
+      gender,
+      father_cnic,
+      mother_cnic,
+      father_profession,
+      religion,
+      caste,
+      previous_school,
+      nameurdu,
+      fatherurdu,
+      dob_urdu
+    ];
+
+    db.query(sql, values, (err, result) => {
+      if (err) {
+        console.error('Error inserting student: ', err);
+        return res.status(500).json({ error: 'Database error', details: err.message });
+      }
+      res.status(201).json({ id: result.insertId, adm_no, name });
     });
+  } catch (error) {
+    console.error('Error inserting student: ', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+// Handling GET by admno
+
+router.get('/:id', checkAuth, (req, res) => {
+  const id = req.params.id;
+  const query = 'SELECT * FROM basicinfo WHERE id = ?';
+  db.query(query, [id], (error, results) => {
+      if (error) {
+          console.error('Database query error:', error);
+          return res.status(500).json({ error: 'Database query failed' });
+      }
+      if (results.length === 0) {
+          return res.status(404).json({ message: 'Student not found' });
+      }
+      res.json(results[0]);
+  });
+});
+
+  
+// Get student by ID
+router.get('/:id', checkAuth, (req, res) => {
+  const id = req.params.id;
+  const query = 'SELECT * FROM basicinfo WHERE id = ?';
+  db.query(query, [id], (error, results) => {
+    if (error) {
+      console.error('Database query error:', error);
+      return res.status(500).json({ error: 'Database query failed' });
+    }
+    if (results.length === 0) {
+      return res.status(404).json({ message: 'Student not found' });
+    }
+    res.json(results[0]);
+  });
+});
+
+// Update student
+router.patch('/:id', checkAuth, upload.single('image'), (req, res) => {
+  const id = req.params.id;
+  
+  // Ensure all fields are set up correctly
+  const {
+    adm_no,
+    roll_no,
+    name,
+    father,
+    name_urdu,
+    fname_urdu,
+    monthly_fee,
+    status,
+    adm_date,
+    adm_standard,
+    standard,
+    mobile,
+    email,
+    address,
+    gender,
+    father_cnic,
+    mother_cnic,
+    father_profession,
+    religion,
+    caste,
+    previous_school,
+    dob_urdu,
+    dob,
+  } = req.body;
+
+  // Validate required fields
+  if (!adm_no) {
+    return res.status(400).json({ error: 'Admission number is required' });
+  }
+  if (!name) {
+    return res.status(400).json({ error: 'Name is required' });
+  }
+  // Add more validation as needed...
+
+  let sql = `UPDATE basicinfo SET 
+    adm_no = ?, 
+    roll_no = ?, 
+    name = ?, 
+    father = ?, 
+    name_urdu = ?, 
+    fname_urdu = ?, 
+    monthly_fee = ?, 
+    status = ?, 
+    adm_date = ?, 
+    adm_standard = ?, 
+    standard = ?, 
+    mobile = ?, 
+    email = ?, 
+    address = ?, 
+    gender = ?, 
+    father_cnic = ?, 
+    mother_cnic = ?, 
+    father_profession = ?, 
+    religion = ?, 
+    caste = ?, 
+    previous_school = ?, 
+    dob_urdu = ?,  
+    dob = ?, 
+    updated_at = NOW()`;
+
+  const updateValues = [
+    adm_no,
+    roll_no,
+    name,
+    father,
+    name_urdu,
+    fname_urdu,
+    monthly_fee,
+    status,
+    adm_date,
+    adm_standard,
+    standard,
+    mobile,
+    email,
+    address,
+    gender,
+    father_cnic,
+    mother_cnic,
+    father_profession,
+    religion,
+    caste,
+    previous_school,
+    dob_urdu,
+    dob,
+  ];
+
+  // Handle image upload
+  if (req.file) {
+    sql += ", image = ?";
+    updateValues.push(req.file.path); // Add image path to update values
+  }
+
+  sql += " WHERE id = ?";
+  updateValues.push(id);
+
+  db.query(sql, updateValues, (err, result) => {
+    if (err) {
+      console.error("Error updating student: ", err);
+      return res.status(500).json({ error: "Database error" });
+    }
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+    res.status(200).json({ message: "Student updated successfully" });
+  });
 });
 
 
 
   
   // Delete record
-  router.delete('/del/:admno', checkAuth, (req, res, next) => {
-    const studentId = req.params.admno;
-    console.log(`Delete request received for adm_no: ${studentId}`);
-    
-    const sql = 'DELETE FROM basicinfo WHERE adm_no = ?';
+  router.delete('/del/:id', checkAuth, (req, res) => {
+    const studentId = req.params.id;
+    const sql = 'DELETE FROM basicinfo WHERE id = ?';
     db.query(sql, [studentId], (err, result) => {
-      if (err) {
-        console.error('Error deleting student: ', err);
-        return res.status(500).json({ error: 'Database error' });
-      }
-      if (result.affectedRows === 0) {
-        return res.status(404).json({ error: 'No student found' });
-      }
-      res.status(200).json({ message: 'Student deleted successfully' });
-    });
-  });
-  
-
-  router.get('/classes', (req, res, next) => {
-    const query = 'SELECT * FROM basicinfo';
-    db.query(query, (error, results) => {
-      if (error) {
-        console.error('Database query error:', error);
-        return res.status(500).json({ error: 'Database query failed' });
-      }
-      res.json(results);
+        if (err) {
+            console.error('Error deleting student: ', err);
+            return res.status(500).json({ error: 'Database error' });
+        }
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'No student found' });
+        }
+        res.status(200).json({ message: 'Student deleted successfully' });
     });
 });
+  
 
+router.get('/classes', (req, res) => {
+  const query = 'SELECT * FROM classes'; // Adjust if you have a specific classes table
+  db.query(query, (error, results) => {
+      if (error) {
+          console.error('Database query error:', error);
+          return res.status(500).json({ error: 'Database query failed' });
+      }
+      res.json(results);
+  });
+});
 
 router.patch('/promote', checkAuth, async (req, res, next) => {
   const updates = req.body; // This will be an array of { adm_no, standard }
@@ -206,5 +395,20 @@ router.patch('/promote', checkAuth, async (req, res, next) => {
 });
 
 
+// Get student by ID to ownnload form
+router.get('/download/:id', checkAuth, (req, res) => {
+  const id = req.params.id;
+  const query = 'SELECT * FROM basicinfo WHERE id = ?';
+  db.query(query, [id], (error, results) => {
+    if (error) {
+      console.error('Database query error:', error);
+      return res.status(500).json({ error: 'Database query failed' });
+    }
+    if (results.length === 0) {
+      return res.status(404).json({ message: 'Student not found' });
+    }
+    res.json(results[0]);
+  });
+});
 
   module.exports = router;

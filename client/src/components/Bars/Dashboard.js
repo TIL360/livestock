@@ -44,6 +44,7 @@ import TaskEdit from "../Assignments/TaskEdit";
 import DynamicDBUser from "../Bars/DynamicDBUser";
 import Images from "../Web Images/Images";
 import Feemisc from "../Fee/Feemisc";
+import Download from "../students/Download";
 
 const Dashboard = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -97,6 +98,7 @@ const Dashboard = () => {
             <Route path="dynamicdbuser" element={<DynamicDBUser />} />
             <Route path="images" element={<Images />} />
             <Route path="feemisc" element={<Feemisc />} />
+            <Route path="download/:id" element={<Download />} />
           </Routes>
         </div>
       </div>

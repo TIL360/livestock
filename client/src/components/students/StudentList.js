@@ -18,6 +18,7 @@ export default function StudentList() {
   const [selectedDate, setSelectedDate] = useState("");
   const [currentAdmNo, setCurrentAdmNo] = useState("");
 
+  // Fetch students from API
   useEffect(() => {
     const fetchStudents = async () => {
       try {
@@ -31,6 +32,10 @@ export default function StudentList() {
     };
     fetchStudents();
   }, [token]);
+
+  const handleDownload = (id) => {
+    navigate(`/dashboard/download/${id}`);
+  };
 
   const handleClick = () => {
     navigate("/dashboard/studentcreate");
@@ -58,6 +63,7 @@ export default function StudentList() {
     navigate(`/dashboard/studentedit/${id}`);
   };
 
+ 
   const handleSearch = (e) => {
     setSearch(e.target.value);
   };
@@ -121,6 +127,7 @@ export default function StudentList() {
               <button className="btn btn-success ml-1" onClick={handleAttendance}>
                 Attendance
               </button>
+             
             </div>
             <div className="col-md-9">
               <label htmlFor="searchInput" className="form-label d-none">Search here...</label>
@@ -175,6 +182,9 @@ export default function StudentList() {
                   </button>
                   <button className="btn btn-success ml-1" onClick={() => handleShowModal(student.adm_no)}>
                     <FaPlusSquare />
+                  </button>
+                  <button onClick={() => handleDownload(student.id)} className="btn btn-success ml-1">
+                    Adm Form
                   </button>
                 </td>
               </tr>

@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import fontfile from './Fonts/Angels.ttf';
+import fontfile2 from './Fonts/GreatVibes-Regular.ttf';
 import { Carousel } from 'react-bootstrap'; 
 import axios from 'axios'; 
-import principal from './Images/principal.jpg';
-import solar from './Images/solar.jpg';
-import Quran from './Images/Quran.jpg';
-import coaching from './Images/coaching.jpg';
-import orphans from './Images/orphans.jpg';
-import lab from './Images/lab.jpg';
+
+
 
 const Home = () => {
   const [images, setImages] = useState([]);
@@ -47,6 +44,10 @@ const Home = () => {
           @font-face {
             font-family: 'Trick';
             src: url(${fontfile}) format('truetype');
+          }
+             @font-face {
+            font-family: 'GreatVibes-Regular';
+            src: url(${fontfile2}) format('truetype');
           }
 
           .logo {
@@ -115,11 +116,11 @@ const Home = () => {
         <div>
           <div style={{ textAlign: 'center' }}>
             <br />
-            <h1 className={`title ${animateTitle ? 'animate' : ''}`} style={{ fontSize: '50px', fontFamily: 'Arial', color: '#031564', textShadow: '0px 10px 10px rgba(0, 0, 0, 0.5)' }}>
+            <h1 className={`title ${animateTitle ? 'animate' : ''}`} style={{ fontSize: '50px', fontFamily: "GreatVibes-Regular", color: '#031564', textShadow: '0px 10px 10px rgba(0, 0, 0, 0.5)' }}>
               Welcome to
             </h1>
             <h1 className={`title ${animateTitle ? 'animate' : ''}`} style={{ fontSize: '50px', fontFamily: 'Trick', color: '#031564', textShadow: '0px 10px 10px rgba(0, 0, 0, 0.5)' }}>
-              Islamic Scholar Public School, Wah Cantt
+              RAHBAR PUBLIC SCHOOL
             </h1>
             <div className={`content ${animateContent ? 'animate' : ''}`}>
               <hr />
@@ -151,57 +152,7 @@ const Home = () => {
           </div>
 
         </div>
-        <div className='row'>
-          <div className='col-md-6 px-5 py-5'>
-            <img src={principal} alt="Principal" className="img-fluid" />
-          </div>
-
-          <div className='col-md-6 px-5 py-5'>
-            <h4 style={{ color: "blue" }}>About Us</h4>
-            <h2>Adil Shahzad</h2>
-            <p>20 years experience in teaching field with administration C.E.O (M.Sc Physics & B.Sc (Double Maths).</p>
-          </div>
-          <br/>
-          <hr/>
-          <br/>
-          <div className='row'>
-            <h3 className='text-center' style={{color:"Blue"}}>Our Services</h3>
-                <h2 className='text-center'>
-                We strive to serve the nation</h2>
-  <div className='col-md-4 px-5 py-5'>
-  <img src={solar} alt="Principal" className="img-fluid" style={{alignItems:"center"}} />
-  <h3>Solar Electricity</h3>
-  <p>We provide education with loadsheding free environment with the help of solar electricity.</p>
-  </div>
-
-  <div className='col-md-4 px-5 py-5'>
-  <img src={Quran} alt="Principal" className="img-fluid" style={{alignItems:"center"}} />
-  <h3>Tafseer e Quran</h3>
-  <p>We do provide tafseer e Quran education to students parallel to academic education.</p>
-  </div>
-
-
-  <div className='col-md-4 px-5 py-5'>
-  <img src={lab} alt="Principal" className="img-fluid" style={{alignItems:"center"}} />
-  <h3>Science & Computer Lab</h3>
-  <p>We do provide quality standard Science & Computer Lab for students to meet their needs.</p>
-  </div>
-
-  <div className='col-md-4 px-5 py-5'>
-  <img src={coaching} alt="Principal" className="img-fluid" style={{alignItems:"center"}} />
-  <h3>Free Coaching Classes</h3>
-  <p>Free coaching classes are arranged for students.</p>
-  </div>
-
-  <div className='col-md-4 px-5 py-5'>
-  <img src={orphans} alt="Principal" className="img-fluid" style={{alignItems:"center"}} />
-  <h3>Free Education for Orphans</h3>
-  <p>We do provide free education to orphans.</p>
-  </div>
-
-
-          </div>
-        </div>
+       
 
       </div>
     </>

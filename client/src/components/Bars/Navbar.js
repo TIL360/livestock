@@ -17,7 +17,7 @@ function NavBar() {
         <div className="nav-container">
           <img src={image1} width={80} height={80} alt="Logo" />
           <NavLink exact to="/" className="nav-logo">
-            <span>ISPS Wah, Islamabad</span>
+            <span>Rahbar Public School,<br/> Garhi Habibullah</span>
           </NavLink>
 
           <ul className={click ? "nav-menu active" : "nav-menu"}>
@@ -33,12 +33,12 @@ function NavBar() {
             </li>
             <li className="nav-item">
               <NavLink
-                to="/login"
+                to="/about"
                 activeClassName="active"
                 className="nav-links"
                 onClick={handleClick}
               >
-                ISPS App
+                About
               </NavLink>
             </li>
             {/* New Pages menu */}
@@ -48,6 +48,16 @@ function NavBar() {
               </span>
               {showPages && (
                 <ul className="sub-menu">
+                  <li className="nav-item">
+                    <NavLink
+                      to="/login"
+                      activeClassName="active"
+                      className="nav-links"
+                      onClick={handleClick}
+                    >
+                      RPS App
+                    </NavLink>
+                  </li>
                   <li className="nav-item">
                     <NavLink
                       to="/announcementpublished"

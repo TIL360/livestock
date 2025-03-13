@@ -124,9 +124,9 @@ const FeePdf = ({ feeDetails }) => {
             <View style={styles.column} key={pageIndex}>
               <View style={styles.headerContainer}>
                 <Image style={styles.logo} src={logo} />
-                <Text style={styles.header}>ISPS Wah Cantt, Islamabad </Text>
+                <Text style={styles.header}>Rahbar Public School </Text>
               </View>
-              <Text style={{fontSize:"10px", textAlign:"center"}}>Contact: 0336-5777728</Text>
+              <Text style={{fontSize:"10px", textAlign:"center"}}>Contact: +92 3151436832</Text>
 
               <Text style={styles.title}>
                 Fee Invoice for {getMonthName(feeDetail.fmonth)} - {feeDetail.fyear}
@@ -206,11 +206,11 @@ const FeePdf = ({ feeDetails }) => {
 
               <View style={styles.footer}>
                 <View style={styles.line} />
-                <Text>Easy Paisa Account No: 03365777728</Text>
+                <Text>Easy Paisa Account No: 0342-4449242</Text>
                 <Text>
-                Bank Al-Habib, Lalarukh Basti Branch, Wah Cantt</Text>
+                Askari Bank, Garhi Habibullah Branch</Text>
                 <Text> A/C No:
-                00620981010336013</Text>
+                02410100002929</Text>
 
                 
 
