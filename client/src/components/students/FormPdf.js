@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column', 
         padding: 20, 
         fontSize: 10, 
-        lineHeight: 1.2, 
+        lineHeight: 1.5, // Increased line height for better spacing
         position: 'relative', 
     }, 
     headerContainer: { 
@@ -39,10 +39,10 @@ const styles = StyleSheet.create({
     }, 
     watermark: { 
         position: 'absolute', 
-        top: '30%', // Adjust vertical position as needed
-        left: '30%', // Adjust horizontal position as needed
-        width: '50%', // Adjust size as needed
-        opacity: 0.1, // Adjust opacity for watermark effect
+        top: '30%', 
+        left: '30%', 
+        width: '50%', 
+        opacity: 0.1, 
         zIndex: -1,
     },
     table: { 
@@ -53,40 +53,40 @@ const styles = StyleSheet.create({
     }, 
     tableRow: { 
         flexDirection: 'row', 
+        marginTop: 20,
     },
     tableCellHeadingUrdu: {
-        // border: '1px solid white',
         padding: 3,
         flex: 1,
         textAlign: 'right',
-        fontFamily: 'Jameel Noori Nastaleeq', // Set the font for Urdu headings
+        fontFamily: 'Jameel Noori Nastaleeq', 
         fontWeight: 'bold',
     },
     tableCellUrdu: {
-        // border: '1px solid black',
         padding: 3,
         flex: 1,
         textAlign: 'right',
-        fontFamily: 'Jameel Noori Nastaleeq', // Set the font for Urdu text
+        fontFamily: 'Jameel Noori Nastaleeq', 
         fontWeight: 'bold',
     },
     tableCellHeading: {
-        // border: '1px solid black',
         padding: 3,
         flex: 1,
         textAlign: 'left',
     },
     tableCell: {
-        // border: '1px solid black',
         padding: 3,
         flex: 1,
-        textAlign: 'center',
+        textAlign: 'left',
         fontWeight: 'bold',
+        fontSize:'12px',
+        textDecoration:'underline',
     },
     urduText: {
         fontFamily: 'Jameel Noori Nastaleeq', 
         fontSize: 16,
-        textAlign: 'right', // Align Urdu text to the right
+        textAlign: 'right', 
+        textDecoration:'underline',
     },
     footer: {
         position: 'absolute',
@@ -102,17 +102,23 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     tableCellSpan: {
-        border: '1px solid black',
+        // border: '1px solid black',
         padding: 3,
-        flex: 3, // Span across three columns
-        textAlign: 'center',
+        flex: 3, 
+        textAlign: 'left',
         fontWeight: 'bold',
-      },
+        fontSize:'14px',
+        textDecoration:'underline',
+    },
+    line: {
+        borderBottom: '1px solid black',
+        marginVertical: 5, // Space around the line
+    },
 });
 
 const StudentPdf = ({ student }) => { 
     return ( 
-        <Document> 
+        <Document style={styles.table}> 
             <Page size="A4" style={styles.page}> 
                 <Image src={logo} style={styles.watermark} />
 
@@ -121,7 +127,8 @@ const StudentPdf = ({ student }) => {
                     <Text style={styles.header}>Rahbar Public School</Text> 
                 </View>
                 <Text style={styles.title}>Admission Form</Text>
-                <View style={styles.table}>
+                
+                <View>
                     <View style={styles.tableRow}>
                         <Text style={styles.tableCellHeading}>Admission No</Text>
                         <Text style={styles.tableCell}>{student.adm_no}</Text>
@@ -151,36 +158,41 @@ const StudentPdf = ({ student }) => {
                         <Text style={styles.tableCellHeading}>Father / Guardian CNIC</Text>
                         <Text style={styles.tableCell}>{student.father_cnic}</Text>
                         <Text style={[styles.tableCellHeading]}>Mother / Guardian CNIC</Text>
-                        <Text style={[styles.tableCellUrdu]}>{student.mother_cnic}</Text>
+                        <Text style={[styles.tableCell]}>{student.mother_cnic}</Text>
                     </View>
 
                     <View style={styles.tableRow}>
                         <Text style={styles.tableCellHeading}>Father Profession</Text>
                         <Text style={styles.tableCell}>{student.father_profession}</Text>
                         <Text style={[styles.tableCellHeading]}>Religion</Text>
-                        <Text style={[styles.tableCellUrdu]}>{student.religion}</Text>
+                        <Text style={[styles.tableCell]}>{student.religion}</Text>
                     </View>
 
                     <View style={styles.tableRow}>
                         <Text style={styles.tableCellHeading}>Caste</Text>
                         <Text style={styles.tableCell}>{student.caste}</Text>
                         <Text style={[styles.tableCellHeading]}>Admission Class</Text>
-                        <Text style={[styles.tableCellUrdu]}>{student.adm_standard}</Text>
+                        <Text style={[styles.tableCell]}>{student.adm_standard}</Text>
                     </View>
 
                     <View style={styles.tableRow}>
                         <Text style={styles.tableCellHeading}>Previous School</Text>
                         <Text style={[styles.tableCell, styles.tableCellSpan]}>{student.previous_school}</Text>
                     </View>
+                    <View style={StyleSheet.line}/>
+                    <Text style={{textAlign:'left'}}>Note: Copies of Form 'B', CNIC of Father and School Leaving Certificate in case of student is being transfer 
+                        from other school be attached with admission form.
+                    </Text>
                 </View>
-
+                
                 <View style={styles.footer}>
                     <View style={styles.signature}>
+                        <Text>Signature of Parents / Guardian:____________________  Dated: ____________</Text>
+
+                <View style={styles.line} /> {/* Horizontal line */}
                         <Text>Address: Garhi Habibullah, Tehsil Balakot, District Mansehra</Text>
                         <Text>Contact: +92 3151436832 || Website: https://www.rahbarschool.com</Text>
-                        
                     </View>
-                   
                 </View>
             </Page>
         </Document>

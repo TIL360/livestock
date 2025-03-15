@@ -56,7 +56,27 @@ db.connect((err) => {
 
 // New endpoint for profile or verification
 router.get("/", checkAuth, (req, res) => {
-  const query = 'SELECT * FROM basicinfo';
+  const query = 'SELECT * FROM basicinfo WHERE status = "Active"';
+
+    db.query(query, (error, results) => {
+        if (error) {
+            console.error('Database query error:', error);
+            return res.status(500).json({ error: 'Database query failed' });
+        }
+        res.json(results);
+});
+
+
+
+
+    //   res.status(200).json({
+//     message: 'Handling GET requests to /students'
+//   });
+});
+
+// New endpoint for profile or verification
+router.get("/inactive", checkAuth, (req, res) => {
+  const query = 'SELECT * FROM basicinfo WHERE status = "Inactive"';
 
     db.query(query, (error, results) => {
         if (error) {
@@ -410,5 +430,35 @@ router.get('/download/:id', checkAuth, (req, res) => {
     res.json(results[0]);
   });
 });
+
+router.patch('/promote', checkAuth, async (req, res, next) => {
+  const updates = req.body; // This will be an array of { adm_no, standard }
+  console.log("Received updates:", req.body);
+
+  const updatePromises = updates.map(({ adm_no, standard }) => {
+    return new Promise((resolve, reject) => {
+      const sql = 'UPDATE basicinfo SET standard = ?, updated_at = NOW() WHERE adm_no = ?';
+      db.query(sql, [standard, adm_no], (err, result) => {
+        if (err) {
+          return reject(err);
+        }
+        if (result.affectedRows === 0) {
+          return reject(new Error('Student not found'));
+        }
+        resolve();
+      });
+    });
+  });
+
+  try {
+    await Promise.all(updatePromises);
+    res.status(200).json({ message: 'Standards updated successfully' });
+  } catch (error) {
+    console.error('Error updating students:', error);
+    res.status(500).json({ error: 'Database error' });
+  }
+});
+
+
 
   module.exports = router;

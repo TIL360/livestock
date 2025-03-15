@@ -45,6 +45,9 @@ import DynamicDBUser from "../Bars/DynamicDBUser";
 import Images from "../Web Images/Images";
 import Feemisc from "../Fee/Feemisc";
 import Download from "../students/Download";
+import StudentInactive from "../students/StudentInactive";
+import Studentpromote from "../students/Studentpromote";
+import Report from "../Bars/Report";
 
 const Dashboard = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -99,6 +102,9 @@ const Dashboard = () => {
             <Route path="images" element={<Images />} />
             <Route path="feemisc" element={<Feemisc />} />
             <Route path="download/:id" element={<Download />} />
+            <Route path="studentinactive" element={<StudentInactive />} />
+            <Route path="studentpromote" element={<Studentpromote />} />
+            <Route path="report" element={<Report />} />
           </Routes>
         </div>
       </div>

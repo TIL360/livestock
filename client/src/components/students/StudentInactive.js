@@ -5,7 +5,7 @@ import userContext from "../context/UserContext";
 import { FaEdit, FaPlusSquare, FaTrash } from "react-icons/fa";
 import { Modal, Button } from "react-bootstrap"; // Make sure you have react-bootstrap installed
 
-export default function StudentList() {
+export default function StudentInactive() {
   const navigate = useNavigate();
   axios.defaults.withCredentials = true;
   const [students, setStudents] = useState([]);
@@ -18,11 +18,10 @@ export default function StudentList() {
   const [selectedDate, setSelectedDate] = useState("");
   const [currentAdmNo, setCurrentAdmNo] = useState("");
 
-  // Fetch students from API
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/students`, {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/students/inactive`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setStudents(response.data);
@@ -32,11 +31,6 @@ export default function StudentList() {
     };
     fetchStudents();
   }, [token]);
-
-  const handleDownload = (student) => {
-    navigate(`/dashboard/download/${student.id}`, { state: { studentData: student } });
-  };
-  
 
   const handleClick = () => {
     navigate("/dashboard/studentcreate");
@@ -69,9 +63,9 @@ export default function StudentList() {
   };
 
   const handleInactive = (id) => {
-    navigate(`/dashboard/studentinactive`);
+    navigate(`/dashboard/studentlist`);
   };
- 
+
   const handleSearch = (e) => {
     setSearch(e.target.value);
   };
@@ -124,9 +118,9 @@ export default function StudentList() {
   return (
     <div className="card">
       <div className="card-header">
-        <h1 className="text-center"><b>STUDENTS ACTIVE</b></h1>
+        <h1 className="text-center"><b>STUDENTS <b className="text-danger">(Inactive)</b></b></h1>
         <div className="row align-items-center">
-          <div className="col-md-5 text-center"></div>
+          <div className="col-md-4 text-center"></div>
           <div className="row align-items-center">
             <div className="col-md-5">
               <button className="btn btn-primary" onClick={handleClick}>
@@ -138,10 +132,9 @@ export default function StudentList() {
               <button className="btn btn-warning ml-1" onClick={handlePromotion}>
                 Promotion
               </button>
-              <button className="btn btn-danger ml-1" onClick={handleInactive}>
-                Inactive List
+              <button className="btn btn-success ml-1" onClick={handleInactive}>
+                Active List
               </button>
-             
             </div>
             <div className="col-md-7">
               <label htmlFor="searchInput" className="form-label d-none">Search here...</label>
@@ -197,10 +190,6 @@ export default function StudentList() {
                   <button className="btn btn-success ml-1" onClick={() => handleShowModal(student.adm_no)}>
                     <FaPlusSquare />
                   </button>
-                  <button onClick={() => handleDownload(student)} className="btn btn-success ml-1">
-  Adm Form
-</button>
-
                 </td>
               </tr>
             ))}
