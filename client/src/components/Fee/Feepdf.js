@@ -3,99 +3,98 @@ import { Page, Text, View, Document, StyleSheet, Image } from '@react-pdf/render
 import logo from '../Images/logo.png'; // Adjust the path to your logo image
 
 const styles = StyleSheet.create({
-  page: { 
-    flexDirection: 'row', 
-    padding: 20, 
-    fontSize: 10, 
-    lineHeight: 1.2, 
+  page: {
+    flexDirection: 'row',
+    padding: 20,
+    fontSize: 10,
+    lineHeight: 1.2,
     position: 'relative', // Allow absolute positioning for watermark 
   },
-  column: { 
-    width: '33.33%', 
-    padding: 10, 
+  column: {
+    width: '33.33%',
+    padding: 10,
   },
-  headerContainer: { 
-    flexDirection: 'row', 
-    alignItems: 'center', 
-    justifyContent: 'center', 
-    marginBottom: 10, 
+  headerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 10,
   },
-  header: { 
-    fontSize: 14, 
-    textAlign: 'center', 
-    textDecoration: 'underline', 
-    fontWeight: 'bold', 
+  header: {
+    fontSize: 14,
+    textAlign: 'center',
+    textDecoration: 'underline',
+    fontWeight: 'bold',
     marginLeft: 5, // Space between logo and header text 
   },
-  title: { 
-    fontSize: 12, 
-    textAlign: 'center', 
-    marginBottom: 10, 
+  title: {
+    fontSize: 12,
+    textAlign: 'center',
+    marginBottom: 10,
   },
-  logo: { 
+  logo: {
     width: 40, // Adjusted logo width 
     height: 40, // Adjusted logo height 
   },
-  watermark: { 
-    position: 'absolute', 
-    top: '30%', 
-    left: '30%', 
+  watermark: {
+    position: 'absolute',
+    top: '30%',
+    left: '30%',
     opacity: 0.1, // Lighten the watermark 
     width: '40%', // Adjust width for watermark 
     height: '40%', // Adjust height for watermark 
   },
-  line: { 
-    borderBottomWidth: 1, 
-    borderBottomColor: 'black', 
-    marginVertical: 10, 
+  line: {
+    borderBottomWidth: 1,
+    borderBottomColor: 'black',
+    marginVertical: 10,
   },
-  table: { 
-    width: '100%', 
-    marginBottom: 10, 
+  table: {
+    width: '100%',
+    marginBottom: 10,
   },
-  tableRow: { 
-    flexDirection: 'row', 
+  tableRow: {
+    flexDirection: 'row',
   },
-  tableCell: { 
-    padding: 3, 
+  tableCell: {
+    padding: 3,
     borderWidth: 0.5, // Set border width 
     borderColor: 'black', // Set border color 
     borderStyle: 'solid', // Set border style 
-    flex: 1, 
-    textAlign: 'left', 
+    flex: 1,
+    textAlign: 'left',
   },
-  totalCell: { 
+  totalCell: {
     backgroundColor: 'black', // Background color for total fee 
     color: 'white', // Text color for total fee 
-    padding: 3, 
-    borderWidth: 0.5, 
-    borderColor: 'black', 
-    borderStyle: 'solid', 
-    flex: 1, 
-    textAlign: 'left', 
+    padding: 3,
+    borderWidth: 0.5,
+    borderColor: 'black',
+    borderStyle: 'solid',
+    flex: 1,
+    textAlign: 'left',
   },
-  footer: { 
-    position: 'absolute', 
+  footer: {
+    position: 'absolute',
     bottom: 20, // Distance from bottom 
-    left: 0, 
-    right: 0, 
-    marginTop: 20, 
-    fontSize: 10, 
-    textAlign: 'center', 
+    left: 0,
+    right: 0,
+    marginTop: 20,
+    fontSize: 10,
+    textAlign: 'center',
   },
 });
 
 // Utility function to convert month number to month name
 const getMonthName = (monthNumber) => {
   const monthNames = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
     'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
   ];
   return monthNames[monthNumber - 1]; // monthNumber is 1-based
 };
 
 const FeePdf = ({ feeDetails }) => {
-  console.log(feeDetails); // Verify data
   const pages = [];
 
   feeDetails.forEach((feeDetail) => {
@@ -113,6 +112,9 @@ const FeePdf = ({ feeDetails }) => {
     }
   });
 
+  // Array of copy titles
+  const copyTitles = ['School\'s Copy', 'Student\'s Copy', 'Bank\'s Copy'];
+
   return (
     <Document>
       {pages.map((page, index) => (
@@ -122,12 +124,13 @@ const FeePdf = ({ feeDetails }) => {
 
           {page.map((feeDetail, pageIndex) => (
             <View style={styles.column} key={pageIndex}>
+           {/* Add this line for copy titles */}
+
               <View style={styles.headerContainer}>
                 <Image style={styles.logo} src={logo} />
-                <Text style={styles.header}>Rahbar Public School </Text>
+                <Text style={styles.header}>PIPS <br />Murree</Text>
               </View>
-              <Text style={{fontSize:"10px", textAlign:"center"}}>Contact: +92 3151436832</Text>
-
+              <Text style={styles.title}>{copyTitles[pageIndex]}</Text>
               <Text style={styles.title}>
                 Fee Invoice for {getMonthName(feeDetail.fmonth)} - {feeDetail.fyear}
               </Text>
@@ -205,15 +208,18 @@ const FeePdf = ({ feeDetails }) => {
               <View style={styles.line} />
 
               <View style={styles.footer}>
+                <Text style={{textAlign:"left", width:"90%"}}>
+                  1. Fee Dues must be paid before 10th of every month.
+                </Text>
+                <Text style={{textAlign:"left", width:"90%"}}>
+                  2. Late fee fine (100) will be charged after due date.
+                </Text>
+                <Text style={{textAlign:"left", width:"90%"}}>
+                  3. Defaulters of more than two months will be struck off from the school
+                </Text>
                 <View style={styles.line} />
-                <Text>Easy Paisa Account No: 0342-4449242</Text>
-                <Text>
-                Askari Bank, Garhi Habibullah Branch</Text>
-                <Text> A/C No:
-                02410100002929</Text>
-
-                
-
+                <Text>Sindh Bank A/C Title Pakistan International Public School, Murree</Text>
+                <Text>Account No: 06967814501002</Text>
               </View>
             </View>
           ))}

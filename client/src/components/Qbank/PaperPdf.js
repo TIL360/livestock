@@ -77,19 +77,17 @@ const PaperPdf = ({ objectiveQuestions, subjectiveQuestions, selectedYear, selec
       <Page style={styles.page}>
         <Image src={logo} style={styles.watermark} />
 
-        <Text style={styles.header}>Rahbar Public School
-</Text>
-
-        <Text style={styles.title}>Tehsil Balakot, District Mansehra</Text>
-        <Text style={styles.title}>Contact: +92 333 5002755, +92 3151436832 || Website: https://www.rahbarschool.com</Text>        <br/>
+        <Text style={styles.header}>PIPS, Murree</Text>
+        
+        <Text style={{fontSize:"10px", textAlign:"center"}}>Contact: +92 315 6206302 || Website: https://www.pipsmurree.info</Text>
         
         <View style={styles.headerRow}>
-          <Text style={{textAlign:'left'}}>{` ${selectedExam } - ${selectedYear } `} </Text>
-          
-
+          <Text style={{textAlign:'left'}}>{` ${selectedExam} - ${selectedYear} `}</Text>
         </View>
 
-        <Text style={{ fontWeight: 'bold', fontSize: 14, textAlign: 'center', textDecoration: 'underline' }}>Objective Part (Marks: {totalObjectiveMarks})</Text>
+        <Text style={{ fontWeight: 'bold', fontSize: 14, textAlign: 'center', textDecoration: 'underline' }}>
+          Objective Part (Marks: {totalObjectiveMarks})
+        </Text>
         <Text style={{ fontSize: '11', textDecoration: 'underline', textAlign: 'left', marginBottom: '11' }}>
           Note: All questions in Objective part are compulsory. 
         </Text>
@@ -127,7 +125,9 @@ const PaperPdf = ({ objectiveQuestions, subjectiveQuestions, selectedYear, selec
 
         <View style={styles.section}>
           <View style={styles.headerRow}>
-            <Text style={{ fontWeight: 'bold', fontSize: 14, textAlign: 'left', textDecoration:'underline' }}>Subjective Part (Marks: {totalSubjectiveMarks})</Text>
+            <Text style={{ fontWeight: 'bold', fontSize: 14, textAlign: 'left', textDecoration:'underline' }}>
+              Subjective Part (Marks: {totalSubjectiveMarks})
+            </Text>
           </View>
           {subjectiveQuestions.map((question, index) => (
             <View key={question.qid} style={styles.question}>

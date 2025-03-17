@@ -2,113 +2,57 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import principal from '../Images/principal.jpg';
-import solar from '../Images/solar.jpg';
-import Quran from '../Images/Quran.jpg';
-import coaching from '../Images/coaching.jpg';
-import orphans from '../Images/orphans.jpg';
-import lab from '../Images/lab.jpg';
-import ground from '../Images/playground.jpg';
-import library from '../Images/library.jpg';
-import environment from '../Images/environment.jpg';
-import scholarship from '../Images/scholarship.jpg';
-
 
 
 const About = () => {
- 
-
-
-   
-
   return (
     <>
-     
-        <div className='row'>
-          <div className='col-md-6 px-5 py-5'>
-            <img src={principal} alt="Principal" className="img-fluid" />
-          </div>
-
-          <div className='col-md-6 px-5 py-5'>
-            <h4 style={{ color: "blue" }}>About Us</h4>
-            <h2>Muhammad Asad</h2>
-            <p>Managing Director, Social Activist & Public Speaker .</p>
-            <p>MA (Political Science)</p>
-            <p>10 Years experience in the teaching field and administration.</p>
-          </div>
-          <br/>
-          <hr/>
-          <br/>
-         
+      <div className='row'>
+        <div className='col-md-4 px-5 py-5'>
+          <img 
+            src={principal} 
+            alt="Principal" 
+            className="img-fluid rounded-circle border border-secondary shadow-lg" 
+          />
         </div>
-        <hr/>
-        <div className='row'>
-                    <h3 className='text-center' style={{color:"Blue"}}>Our Services</h3>
-                        <h2 className='text-center'>
-                        We Provide quality education at the threshold</h2>
-          <div className='col-md-4 px-5 py-5'>
-          <img src={solar} alt="Principal" className="img-fluid" style={{alignItems:"center"}} />
-          <h3>Solar Electricity</h3>
-          <p>We provide education with loadsheding free environment with the help of solar electricity.</p>
-          </div>
-        
-          <div className='col-md-4 px-5 py-5'>
-          <img src={Quran} alt="Principal" className="img-fluid" style={{alignItems:"center"}} />
-          <h3>Nazra e Quran / Hifz e Quran </h3>
-          <p>We do provide separate classes of Nazra and Hifz for Students </p>
-          </div>
-        
-        
-          <div className='col-md-4 px-5 py-5'>
-          <img src={lab} alt="Principal" className="img-fluid" style={{alignItems:"center"}} />
-          <h3>Science & Computer Lab</h3>
-          <p className='text-justify'>We do provide state of the art science and computer labs for matriculation students.</p>
-          
 
-          </div>
-        
-          <div className='col-md-4 px-5 py-5'>
-          <img src={coaching} alt="Principal" className="img-fluid" style={{alignItems:"center"}} />
-          <h3>Coaching Classes</h3>
-          <p> A team of expert staff provides Coaching Classes and career counseling.</p>
-          </div>
-        
-          <div className='col-md-4 px-5 py-5'>
-          <img src={orphans} alt="Principal" className="img-fluid" style={{alignItems:"center"}} />
-          <h3>Free Education for orphan</h3>
-          <p>We do provide Completely free education for orphans from Nursery to Grade X </p>
-          </div>
+        <div className='col-md-8 px-4 py-5'>
+          <h4 className='text-info'>About Us</h4>
+          <h2 style={{ color: "white" }}>Mr Mubashir</h2>
+          <p style={{ color: "white" }}>MSC ۔ M۔Ed</p>
+          <p style={{ color: "white" }}>25 Years teaching and administration experience.</p>
 
-          <div className='col-md-4 px-5 py-5'>
-          <img src={ground} alt="Principal" className="img-fluid" style={{alignItems:"center"}} />
-          
-          <h3>Playground</h3>
-          <p>Lucrative play grounds for children with different sport facilities. </p>
-          </div>
+       
+          <h3 className='text-info'>Vision</h3>
+          <h3 className='text-info'>Empowering Minds, Enriching Futures</h3>
+          <p style={{ color: "white" }}>
 
-         
+          Vision Statement: At Pakistan International Public School Murree, our vision is to foster a community of curious learners, creative thinkers, and compassionate individuals. We strive to empower students with knowledge, skills, and values necessary to excel in an ever-changing world, cultivating leaders who contribute positively to local and global communities.</p>
+<h3 className='text-info'>
+Our Mission
+          </h3>
+<p style={{ color: "white" }}>
 
-          <div className='col-md-4 px-5 py-5'>
-          <img src={scholarship} alt="Principal" className="img-fluid" style={{alignItems:"center"}} />
-          <h3>Subsidy Policies </h3>
-          <p>We facilitate needy and deserving students by giving them Scholarships and fee concessions </p>
-          </div>
-
-          <div className='col-md-4 px-5 py-5'>
-          <img src={library} alt="Principal" className="img-fluid" style={{alignItems:"center"}} />
-          <h3>Library </h3>
-          <p className='text-justify'>The library is filled with over 500 books of different fields.</p>
-          </div>
-
-          <div className='col-md-4 px-5 py-5'>
-          <img src={environment} alt="Principal" className="img-fluid" style={{alignItems:"center"}} />
-          <h3>Educational Environment </h3>
-          <p className='text-justify'> We have a safe, clean and entertaining Learning environment for students.</p>
-          </div>
-        
-
-         
-          
-                  </div>
+At Pakistan International Public School Murree, our mission is to:
+<br/>
+•⁠ ⁠Provide a supportive and inclusive learning environment
+<br/>
+•⁠ ⁠Foster academic excellence and personal growth
+<br/>
+•⁠ ⁠Develop critical thinking, creativity, and problem-solving skills
+<br/>
+•⁠ ⁠Cultivate leadership, teamwork, and social responsibility
+<br/>
+•⁠ ⁠Prepare students for success in academics, careers, and beyond"
+</p>
+        </div>
+        <br />
+        <hr />
+        <br />
+      </div>
+      
+      <hr />
+      
     </>
   );
 };

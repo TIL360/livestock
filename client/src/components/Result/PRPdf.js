@@ -17,11 +17,12 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     header: {
-        fontSize: 14,
+        fontSize: 18,
         textAlign: 'center',
         textDecoration: 'underline',
         fontWeight: 'bold',
         marginLeft: 5,
+        marginTop: 5,
     },
     title: {
         fontSize: 14,
@@ -56,6 +57,12 @@ const styles = StyleSheet.create({
         padding: 3,
         flex: 1,
         textAlign: 'center',
+    },  
+    tableCellSub: {
+        border: '1px solid black',
+        padding: 3,
+        flex: 1,
+        textAlign: 'left',
     },
     remarks: {
         marginTop: 10,
@@ -74,6 +81,12 @@ const styles = StyleSheet.create({
     },
     signature: {
         width: '30%',
+    },
+    headerTextContainer: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginLeft: 10, // Space between logo and text
     },
 });
 
@@ -99,7 +112,10 @@ const PRPdf = ({ invoice }) => {
 
                 <View style={styles.headerContainer}>
                     <Image style={styles.logo} src={logo} />
-                    <Text style={styles.header}>Rahbar Public School</Text>
+                    <View style={styles.headerTextContainer}>
+                        <Text style={styles.header}>PAKISTAN INT PUBLIC SCHOOL</Text>
+                        <Text style={styles.header}>MURREE</Text>
+                    </View>
                 </View>
 
                 <Text style={styles.title}>Progress Report ({invoice.month} - {invoice.year})</Text>
@@ -120,7 +136,7 @@ const PRPdf = ({ invoice }) => {
                     <View style={styles.tableRow}>
                         <Text style={styles.tableCell}>Standard</Text>
                         <Text style={styles.tableCell}>{invoice.result_standard}</Text>
-                        <Text style={styles.tableCell}>Position</Text>
+                        <Text style={styles.tableCell}>Position in Class</Text>
                         <Text style={styles.tableCell}>{invoice.position}</Text>
                     </View>
                 </View>
@@ -128,7 +144,7 @@ const PRPdf = ({ invoice }) => {
                 <View style={styles.table}>
                     <Text style={styles.title}>Marks Detail</Text>
                     <View style={styles.tableRow}>
-                        <Text style={styles.tableCell}>Subjects</Text>
+                        <Text style={styles.tableCellSub}>Subjects</Text>
                         <Text style={styles.tableCell}>Total Marks</Text>
                         <Text style={styles.tableCell}>Obt Marks</Text>
                         <Text style={styles.tableCell}>Percentage</Text>
@@ -140,7 +156,7 @@ const PRPdf = ({ invoice }) => {
                         const percentage = calculatePercentage(obtainedMarks, totalMarks);
                         return (
                             <View style={styles.tableRow} key={index}>
-                                <Text style={styles.tableCell}>{subject}</Text>
+                                <Text style={styles.tableCellSub}>{subject}</Text>
                                 <Text style={styles.tableCell}>{totalMarks}</Text>
                                 <Text style={styles.tableCell}>{obtainedMarks}</Text>
                                 <Text style={styles.tableCell}>{percentage.toFixed(2)}%</Text>
@@ -168,7 +184,7 @@ const PRPdf = ({ invoice }) => {
                     <Text style={{ marginBottom: 20, fontWeight: 'bold' }}>Principal's Remarks: </Text>
                     <Text style={{ marginBottom: 20 }}>_________________________________________________________________________________________________________</Text>
                     <Text style={{ marginBottom: 20 }}>_________________________________________________________________________________________________________</Text>
-                    </View>
+                </View>
 
                 <View style={styles.signatureSection}>
                     <View style={styles.signature}>

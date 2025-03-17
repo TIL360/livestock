@@ -120,7 +120,7 @@ const Home = () => {
               Welcome to
             </h1>
             <h1 className={`title ${animateTitle ? 'animate' : ''}`} style={{ fontSize: '50px', fontFamily: 'Trick', color: '#031564', textShadow: '0px 10px 10px rgba(0, 0, 0, 0.5)' }}>
-              RAHBAR PUBLIC SCHOOL
+              PAKISTAN <br/> INTERNATIONAL PUBLIC SCHOOL, MURREE
             </h1>
             <div className={`content ${animateContent ? 'animate' : ''}`}>
               <hr />

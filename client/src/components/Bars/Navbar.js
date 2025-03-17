@@ -17,7 +17,7 @@ function NavBar() {
         <div className="nav-container">
           <img src={image1} width={80} height={80} alt="Logo" />
           <NavLink exact to="/" className="nav-logo">
-            <span>Rahbar Public School,<br/> Garhi Habibullah</span>
+            <span>PIPS,<br/> Murree</span>
           </NavLink>
 
           <ul className={click ? "nav-menu active" : "nav-menu"}>
@@ -55,7 +55,7 @@ function NavBar() {
                       className="nav-links"
                       onClick={handleClick}
                     >
-                      RPS App
+                      PIPS App
                     </NavLink>
                   </li>
                   <li className="nav-item">

@@ -24,17 +24,30 @@ import Invoicefee from './components/Pages/Invoicefee';
 import Result from './components/Pages/Result';
 import './components/CSS/app.css';
 import About from './components/Pages/About';
+import Services from './components/Pages/Services';
+import bg5 from './components/Images/bg5.jpg';
 
 const App = () => {
   return (
     <AuthProvider>
       <Router>
-        <div id="root">
+          <div
+                  style={{
+                    backgroundImage: `url(${bg5})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    height: 'auto',
+                    width: '100vw',
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
+                >
           <Navbar />
           <main>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
+              <Route path="/services" element={<Services />} />
               <Route path="/announcementpublished" element={<AnnouncementPublished />} />
               <Route path="/taskview" element={<Taskview />} />
               <Route path="/applyonline" element={<ApplyOnline />} />
