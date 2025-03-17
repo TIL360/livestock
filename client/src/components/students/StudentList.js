@@ -77,10 +77,11 @@ export default function StudentList() {
   };
 
   const filteredStudents = students.filter((student) =>
-    student.adm_no.toString().includes(search) ||
-    student.name.toLowerCase().includes(search.toLowerCase()) ||
-    student.standard.toLowerCase().includes(search.toLowerCase())
+    (student.adm_no.toString().includes(search)) ||
+    (student.name && student.name.toLowerCase().includes(search.toLowerCase())) || // Check if name exists
+    (student.standard && student.standard.toLowerCase().includes(search.toLowerCase())) // Check if standard exists
   );
+  
 
   const totalPages = Math.ceil(filteredStudents.length / recordsPerPage);
   const startIndex = (currentPage - 1) * recordsPerPage;

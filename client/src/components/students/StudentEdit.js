@@ -242,7 +242,7 @@ export default function StudentEdit() {
                 <input type="date" className="form-control" id="dob" name="dob" value={student.dob} onChange={handleChange} />
               </div>
                 <div className="col-md-6">
-                  <label htmlFor="dob_urdu"> <b>تاریخ پیداءش اردو میں</b> </label>
+                  <label htmlFor="dob_urdu"> <b>DoB (in English)</b> </label>
                   <input type="text" className="form-control" id="dob_urdu" name="dob_urdu" value={student.dob_urdu} onChange={handleChange} />
                 </div>
               </div>

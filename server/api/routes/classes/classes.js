@@ -51,6 +51,18 @@ router.get("/usercontext", checkAuth, (req, res) => {
   });
 });
 
+// New endpoint for fetching classes without authentication
+router.get("/public", (req, res) => { 
+  const query = 'SELECT * FROM classes';
+  
+  db.query(query, (error, results) => {
+    if (error) {
+      console.error('Database query error:', error);
+      return res.status(500).json({ error: 'Database query failed' });
+    }
+    res.json(results);
+  });
+});
 
 // Update a specific standard
 router.patch("/update/:sid", checkAuth, (req, res) => {

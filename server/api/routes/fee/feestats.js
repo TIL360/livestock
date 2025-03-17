@@ -186,5 +186,67 @@ router.get("/salary", checkAuth, (req, res) => {
 });
 
 
+router.get("/stats", checkAuth, (req, res) => {
+  const currentYear = new Date().getFullYear();
+  const currentMonth = new Date().getMonth() + 1; // Months are 0-based in JavaScript
+
+  // Queries to fetch the required statistics
+  const queries = {
+    totalStudents: "SELECT COUNT(*) AS count FROM basicinfo WHERE status = 'active'",
+    totalSalaries: "SELECT SUM(net_salary) AS total_net_salary FROM salary_tbl WHERE year = ? AND month = ?",
+    totalCollections: "SELECT SUM(total_collection) AS total_collection FROM fee_tbl WHERE fyear = ? AND fmonth = ?",
+    totalExpenses: "SELECT SUM(amount) AS total_expense FROM expense_tbl WHERE year = ? AND month = ?",
+    totalFees: "SELECT SUM(total_fee) AS total_fee FROM fee_tbl WHERE fyear = ? AND fmonth = ?" // Adjusted query
+  };
+
+  // Execute all queries
+  Promise.all([
+    new Promise((resolve, reject) => {
+      db.query(queries.totalStudents, (error, result) => {
+        if (error) return reject(error);
+        resolve({ totalStudents: result[0].count });
+      });
+    }),
+    new Promise((resolve, reject) => {
+      db.query(queries.totalSalaries, [currentYear, currentMonth], (error, result) => {
+        if (error) return reject(error);
+        resolve({ totalSalaries: result[0].total_net_salary || 0 });
+      });
+    }),
+    new Promise((resolve, reject) => {
+      db.query(queries.totalCollections, [currentYear, currentMonth], (error, result) => {
+        if (error) return reject(error);
+        resolve({ totalCollections: result[0].total_collection || 0 });
+      });
+    }),
+    new Promise((resolve, reject) => {
+      db.query(queries.totalExpenses, [currentYear, currentMonth], (error, result) => {
+        if (error) return reject(error);
+        resolve({ totalExpenses: result[0].total_expense || 0 });
+      });
+    }),
+    new Promise((resolve, reject) => {
+      db.query(queries.totalFees, [currentYear, currentMonth], (error, result) => { // New promise for total fees
+        if (error) return reject(error);
+        resolve({ totalFees: result[0].total_fee || 0 });
+      });
+    })
+  ])
+  .then(([students, salaries, collections, expenses, fees]) => { // Include fees in destructuring
+    const response = {
+      totalStudents: students.totalStudents,
+      totalSalaries: salaries.totalSalaries,
+      totalCollections: collections.totalCollections,
+      totalExpenses: expenses.totalExpenses,
+      totalfee: fees.totalFees // Update to ensure the key matches what the frontend expects
+    };
+    return res.status(200).json(response);
+  })
+  .catch((error) => {
+    console.error("Database query error:", error);
+    return res.status(500).json({ error: "Database query failed" });
+  });
+});
+
 
 module.exports = router;

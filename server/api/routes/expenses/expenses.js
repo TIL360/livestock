@@ -70,6 +70,31 @@ router.get('/', checkAuth, (req, res) => {
     });
 });
 
+// Get Distinct Years
+router.get('/years', checkAuth, (req, res) => {
+  const sql = 'SELECT DISTINCT year FROM expense_tbl';
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error('Error fetching years:', err);
+      return res.status(500).json({ error: 'Database error' });
+    }
+    res.json(results);
+  });
+});
+
+// Get Distinct Months
+router.get('/months', checkAuth, (req, res) => {
+  const sql = 'SELECT DISTINCT month FROM expense_tbl';
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error('Error fetching months:', err);
+      return res.status(500).json({ error: 'Database error' });
+    }
+    res.json(results);
+  });
+});
+
+
 // Get Expense by ID
 router.get('/:id', checkAuth, (req, res) => {
     const id = req.params.id;
@@ -101,19 +126,21 @@ router.patch('/:id', checkAuth, (req, res) => {
 });
 
 // Delete Expense
+// Delete Expense
 router.delete('/:id', checkAuth, (req, res) => {
-    const id = req.params.id;
-    db.query('DELETE FROM expense_tbl WHERE expense_id = ?', [id], (err, result) => {
-        if (err) {
-            console.error('Error deleting expense:', err);
-            return res.status(500).json({ error: 'Database error' });
-        }
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ message: 'Expense not found' });
-        }
-        res.status(200).json({ message: 'Expense deleted successfully' });
-    });
+  const id = req.params.id;
+  db.query('DELETE FROM expense_tbl WHERE expense_id = ?', [id], (err, result) => {
+      if (err) {
+          console.error('Error deleting expense:', err);
+          return res.status(500).json({ error: 'Database error' });
+      }
+      if (result.affectedRows === 0) {
+          return res.status(404).json({ message: 'Expense not found' });
+      }
+      res.status(200).json({ message: 'Expense deleted successfully' });
+  });
 });
+
 // Get Total Monthly Expenses
 router.get('/total-monthly', checkAuth, (req, res) => {
   const sql = `
@@ -129,5 +156,7 @@ router.get('/total-monthly', checkAuth, (req, res) => {
       res.json({ total: results[0].total_expenses || 0 });
   });
 });
+
+
 
 module.exports = router;

@@ -48,6 +48,7 @@ import Download from "../students/Download";
 import StudentInactive from "../students/StudentInactive";
 import Studentpromote from "../students/Studentpromote";
 import Report from "../Bars/Report";
+import Expenses from "../Expenses/Expenses";
 
 const Dashboard = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -105,6 +106,7 @@ const Dashboard = () => {
             <Route path="studentinactive" element={<StudentInactive />} />
             <Route path="studentpromote" element={<Studentpromote />} />
             <Route path="report" element={<Report />} />
+            <Route path="expenses" element={<Expenses />} />
           </Routes>
         </div>
       </div>

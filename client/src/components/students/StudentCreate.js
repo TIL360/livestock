@@ -292,7 +292,7 @@ formData.append('fatherurdu', fatherurdu);
           {/* Date of Birth and Monthly Fee */}
           <div className="row mb-3">
             <div className="col-md-6">
-              <label><b>Date of Birth (Urdu)</b></label>
+              <label><b>Date of Birth (English)</b></label>
               <input
                 type="text"
                 className="form-control"
