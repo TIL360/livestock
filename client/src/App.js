@@ -25,7 +25,7 @@ import Result from './components/Pages/Result';
 import './components/CSS/app.css';
 import About from './components/Pages/About';
 import Services from './components/Pages/Services';
-import bg5 from './components/Images/bg5.jpg';
+// import bg5 from './components/Images/bg5.jpg';
 
 const App = () => {
   return (
@@ -33,7 +33,8 @@ const App = () => {
       <Router>
           <div
                   style={{
-                    backgroundImage: `url(${bg5})`,
+                    // backgroundImage: `url(${bg5})`,
+                    backgroundColor:'#d9d9d9',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     height: 'auto',

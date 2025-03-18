@@ -204,8 +204,7 @@ const FeePdf = ({ feeDetails }) => {
                 </View>
               </View>
 
-              {/* Horizontal line above bank details */}
-              <View style={styles.line} />
+             
 
               <View style={styles.footer}>
                 <Text style={{textAlign:"left", width:"90%"}}>

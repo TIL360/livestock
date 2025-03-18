@@ -41,7 +41,7 @@ export default function Invoicefee() {
 
   return (
     <div style={{ background: "white", padding: '20px', height: '100vh' }}>
-      <h2 className='text-center'>Invoice Search</h2>
+      <h2 className='text-center'>Download Fee Invoice</h2>
       <br/>
       <div className='row'>
         <div className="col-md-6">

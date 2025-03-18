@@ -44,7 +44,7 @@ export default function Taskview() {
 
   return (
     <div className="container" style={{ textAlign: 'center', marginTop: '20px', background: "white", height: "100vh" }}>
-      <h2>View Assignments</h2>
+      <h2>Student Online Diary / Home Work</h2>
       <hr/>
       <div className="row justify-content-center">
         <div className="col-md-4">

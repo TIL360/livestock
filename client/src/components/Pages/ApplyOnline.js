@@ -118,7 +118,7 @@ const ApplyOnline = () => {
   };
 
   return (
-    <div className="card col-md-8 mx-auto" style={{height:"100vh"}}>
+    <div className="card col-md-8 mx-auto" style={{height:"200vh"}}>
       <div className='align-item-center mt-4 ' style={{ height: "auto", padding: "15px" }}>
         <form onSubmit={handleSubmit}>
           <h3 className='text-center'>Application Form</h3>

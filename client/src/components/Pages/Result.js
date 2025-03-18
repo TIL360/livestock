@@ -26,7 +26,7 @@ function Result() {
 
   return (
     <div style={{background:"white", height:"100vh"}}>
-      <h2 className='text-center'>Result Search</h2>
+      <h2 className='text-center'>Download Progress Report</h2>
       <div className='row'>
         <div className='col-md-6'>
           <input className='form-control mx-2 shadow p-2 rounded-pill border-3 border-info'

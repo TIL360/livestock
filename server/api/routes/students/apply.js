@@ -173,6 +173,39 @@ router.post('/basicinfo', checkAuth, (req, res) => {
   });
 });
 
+router.post('/staff', checkAuth, (req, res) => {
+  console.log(req.body); // Log the incoming request body
+  const {
+      name,
+      father,
+      cnic,
+      email,
+      studentmobile,
+      address,
+      image,
+      appointment,
+      salary,
+      allowance,
+      doj // Date of Joining
+  } = req.body;
+
+  const status = 'Active'; // Set default status
+  const sql = 'INSERT INTO staff_tbl (name, father_name, cnic, email, mobile, address, image, appointment, salary, allowance, doj, status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)';
+
+  const values = [
+                                       name, father, cnic, email, studentmobile, address, image, appointment, salary, allowance, doj, status
+  ];
+
+  console.log('Values to be inserted into staff_tbl:', values); // Debugging
+  
+  db.query(sql, values, (err, result) => {
+      if (err) {
+          console.error('Error inserting into staff_tbl:', err);
+          return res.status(500).json({ error: 'Database error' });
+      }
+      res.json({ message: 'Job application accepted and data saved to staff_tbl!' });
+  });
+});
 
 
 module.exports = router;

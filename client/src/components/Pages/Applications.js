@@ -27,7 +27,7 @@ const Applications = () => {
                 console.error('Error fetching applications:', error);
             }
         };
-        
+         
         fetchApplications();
     }, [token]);
 
@@ -56,8 +56,32 @@ const Applications = () => {
     };
 
     const handleAcceptClick = async (application) => {
-        setApplicationToAccept(application);
-        setShowModal(true);
+        if (application.type === 'job') {
+            // Directly insert the job application into staff_tbl
+            await acceptJobApplication(application);
+        } else {
+            // If it's an admission application, show the modal
+            setApplicationToAccept(application);
+            setShowModal(true);
+        }
+    };
+
+    const acceptJobApplication = async (application) => {
+        try {
+            await axios.post(`${process.env.REACT_APP_API_URL}/apply/staff`, {
+                ...application,
+                // You can include additional data if needed
+            }, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            setSuccessMessage('Job application is accepted and recorded successfully!');
+            setApplications(applications.filter(app => app.applyid !== application.applyid));
+            setTimeout(() => {
+                navigate('/dashboard/studentlist');
+            }, 8000);
+        } catch (error) {
+            console.error('Error accepting job application:', error);
+        }
     };
 
     const handleModalSubmit = async (admNo) => {
@@ -65,11 +89,11 @@ const Applications = () => {
         try {
             await axios.post(`${process.env.REACT_APP_API_URL}/apply/basicinfo`, {
                 adm_no: admNo,
-                ...applicationToAccept, // Spread the applicationToAccept object
+                ...applicationToAccept,
             }, {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            setSuccessMessage('Application is accepted and recorded successfully! ');
+            setSuccessMessage('Application is accepted and recorded successfully!');
             setTimeout(() => {
                 navigate('/dashboard/studentlist');
             }, 8000);
@@ -79,7 +103,7 @@ const Applications = () => {
             console.error('Error accepting application:', error);
         }
     };
-    
+
     const filteredApplications = applicationType ? applications.filter(app => app.type === applicationType) : applications;
 
     return (
@@ -146,7 +170,7 @@ const Applications = () => {
                                     {applicationType === 'job' && (
                                         <>
                                             <td>{application.qual}</td>
-                                             <td>{application.exp}</td>
+                                            <td>{application.exp}</td>
                                             <td><img src={`${process.env.REACT_APP_API_URL}/${application.image}`} alt="application" style={{ width: '50px', height: '50px' }} /></td>
                                         </>
                                     )}
@@ -165,7 +189,6 @@ const Applications = () => {
                                         <button 
                                             className='btn btn-success ml-1' 
                                             onClick={() => handleAcceptClick(application)} 
-                                            disabled={applicationType === 'job'}
                                         >
                                             Accept
                                         </button>

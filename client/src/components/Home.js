@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import fontfile from './Fonts/Angels.ttf';
+import fontfile from './Fonts/Poppins-BlackItalic.ttf';
 import fontfile2 from './Fonts/GreatVibes-Regular.ttf';
 import { Carousel } from 'react-bootstrap'; 
 import axios from 'axios'; 
@@ -119,7 +119,7 @@ const Home = () => {
             <h1 className={`title ${animateTitle ? 'animate' : ''}`} style={{ fontSize: '50px', fontFamily: "GreatVibes-Regular", color: '#031564', textShadow: '0px 10px 10px rgba(0, 0, 0, 0.5)' }}>
               Welcome to
             </h1>
-            <h1 className={`title ${animateTitle ? 'animate' : ''}`} style={{ fontSize: '50px', fontFamily: 'Trick', color: '#031564', textShadow: '0px 10px 10px rgba(0, 0, 0, 0.5)' }}>
+            <h1 className={`title ${animateTitle ? 'animate' : ''}`} style={{ fontSize: '50px', fontFamily: 'Trick', color: '#353535', textShadow: '0px 10px 10px rgba(0, 0, 0, 0.5)' }}>
               PAKISTAN <br/> INTERNATIONAL PUBLIC SCHOOL, MURREE
             </h1>
             <div className={`content ${animateContent ? 'animate' : ''}`}>
@@ -128,7 +128,7 @@ const Home = () => {
           </div>
 
           <div className='container'>
-            <div className='mx-2 shadow p-2 border-3 border-info'>
+            <div className='mx-2 shadow p-2 '>
 
               {/* Image Slider */}
               <Carousel activeIndex={currentIndex} onSelect={setCurrentIndex} interval={null}>

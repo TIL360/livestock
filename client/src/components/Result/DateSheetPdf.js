@@ -80,8 +80,8 @@ const DateSheetPdf = ({ dateSheetData, standardOptions, selectedExam, selectedYe
 
                 <View style={styles.headerContainer}>
                     <Image style={styles.logo} src={logo} />
-                    <Text style={styles.header}>Rahbar Public School</Text>
-                    <Text style={styles.header}>Contact: +92 333 5002755, +92 3151436832 || Website: https://www.rahbarschool.com</Text>
+                    <Text style={styles.header}>Pakistan International School, Murree (PIPS)</Text>
+                    <Text style={styles.title}>Contact: +92 370 5057482, +92 315 6206302 || Website: https://www.rahbarschool.com</Text>
                     
                     <Text style={styles.title}>Date Sheet for {selectedExam} - {selectedYear}</Text>
                 </View>
