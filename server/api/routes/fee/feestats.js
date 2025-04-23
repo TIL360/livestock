@@ -5,7 +5,7 @@ const checkAuth = require("../middleware/check-atuh"); // correct the spelling t
 const multer = require("multer");
 const path = require("path");
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
+  destination: function (req, file, cb) { 
     cb(null, "./uploads");
   },
   filename: function (req, file, cb) {
@@ -124,7 +124,68 @@ router.get("/mainhead", checkAuth, (req, res) => {
         return res.status(200).json({ success: true, data: result[0] });
     });
 });
+router.get("/monthlyreport", checkAuth, (req, res) => {
+  const { year, month } = req.query; // Get year and month from query
 
+  if (!year || !month) {
+    return res.status(400).json({ error: "Year and month are required." });
+  }
+
+  const query = `
+    SELECT 
+      fee_tbl.fyear,
+      fee_tbl.fmonth,
+      SUM(fee_tbl.monthly_fee_feetbl) AS monthly_total_fee,
+      SUM(fee_tbl.arrears) AS monthly_fee_arrears,
+      SUM(fee_tbl.balance) AS fee_balance,
+      
+      SUM(fee_tbl.exam_fee) AS total_exam_fee,
+      SUM(fee_tbl.exam_collection) AS total_exam_collection,
+      SUM(fee_tbl.exam_arrears) AS total_exam_arrears,
+      SUM(fee_tbl.exam_balance) AS exam_balance,
+      
+      SUM(fee_tbl.adm_fee) AS total_adm_fee,
+      SUM(fee_tbl.adm_collection) AS total_adm_collection,
+      SUM(fee_tbl.adm_arrears) AS total_adm_arrears,
+      SUM(fee_tbl.adm_balance) AS adm_balance,
+      
+      SUM(fee_tbl.misc_fee) AS total_misc_fee,
+      SUM(fee_tbl.misc_collection) AS total_misc_collection,
+      SUM(fee_tbl.misc_arrears) AS total_misc_arrears,
+      SUM(fee_tbl.misc_balance) AS misc_balance,
+      
+      SUM(fee_tbl.fine_fee) AS total_fine_fee,
+      SUM(fee_tbl.fine_collection) AS total_fine_collection,
+      SUM(fee_tbl.fine_arrears) AS total_fine_arrears,
+      SUM(fee_tbl.fine_balance) AS fine_balance,
+      
+      SUM(fee_tbl.total_collection) AS total_collection,
+      SUM(fee_tbl.total_arrears) AS total_arrears,
+      SUM(fee_tbl.total_balance) AS total_balance,
+      
+      
+      SUM(fee_tbl.total_fee) AS total_full_fee,
+      SUM(fee_tbl.total_arrears) AS total_full_arrears,
+      SUM(fee_tbl.total_collection) AS total_full_collection,
+      SUM(fee_tbl.total_balance) AS total_full_balance,
+     
+      
+      (SUM(fee_tbl.total_fee) - SUM(fee_tbl.total_collection)) AS balance
+    FROM 
+      fee_tbl
+    WHERE fyear = ? AND fmonth = ?
+    GROUP BY fee_tbl.fyear, fee_tbl.fmonth
+  `;
+
+  db.query(query, [year, month], (error, result) => {
+    if (error) {
+      console.error("Database query error:", error);
+      return res.status(500).json({ error: "Database query failed" });
+    }
+
+    return res.status(200).json({ success: true, data: result });
+  });
+});
 
 
 router.get("/reporting", checkAuth, (req, res) => {

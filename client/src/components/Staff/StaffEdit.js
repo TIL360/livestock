@@ -14,18 +14,25 @@ export default function StaffEdit() {
         salary: '',
         allowance: '',
         mobile: '',
+        doj: '',
+        appointment: '',
+        standard: '',
+        status: '',
+        email: '',
+        address: '',
         image: '',
     });
     const [newImage, setNewImage] = useState(null);
     const [loading, setLoading] = useState(true); // Loading state
+    const [standards, setStandards] = useState([]); // State to hold standards
 
+    // Fetch staff details
     useEffect(() => {
         const fetchStaff = async () => {
             try {
                 const response = await axios.get(`${process.env.REACT_APP_API_URL}/staff/${staffid}`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
-                console.log("Fetched staff data:", response.data); // Add this line
                 setStaffData(response.data);
             } catch (error) {
                 console.error("Error fetching staff:", error);
@@ -35,6 +42,21 @@ export default function StaffEdit() {
         };
         fetchStaff();
     }, [staffid, token]);
+
+    // Fetch standards
+    useEffect(() => {
+        const fetchStandards = async () => {
+            try {
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/classes`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                setStandards(response.data); // Set standards from fetched data
+            } catch (err) {
+                console.error("Error fetching standards:", err);
+            }
+        };
+        fetchStandards();
+    }, [token]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -71,13 +93,12 @@ export default function StaffEdit() {
         }
     };
     
-    
-
     if (loading) return <div>Loading...</div>; // Show a loading message
 
     const handleback = () => {
         navigate('/dashboard/stafflist');
     }
+
     return (
         <div className="card col-md-8 mx-auto">
             <div className="card-header">
@@ -113,6 +134,50 @@ export default function StaffEdit() {
                         <div className="col-md-6">
                             <label><b>Allowance</b></label>
                             <input type="text" className="form-control" name="allowance" value={staffData.allowance} onChange={handleChange} />
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-md-6">
+                            <label><b>Date of Joining</b></label>
+                            <input type="date" className="form-control" name="doj" value={staffData.doj} onChange={handleChange} />
+                        </div>
+                        <div className="col-md-6">
+                            <label><b>Appointment</b></label>
+                            <select name="appointment" className="form-control" value={staffData.appointment} onChange={handleChange}>
+                                <option value="">Select Appointment</option>
+                                <option value="Principal">Principal</option>
+                                <option value="Co-ordinator">Co-ordinator</option>
+                                <option value="Teacher">Teacher</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-md-6">
+                            <label><b>Status</b></label>
+                            <select name="status" className="form-control" value={staffData.status} onChange={handleChange}>
+                                <option value="">Select Status</option>
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                            </select>
+                        </div>
+                        <div className="col-md-6">
+                            <label><b>Standard</b></label>
+                            <select name="standard" className="form-control" value={staffData.standard} onChange={handleChange}>
+                                <option value="">Select Standard</option>
+                                {standards.map((std) => (
+                                    <option key={std.id} value={std.id}>{std.standard}</option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-md-6">
+                            <label><b>Email</b></label>
+                            <input type="email" className="form-control" name="email" value={staffData.email} onChange={handleChange} />
+                        </div>
+                        <div className="col-md-6">
+                            <label><b>Address</b></label>
+                            <input type="text" className="form-control" name="address" value={staffData.address} onChange={handleChange} />
                         </div>
                     </div>
                     <div className="row">

@@ -146,40 +146,39 @@ export default function UnpaidFee() {
       </div>
 
       <table className="table table-bordered">
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>Adm No</th>
-            <th>Name</th>
-            <th>Class</th>
-            <th>Fee M/Y</th>
-            <th>Fee</th>
-            <th>Arrears</th>
-            <th>Total Fee</th>
-        
-          </tr>
-        </thead>
-        <tbody>
-          {filteredFeePaidDetails.length === 0 ? (
-            <tr>
-              <td colSpan="8">No fee paid records found</td>
-            </tr>
-          ) : (
-            filteredFeePaidDetails.map((detail) => (
-              <tr key={detail.idf}>
-                <td>{detail.idf}</td>
-                <td>{detail.fee_adm_no}</td>
-                <td>{detail.name}</td>
-                <td>{detail.FeeStandard}</td>
-                <td>{detail.fmonth} / {detail.fyear}  </td>
-                <td>{detail.monthly_fee_feetbl}</td>
-                <td>{detail.total_arrears}</td>
-                <td>{detail.total_fee}</td>
-               
-              </tr>
-            ))
-          )}
-        </tbody>
+      <thead>
+  <tr>
+    <th>Id</th>
+    <th>Adm No</th>
+    <th>Name</th>
+    <th>Class</th>
+    <th>Fee M/Y</th> {/* You might want to clarify in the header that it's showing Year and Month */}
+    <th>Fee</th>
+    <th>Arrears</th>
+    <th>Total Fee</th>
+  </tr>
+</thead>
+<tbody>
+  {filteredFeePaidDetails.length === 0 ? (
+    <tr>
+      <td colSpan="8">No fee paid records found</td>
+    </tr>
+  ) : (
+    filteredFeePaidDetails.map((detail) => (
+      <tr key={detail.idf}>
+        <td>{detail.idf}</td>
+        <td>{detail.fee_adm_no}</td>
+        <td>{detail.name}</td>
+        <td>{detail.FeeStandard}</td>
+        <td>{`${detail.fyear || "Nmonthly_fee_feetbl	/A"} / ${detail.fmonth || "N/A"}`}</td>
+        <td>{detail.monthly_fee_feetbl}</td>
+        <td>{detail.total_arrears}</td>
+        <td>{detail.total_fee}</td>
+      </tr>
+    ))
+  )}
+</tbody>
+
       </table>
     </div>
   );

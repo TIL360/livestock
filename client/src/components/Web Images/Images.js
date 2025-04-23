@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import userContext from "../context/UserContext"; 
 import { FaEdit, FaTrash } from 'react-icons/fa';
-import Modal from 'react-modal'; // Make sure to install react-modal
-
-Modal.setAppElement('#root'); // Adjust based on your app structure
 
 export default function Images() {
   const { token } = useContext(userContext);
@@ -12,8 +10,8 @@ export default function Images() {
   const [description, setDescription] = useState('');
   const [image, setImage] = useState(null);
   const [records, setRecords] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentRecord, setCurrentRecord] = useState(null);
+  
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const fetchRecords = useCallback(async () => {
     try {
@@ -28,10 +26,14 @@ export default function Images() {
 
   useEffect(() => {
     fetchRecords();
-  }, [fetchRecords]); // Add fetchRecords to the dependency array
+  }, [fetchRecords]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!image) {
+      alert("Please select an image file to upload."); // Alert user if no image is selected
+      return;
+    }
     const formData = new FormData();
     formData.append('title', title);
     formData.append('description', description);
@@ -56,44 +58,17 @@ export default function Images() {
       await axios.delete(`${process.env.REACT_APP_API_URL}/image/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      fetchRecords(); // Fetch records after deletion
+      fetchRecords();
     } catch (error) {
       console.error("Error deleting record:", error);
     }
   };
 
-  const openEditModal = (record) => {
-    setCurrentRecord(record);
-    setTitle(record.title);
-    setDescription(record.description);
-    setIsModalOpen(true);
-  };
-
-  
-
-const updateRecord = async () => {
-  const formData = new FormData();
-  formData.append('title', title);
-  formData.append('description', description);
-  if (image) formData.append('image', image);
-
-  try {
-    await axios.put(`${process.env.REACT_APP_API_URL}/image/${currentRecord.id}`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        Authorization: `Bearer ${token}`
-      },
-    });
-    //resetForm();
-    
-    setIsModalOpen(false);
-    setCurrentRecord(null); // Reset current record
-    fetchRecords(); // Fetch records after update
-  } catch (error) {
-    console.error("Error updating record:", error);
-    // Optionally display an error message
-  }
+  const openEditPage = (record) => {
+    console.log("Navigating to edit page with record ID:", record.id);  // Debug log
+    navigate(`/dashboard/editimage/${record.id}`);
 };
+
 
   const resetForm = () => {
     setTitle('');
@@ -177,53 +152,14 @@ const updateRecord = async () => {
                 )}
               </td>
               <td>
-                <button className='btn btn-primary' onClick={() => openEditModal(record)}><FaEdit /></button>
+                <button className='btn btn-primary' onClick={() => openEditPage(record)}><FaEdit /></button>
                 <button className='btn btn-danger ml-1' onClick={() => handleDelete(record.id)}><FaTrash /></button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-
-<Modal isOpen={isModalOpen} onRequestClose={() => {
-  setIsModalOpen(false);
-  setCurrentRecord(null); // Reset current record when closing the modal
-}}>
-  <h2>Edit Image</h2>
-  {currentRecord && currentRecord.photo && (
-    <div className="mb-3">
-      <img
-        src={`${process.env.REACT_APP_API_URL}/uploads/webimages/${currentRecord.photo}`}
-        alt={currentRecord.title}
-        style={{ width: "100px", height: "100px", marginBottom: "10px" }}
-      />
-    </div>
-  )}
-  <form onSubmit={updateRecord}>
-    <input
-      type="text"
-      className="form-control"
-      value={title}
-      onChange={(e) => setTitle(e.target.value)}
-      required
-    />
-    <input
-      type="text"
-      className="form-control"
-      value={description}
-      onChange={(e) => setDescription(e.target.value)}
-      required
-    />
-    <input
-      type="file"
-      className="form-control"
-      onChange={(e) => setImage(e.target.files[0])}
-      accept="image/*"
-    />
-    <button type="submit" className="btn btn-primary mt-3">Update</button>
-  </form>
-</Modal>
-
     </div>
   );
 }
+ 

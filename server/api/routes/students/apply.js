@@ -64,45 +64,69 @@ router.get("/", checkAuth, (req, res) => {
   });
    
   router.post('/', upload.single('image'), (req, res) => {
-    const { name, father, cnic, dob, email, gender, studentmobile, fathermobile, qual, domicile, progame, address, experience, name_urdu, fname_urdu, father_cnic, mother_cnic, father_profession, religion, caste, previous_school, dob_urdu, type } = req.body;
-
+    const {
+      name, father, cnic, dob, email, gender, studentmobile, fathermobile, qual,
+      domicile, progame, address, experience, name_urdu, fname_urdu, father_cnic,
+      mother_cnic, father_profession, religion, caste, previous_school, dob_urdu, type
+    } = req.body;
+  
     const imagePath = req.file ? req.file.path : null;
     console.log(req.body); // Log the incoming request body
-    const sql = 'INSERT INTO applications SET ?';
-    const data = {
-      name,
-      father,
-      cnic,
-      dob,
-      email,
-      gender,
-      studentmobile,
-      fathermobile,
-      qual, // Ensure this is spelled correctly
-      domicile,
-      progame,
-      address,
-      exp: experience,
-      image: imagePath,
-      type,
-      name_urdu,
-      fname_urdu,
-      father_cnic,
-      mother_cnic,
-      father_profession,
-      religion,
-      caste,
-      previous_school,
-      dob_urdu
-    };
-    
   
-    db.query(sql, data, (err, result) => {
+    // Check if a record with the same cnic already exists
+    const checkSql = 'SELECT COUNT(*) AS count FROM applications WHERE cnic = ?';
+    db.query(checkSql, [cnic], (err, checkResult) => {
       if (err) {
-        console.error('Error inserting data:', err);
-        return res.status(500).json({ error: 'Database error' });
+        console.error('Error checking existing cnic:', err);
+        return res.status(500).json({ error: 'Database error during cnic check' });
       }
-      res.json({ message: 'Application submitted successfully!', applicationId: result.insertId });
+  
+      if (checkResult[0].count > 0) {
+        // Record exists - respond with friendly message
+        return res.status(400).json({ message: 'CNIC already exists.' });
+      }
+  
+      // Proceed to insert since no duplicate found
+      const sql = 'INSERT INTO applications SET ?';
+      const data = {
+        name,
+        father,
+        cnic,
+        dob,
+        email,
+        gender,
+        studentmobile,
+        fathermobile,
+        qual,
+        domicile,
+        progame,
+        address,
+        exp: experience,
+        image: imagePath,
+        type,
+        name_urdu,
+        fname_urdu,
+        father_cnic,
+        mother_cnic,
+        father_profession,
+        religion,
+        caste,
+        previous_school,
+        dob_urdu
+      };
+  
+      db.query(sql, data, (err, result) => {
+        if (err) {
+          // Check if error is due to duplicate entry
+          if (err.code === 'ER_DUP_ENTRY') {
+            // Duplicate entry error from database
+            return res.status(400).json({ message: 'CNIC already exists.' });
+          }
+          console.error('Error inserting record:', err);
+          return res.status(500).json({ error: 'Error submitting application! Please try again.' });
+        }
+        res.json({ message: 'Application submitted successfully!', applicationId: result.insertId });
+      });
     });
   });
   

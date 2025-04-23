@@ -45,6 +45,9 @@ export default function StaffList() {
     const handleAdd = () => {
         navigate('/dashboard/staffadd');
     }
+    const handleattendance = () => {
+        navigate('/dashboard/staffattendance');
+    }
 
     const handleSearch = (e) => {
         setSearch(e.target.value);
@@ -93,6 +96,7 @@ export default function StaffList() {
     <button className="btn btn-primary" onClick={handleAdd}>Add </button>
     <button className="btn btn-success flex-grow-1 ml-1" onClick={handlesalries}>Initiate </button>
     <button className="btn btn-success flex-grow-1 ml-1" onClick={handlesalarydetail}>Salaries </button>
+    <button className="btn btn-success flex-grow-1 ml-1" onClick={handleattendance}>Attendance </button>
     
     <input 
         type="text" 
@@ -110,8 +114,9 @@ export default function StaffList() {
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
-                            <th>Father's Name</th>
-                            <th>Salary</th>
+                            <th>CNIC</th>
+                            <th>Appointment</th>
+                            <th>Standard</th>
                             <th>Mobile</th>
                             <th>Image</th>
                             <th className="text-center">Actions</th>
@@ -122,8 +127,9 @@ export default function StaffList() {
                             <tr key={s.staffid}>
                                 <td>{s.staffid}</td>
                                 <td>{s.name}</td>
-                                <td>{s.father_name}</td>
-                                <td>{s.salary}</td>
+                                <td>{s.cnic}</td>
+                                <td>{s.appointment}</td>
+                                <td>{s.standard}</td>
                                 <td>{s.mobile}</td>
                                 <td className="text-center">
                                     <img

@@ -76,28 +76,31 @@ router.get("/", checkAuth, async (req, res) => {
   }
 
   const query = `
-    SELECT 
-      f.idf, 
-      f.fee_adm_no, 
-      b.name, 
-      f.FeeStandard, 
-      f.collection, 
-      f.monthly_fee_feetbl AS total_fee, 
-      f.collection_by, 
-      f.payment_at,
-      f.created_at,
-      YEAR(f.payment_at) AS fyear,          -- Added fyear
-      MONTH(f.payment_at) AS fmonth         -- Added fmonth
-    FROM 
-      fee_tbl f 
-    JOIN 
-      basicinfo b 
-    ON 
-      f.fee_adm_no = b.adm_no 
-    WHERE 
-      f.collection = 0
-      ${whereClauses.length > 0 ? 'AND ' + whereClauses.join(' AND ') : ''}
-  `;
+  SELECT 
+    f.idf, 
+    f.fee_adm_no, 
+    b.name, 
+    f.FeeStandard, 
+    f.collection, 
+    f.total_fee, 
+    f.monthly_fee_feetbl, 
+    f.collection_by,  
+    f.total_arrears, 
+    f.payment_at,
+    f.created_at,
+    f.fyear,
+    f.fmonth
+  FROM 
+    fee_tbl f 
+  JOIN 
+    basicinfo b 
+  ON 
+    f.fee_adm_no = b.adm_no 
+  WHERE 
+    f.collection = 0
+    ${whereClauses.length > 0 ? 'AND ' + whereClauses.join(' AND ') : ''}
+`;
+
 
   const values = [
       collection_by,

@@ -2,15 +2,13 @@ import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import userContext from '../context/UserContext';
 import { PDFDownloadLink } from '@react-pdf/renderer';
-import AttendancePdf from './AttendancePdf'; // Ensure this path is correct
+import AttendanceReportPdf from './ReportPdf'; // Import the PDF component
 import { FaFilePdf } from 'react-icons/fa';
 
-export default function AttReport() {
+export default function StaffAttReport() {
   const { token } = useContext(userContext);
-  const [standards, setStandards] = useState([]);
   const [years, setYears] = useState([]);
   const [months, setMonths] = useState([]);
-  const [selectedStandard, setSelectedStandard] = useState('');
   const [selectedYear, setSelectedYear] = useState('');
   const [selectedMonth, setSelectedMonth] = useState('');
   const [attendanceRecords, setAttendanceRecords] = useState([]);
@@ -19,21 +17,15 @@ export default function AttReport() {
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 10; // Items to display per page
 
-  // Fetch standards, years, and months when component mounts
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const standardsResponse = await axios.get(`${process.env.REACT_APP_API_URL}/attendance/standards`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        setStandards(standardsResponse.data);
-
-        const yearsResponse = await axios.get(`${process.env.REACT_APP_API_URL}/attendance/years`, {
+        const yearsResponse = await axios.get(`${process.env.REACT_APP_API_URL}/staffatt/years`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setYears(yearsResponse.data);
 
-        const monthsResponse = await axios.get(`${process.env.REACT_APP_API_URL}/attendance/months`, {
+        const monthsResponse = await axios.get(`${process.env.REACT_APP_API_URL}/staffatt/months`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setMonths(monthsResponse.data);
@@ -46,48 +38,50 @@ export default function AttReport() {
   }, [token]);
 
   const handleFetchAttendance = async () => {
+    if (!selectedYear || !selectedMonth) {
+      alert("Please select both year and month before fetching attendance.");
+      return;
+    }
+  
     try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/attsheet?attstandard=${selectedStandard}&attyear=${selectedYear}&attmonth=${selectedMonth}`, {
-          headers: { Authorization: `Bearer ${token}` }
-        }
-      ); 
-      setAttendanceRecords(response.data.attendanceRecords);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/staffattsheet`, {
+        headers: { Authorization: `Bearer ${token}` },
+        params: { attyear: selectedYear, attmonth: selectedMonth }
+      });
+  
+      if (Array.isArray(response.data.attendanceRecords)) {
+        setAttendanceRecords(response.data.attendanceRecords);
+      } else {
+        console.error("Unexpected response format:", response.data);
+        alert("No attendance records available.");
+      }
       setCurrentPage(1);
     } catch (error) {
       console.error("Error fetching attendance records:", error);
-      alert('Error fetching attendance records. Please try again.');
+      alert("An error occurred while fetching attendance records.");
     }
   };
   
+
   const daysInMonth = selectedYear && selectedMonth ? new Date(selectedYear, selectedMonth, 0).getDate() : 0;
+
+  // Calculate total pages for pagination
   const totalPages = Math.ceil(attendanceRecords.length / recordsPerPage);
+
+  // Calculate records to show on current page
   const startIndex = (currentPage - 1) * recordsPerPage;
   const currentAttendanceRecords = attendanceRecords.slice(startIndex, startIndex + recordsPerPage);
 
+  // Handle page change
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
   return (
     <div style={{ background: "white" }}>
-      <h3 className='text-center'><strong><u>ATTENDANCE REPORT</u></strong></h3>
+      <h3 className='text-center'><strong><u>STAFF ATTENDANCE REPORT</u></strong></h3>
       <hr />
       <div className="row mb-3 align-items-center">
-        <div className="col-md-2">
-          <select
-            value={selectedStandard}
-            onChange={(e) => setSelectedStandard(e.target.value)}
-            className="form-control mx-2 shadow p-2 rounded-pill border-3 border-info "
-          >
-            <option value="" disabled>Select Standard</option>
-            {standards.map((standard) => (
-              <option key={standard.attstandard} value={standard.attstandard}>
-                {standard.attstandard}
-              </option>
-            ))}
-          </select>
-        </div>
         <div className="col-md-2">
           <select
             value={selectedYear}
@@ -116,53 +110,62 @@ export default function AttReport() {
             ))}
           </select>
         </div>
-        <button onClick={handleFetchAttendance} className="btn btn-primary btn-sm mb-1 shadow p-3 rounded-pill col-md-2">
+        <div className='col-md-4'>
+
+        <button onClick={handleFetchAttendance} className="btn btn-primary btn-sm mb-1 shadow p-3">
           <strong>Fetch Attendance</strong>
         </button>
-        <div className='col-md-2'>
-          <PDFDownloadLink 
-            document={<AttendancePdf 
-              attendanceRecords={attendanceRecords} 
-              selectedMonth={selectedMonth} 
-              selectedYear={selectedYear} 
-              daysInMonth={daysInMonth} 
-              selectedStandard={selectedStandard} 
-            />} 
-            fileName={`attendance_report_${selectedMonth}_${selectedYear}.pdf`}
-          >
-            <button className="btn btn-success">
-              <FaFilePdf /> 
-            </button>
-          </PDFDownloadLink>
         </div>
+        <div className='col-md-2'>
+
+        <PDFDownloadLink 
+                        document={<AttendanceReportPdf attendanceRecords={attendanceRecords} selectedMonth={selectedMonth} selectedYear={selectedYear} daysInMonth={daysInMonth} />} 
+                        fileName={`attendance_report_${selectedMonth}_${selectedYear}.pdf`}
+                    >
+                        <button className="btn btn-success">
+                            <FaFilePdf /> 
+                        </button>
+                    </PDFDownloadLink>
+        </div>
+
       </div>
-      
+
       <hr className='border-2' />
-      {currentAttendanceRecords.length > 0 && (
+      {currentAttendanceRecords.length > 0 ? (
         <div>
-          <h4 className='text-center text-success'> RAHBAR PUBLIC SCHOOL - STUDENTS ATTENDANCE ({selectedMonth} of {selectedYear})</h4>
-          <h5 className='text-center text-danger'>STANDARD: <b className='text-success'>{selectedStandard}</b></h5>
+          <h4 className='text-center text-success'> PAKISTAN INTERNATION PUBLIC SCHOOL - STAFF ATTENDANCE ({selectedMonth} of {selectedYear})</h4>
           <table className="table table-bordered mt-3 border-2">
             <thead>
               <tr>
                 <th>Ser</th>
-                <th>Adm No & Name</th>
+                <th>Name</th>
                 {Array.from({ length: daysInMonth }, (_, index) => (
                   <th key={index + 1}>{index + 1}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {currentAttendanceRecords.map((record, index) => (
-                <tr key={record.att_adm_no}>
-                  <td>{startIndex + index + 1}</td>
-                  <td>{record.att_adm_no} {record.name}</td>
-                  {record.attendance.map((att, i) => (
-                    <td key={i}>{att}</td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
+  {currentAttendanceRecords.map((record, index) => (
+    <tr key={record.att_adm_no}>
+      <td>{startIndex + index + 1}</td>
+      <td>{record.name}</td>
+      {Array.from({ length: daysInMonth }, (_, dayIndex) => {
+        const attendance = Array.isArray(record.attendance) ? record.attendance[dayIndex] : null;
+
+        // Render attendance status or leave blank
+        return (
+          <td key={dayIndex}>
+            {attendance === 'P' ? 'P' :
+             attendance === 'A' ? 'A' : 
+             ''}
+          </td>
+        );
+      })}
+    </tr>
+  ))}
+</tbody>
+
+
           </table>
 
           {/* Pagination Controls */}
@@ -177,6 +180,10 @@ export default function AttReport() {
               </button>
             ))}
           </div>
+        </div>
+      ) : (
+        <div className="text-center text-warning">
+          <h5>No attendance records available for the selected criteria. Please try a different month or year.</h5>
         </div>
       )}
     </div>

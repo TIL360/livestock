@@ -142,7 +142,6 @@ router.post('/', checkAuth, upload.single('image'), (req, res) => {
         status,
         image,
         created_at,
-        updated_at,
         standard,
         section,
         adm_date,
@@ -161,7 +160,7 @@ router.post('/', checkAuth, upload.single('image'), (req, res) => {
         name_urdu,
         fname_urdu,
         dob_urdu
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
     `;
 
     const values = [
@@ -173,7 +172,6 @@ router.post('/', checkAuth, upload.single('image'), (req, res) => {
       status,
       imagePath,
       created_at,
-      null, // updated_at
       current_standard,
       section,
       adm_date,

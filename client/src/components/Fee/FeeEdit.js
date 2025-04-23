@@ -37,7 +37,7 @@ const FeeEdit = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     const updatedFields = {
-      monthly_fee: feedetail.monthly_fee,
+      monthly_fee_feetbl: feedetail.monthly_fee_feetbl,
       arrears: feedetail.arrears,
       adm_fee: feedetail.adm_fee,
       adm_arrears: feedetail.adm_arrears,
@@ -45,9 +45,11 @@ const FeeEdit = () => {
       fine_arrears: feedetail.fine_arrears,
       exam_fee: feedetail.exam_fee,
       exam_arrears: feedetail.exam_arrears,
-      updated_at: new Date().toLocaleDateString('en-GB'), // dd-mm-yyyy format
+      misc_fee: feedetail.misc_fee, // Add misc_fee
+      misc_arrears: feedetail.misc_arrears, // Add misc_arrears
+      updated_at: new Date().toLocaleDateString('en-GB'),
     };
-    
+
     try {
       const response = await axios.patch(`${process.env.REACT_APP_API_URL}/fee/edit/${idf}`, updatedFields, {
         headers: {
@@ -77,12 +79,19 @@ const FeeEdit = () => {
               {errorMessage}
             </div>
           )}</p>
-          <div className="col-md-4">
+         <div className="col-md-4">
             <div className="form-group">
               <label className="form-label">Monthly Fee</label>
-              <input className="form-control" type="text" name="monthly_fee" value={feedetail.monthly_fee_feetbl || 0} onChange={handleInputChange} />
+              <input
+                className="form-control"
+                type="number"
+                name="monthly_fee_feetbl"
+                value={feedetail.monthly_fee_feetbl || 0}
+                onChange={handleInputChange}
+              />
             </div>
           </div>
+
           <div className="col-md-4">
             <div className="form-group">
               <label className="form-label">Arrears</label>
@@ -125,7 +134,36 @@ const FeeEdit = () => {
               <input className="form-control" type="text" name="exam_arrears" value={feedetail.exam_arrears || 0} onChange={handleInputChange} />
             </div>
           </div>
-        </div>
+          <div className="col-md-4">
+            <div className="form-group">
+              <label className="form-label">{feedetail.remarks || "Misc Fee"}</label>
+              <input
+                className="form-control"
+                type="text"
+                name="misc_fee"
+                value={feedetail.misc_fee || 0}
+                onChange={handleInputChange}
+              />
+            </div>
+          </div>
+          <div className="col-md-5">
+          <div className="col-md-5">
+  <div className="form-group">
+    <label className="form-label">
+      {feedetail.remarks ? `${feedetail.remarks} arrears` : "Misc Fee"}
+    </label>
+    <input
+      className="form-control"
+      type="text"
+      name="misc_arrears"
+      value={feedetail.misc_arrears || 0}
+      onChange={handleInputChange}
+    />
+  </div>
+</div>
+
+</div>
+</div>
         <div className='row'>
           <button className="btn btn-success col-md-2 ml-3" onClick={(e) => handleUpdate(e)}> Update </button>
           <button className="btn btn-secondary ml-1 col-md-2" onClick={(e) => handleBack(e)}> Back </button>

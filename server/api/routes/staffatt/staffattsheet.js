@@ -47,45 +47,41 @@ db.connect((err) => {
 });
 
 router.get("/", checkAuth, (req, res) => {
-  const { attstandard, attyear, attmonth } = req.query;
+  const { attyear, attmonth } = req.query;
 
-  // Adjust the query to match your db table and columns
   const queryAttendance = `
-SELECT attendance.*, basicinfo.name
-FROM attendance
-JOIN basicinfo ON attendance.att_adm_no = basicinfo.adm_no
-WHERE attstandard = ? AND YEAR = ? AND MONTH = ?`;
+    SELECT staff_attendance.*, staff_tbl.name
+    FROM staff_attendance
+    JOIN staff_tbl ON staff_attendance.cnic_att = staff_tbl.cnic
+    WHERE YEAR(curr_date) = ? AND MONTH(curr_date) = ?`;
 
-db.query(queryAttendance, [attstandard, attyear, attmonth], (error, attendanceRecords) => {
+  db.query(queryAttendance, [attyear, attmonth], (error, attendanceRecords) => {
     if (error) {
-        console.error("Database query error:", error);
-        return res.status(500).json({ error: "Database query failed" });
+      console.error("Database query error:", error);
+      return res.status(500).json({ error: "Database query failed" });
     }
-    // console.log("Fetched Attendance Records:", attendanceRecords); // Log the results
 
-    // Process and send data
-    const daysInMonth = new Date(attyear, attyear === '2' ? 3 : attyear * 1, 0).getDate();
+    const daysInMonth = new Date(attyear, attmonth, 0).getDate();
     const summary = {};
+    
     attendanceRecords.forEach(record => {
-        const admNo = record.att_adm_no;
-        const date = new Date(record.curr_date);
-        if (!summary[admNo]) {
-            summary[admNo] = {
-                att_adm_no: admNo,
-                name: record.name, // Add the name property to the summary
-                attendance: new Array(daysInMonth).fill(''),
-            };
-        }
-        const day = date.getDate() - 1;
-        summary[admNo].attendance[day] = record.attendance;
+      const cnic = record.cnic_att;
+      const date = new Date(record.curr_date);
+      if (!summary[cnic]) {
+        summary[cnic] = {
+          att_adm_no: record.cnic_att, // Assuming cnic is the admission number
+          name: record.name,
+          attendance: new Array(daysInMonth).fill('Absent'), // Default to 'Absent'
+        };
+      }
+      const day = date.getDate() - 1;
+      summary[cnic].attendance[day] = record.attendance || 'Absent'; // Use attendance value if available
     });
 
     const summaryArray = Object.values(summary);
     res.status(200).json({ attendanceRecords: summaryArray });
+  });
 });
-
-});
-
 
 
 module.exports = router;

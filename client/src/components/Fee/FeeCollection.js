@@ -55,22 +55,19 @@ export default function FeeCollection() {
     e.preventDefault();
     setErrorMessage("");
 
-    if (feedetail.collection_by) {
-      console.log(feedetail.collection_by);
-      setErrorMessage("Fee has already been collected. Cannot update.");
-      return; 
-    }
-
     const dataToUpdate = {
-      collection: feedetail.collection,
-      adm_collection: feedetail.adm_collection,
-      exam_collection: feedetail.exam_collection,
-      fine_collection: feedetail.fine_collection,
-      collection_by: user.username,
+      monthly_fee_feetbl: feedetail.monthly_fee_feetbl, // Assuming this is the correct mapping
+      collection: feedetail.collection,            // Include collection
+      adm_collection: feedetail.adm_collection,    // Include adm_collection
+      fine_collection: feedetail.fine_collection,  // Include fine_collection
+      exam_collection: feedetail.exam_collection,  // Include exam_collection    // Add this field
+      collection_by: user.username,                // This can remain if needed
     };
-
+    
+    // Ensure you are sending the correct data in the PATCH request
+    
     try {
-      const response = await axios.patch(`${process.env.REACT_APP_API_URL}/fee/${idf}`, dataToUpdate, {
+      const response = await axios.patch(`${process.env.REACT_APP_API_URL}/fee/collect/${idf}`, dataToUpdate, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -80,9 +77,10 @@ export default function FeeCollection() {
       navigate('/dashboard/feesearch', { state: { message: 'Fee collected successfully!' } });
     } catch (error) {
       console.error("Error updating fee:", error);
-      setErrorMessage(error.response?.data?.error || 'Error updating fee. Please try again.');
+      setErrorMessage(typeof error.response?.data?.error === 'string' ? error.response.data.error : 'Error updating fee. Please try again.');
     }
-  };
+};
+
 
   const handleBack = () => {
     navigate("/dashboard/feesearch");

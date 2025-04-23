@@ -7,7 +7,7 @@ const Footer = () => {
     <div className='d-flex justify-content-between align-items-center text-white' style={{ backgroundColor: "black", fontSize: "12px", padding: "10px" }}>
       <div className='col-md-8' style={{ borderRight: '1px solid white', paddingRight: '10px' }}>
         <h6>P.I.P.S, Murree</h6>
-        <p>Contact: +92 370 5057482 || Website: https://www.rahbarschool.com</p>
+        <p>Contact: +92 370 5057482 || Website: https://www.pipsmurree.info</p>
         <p>
           E-mail: pipsmurree6@gmail.com <br />
           <a href="https://www.facebook.com/share/18R1wLc658/" target="_blank" rel="noopener noreferrer" style={{ color: 'white', marginRight: '10px', fontSize: "20px" }}>

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { FaBars, FaUserGraduate, FaExpand, FaWallet, FaUserTie, FaSignOutAlt, FaCloudUploadAlt, FaDatabase, FaQuestion, FaPlus, FaLock, FaEnvelope, FaTeamspeak, FaTasks, FaImage} from "react-icons/fa";
+import { FaBars, FaUserGraduate, FaExpand, FaWallet, FaUserTie, FaSignOutAlt, FaCloudUploadAlt, FaDatabase, FaQuestion, FaPlus, FaLock, FaEnvelope, FaTeamspeak, FaTasks, FaImage, FaReact} from "react-icons/fa";
 import { NavLink, useNavigate } from 'react-router-dom';
 import '../CSS/sidebar.css';
 import userContext from '../context/UserContext';
@@ -17,6 +17,7 @@ const Sidebar = ({ toggle, isOpen }) => {
     { path: "/dashboard/addquestion", name: "Q Bank", icon: <FaQuestion /> },
     { path: "/dashboard/infos", name: "Announcement", icon: <FaTeamspeak /> },
     { path: "/dashboard/assigntasks", name: "Diary", icon: <FaTasks /> },
+    { path: "/dashboard/reports", name: "Reports", icon: <FaReact /> },
     { path: "/dashboard/standards", name: "Classes", icon: <FaBars /> },
     { path: "/dashboard/resultprep", name: "Exams", icon: <FaUserTie /> },
         { path: "/dashboard/Expenses", name: "Expenses", icon: <FaExpand /> },

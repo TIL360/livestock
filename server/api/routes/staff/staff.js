@@ -61,21 +61,25 @@ router.get('/', checkAuth, (req, res) => {
 
 // POST request to add a new staff record
 router.post('/staff-add', checkAuth, upload.single('image'), (req, res) => {
-  const { name, father_name, cnic, salary, allowance, mobile } = req.body;
-
+  const { name, father_name, cnic, salary, allowance, mobile, doj, appointment, standard, status, email, address } = req.body;
+  
   // Check if an image was uploaded
   const imagePath = req.file ? req.file.path : null; // Set to null if no file
-
+  const created_at = new Date();
   // SQL to insert new staff record
-  const sql = 'INSERT INTO staff_tbl (name, father_name, cnic, salary, allowance, mobile, image) VALUES (?, ?, ?, ?, ?, ?, ?)';
+  const sql = 'INSERT INTO staff_tbl (name, father_name, cnic, salary, allowance, mobile, image, doj, appointment, standard, status, email, address, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
   
-  db.query(sql, [name, father_name, cnic, salary, allowance, mobile, imagePath], (err, result) => {
+  db.query(sql, [name, father_name, cnic, salary, allowance, mobile, imagePath, doj, appointment, standard, status, email, address, created_at], (err, result) => {
     if (err) {
-      console.error('Error adding staff:', err);
-      return res.status(500).json({ error: 'Database error' });
+        console.error('Error adding staff:', err);
+        if (err.code === 'ER_DUP_ENTRY') { // This checks for duplicate entry error
+            return res.status(400).json({ error: 'Duplicate entry for CNIC. This CNIC is already in use.' });
+        }
+        return res.status(500).json({ error: 'Database error' });
     }
     res.status(201).json({ id: result.insertId, name, father_name });
-  });
+});
+
 });
 
 
@@ -95,17 +99,18 @@ router.get('/:staffid', checkAuth, (req, res) => {
 });
 
 // Update staff record
+// Update staff record
 router.patch('/:staffid', checkAuth, upload.single('image'), (req, res) => {
   const staffid = req.params.staffid;
-  const { name, father_name, cnic, salary, allowance, mobile } = req.body;
-
+  const { name, father_name, cnic, salary, allowance, mobile, doj, appointment, standard, status, email, address } = req.body;
+  const updated_at = new Date();
   // SQL to check the current staff data
   db.query('SELECT image FROM staff_tbl WHERE staffid = ?', [staffid], (err, results) => {
     if (err) {
       console.error('Error fetching staff data:', err);
       return res.status(500).json({ message: 'Database error' });
     } 
-    
+
     if (results.length === 0) {
       return res.status(404).json({ message: 'Staff not found' });
     }
@@ -113,8 +118,8 @@ router.patch('/:staffid', checkAuth, upload.single('image'), (req, res) => {
     const existingImagePath = results[0].image;
 
     // SQL to update all relevant fields
-    let sql = 'UPDATE staff_tbl SET name = ?, father_name = ?, cnic = ?, salary = ?, allowance = ?, mobile = ?';
-    const params = [name, father_name, cnic, salary, allowance, mobile];
+    let sql = 'UPDATE staff_tbl SET name = ?, father_name = ?, cnic = ?, salary = ?, allowance = ?, mobile = ?, doj = ?, appointment = ?, standard = ?, status = ?, email = ?, address = ?, updated_at = ?';
+    const params = [name, father_name, cnic, salary, allowance, mobile, doj, appointment, standard, status, email, address, updated_at];
 
     // Include existing image path if no new image
     if (req.file) {
@@ -136,6 +141,7 @@ router.patch('/:staffid', checkAuth, upload.single('image'), (req, res) => {
     });
   });
 });
+
 
 // DELETE request to remove a staff record
 router.delete('/:staffid', checkAuth, (req, res) => {

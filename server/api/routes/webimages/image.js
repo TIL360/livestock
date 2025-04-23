@@ -18,7 +18,7 @@ const fileFilter = (req, file, cb) => {
   if (
     file.mimetype === "image/jpeg" ||
     file.mimetype === "image/png" ||
-    file.mimetype === "image/jpeg"
+    file.mimetype === "image/gif" // Added GIF support
   ) {
     cb(null, true);
   } else {
@@ -26,9 +26,10 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
+
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 1024 * 1024 * 5 },
+  limits: { fileSize: 1024 * 1024 * 20 },
   fileFilter: fileFilter,
 });
 
@@ -58,39 +59,69 @@ router.get("/", checkAuth, (req, res) => {
   });
   
   // Endpoint to upload an image
-  router.post("/", checkAuth, upload.single('image'), (req, res) => {
-    const { title, description } = req.body;
-    const imagePath = req.file ? req.file.filename : null; // Get image filename
-  
-    // Insert data into the database
-    const sql = 'INSERT INTO images (title, description, photo) VALUES (?, ?, ?)';
-    db.query(sql, [title, description, imagePath], (err, result) => {
-      if (err) {
-        console.error('Error inserting image record:', err);
-        return res.status(500).json({ error: 'Database error' });
-      }
-      res.status(201).json({ id: result.insertId, title, description });
-    });
-  });
-
-// Add these routes to your existing router
-
-// Endpoint to update an image
-router.put("/:id", checkAuth, upload.single('image'), (req, res) => {
+ // Endpoint to upload an image
+router.post("/", checkAuth, upload.single('image'), (req, res) => {
   const { title, description } = req.body;
   const imagePath = req.file ? req.file.filename : null; // Get image filename
-  const imageId = req.params.id;
+  
+  if (!title || !description || !imagePath) {
+    return res.status(400).json({ error: 'Title, description, and image are required.' });
+  }
 
-  // Update data in the database
-  const sql = 'UPDATE images SET title = ?, description = ?, photo = ? WHERE id = ?';
-  db.query(sql, [title, description, imagePath || null, imageId], (err, result) => {
+  // Insert data into the database
+  const sql = 'INSERT INTO images (title, description, photo) VALUES (?, ?, ?)';
+  db.query(sql, [title, description, imagePath], (err, result) => {
     if (err) {
-      console.error('Error updating image record:', err);
+      console.error('Error inserting image record:', err);
       return res.status(500).json({ error: 'Database error' });
     }
-    res.status(200).json({ message: 'Image updated successfully' });
+    res.status(201).json({ id: result.insertId, title, description, photo: imagePath });
   });
 });
+
+
+// Endpoint to fetch an image by ID
+// Endpoint to fetch an image by ID
+router.get("/edit/:id", (req, res) => {
+  const imageId = req.params.id;
+  console.log(imageId);
+  const query = 'SELECT * FROM images WHERE id = ?';
+  db.query(query, [imageId], (error, results) => {
+    if (error) {
+      console.error('Database query error:', error);
+      return res.status(500).json({ error: 'Database query failed' });
+    }
+    if (results.length === 0) {
+      return res.status(404).json({ error: 'Image not found' });
+    }
+    res.json(results[0]); // Return the first result
+  });
+});
+
+
+// Endpoint to update an image
+router.patch("/update/:id", checkAuth, upload.single('photo'), (req, res) => {
+  const { title, description } = req.body;
+  const oldPhoto = req.body.oldPhoto || null; // Capture the old photo name if it exists
+  const imagePath = req.file ? req.file.filename : oldPhoto; // Use new image if uploaded, otherwise use old
+
+  const imageId = req.params.id;
+
+  const sql = 'UPDATE images SET title = ?, description = ?, photo = ? WHERE id = ?';
+  const values = [title, description, imagePath, imageId];
+
+  db.query(sql, values, (err, result) => {
+      if (err) {
+          console.error('Error updating image record:', err);
+          return res.status(500).json({ error: 'Database error' });
+      }
+      if (result.affectedRows === 0) {
+          return res.status(404).json({ error: 'Image not found' });
+      }
+      res.status(200).json({ message: 'Image updated successfully' });
+  });
+});
+
 
 // Endpoint to delete an image
 router.delete("/:id", checkAuth, (req, res) => {
@@ -103,10 +134,12 @@ router.delete("/:id", checkAuth, (req, res) => {
       console.error('Error deleting image record:', err);
       return res.status(500).json({ error: 'Database error' });
     }
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Image not found' });
+    }
     res.status(204).json({ message: 'Image deleted successfully' });
   });
 });
-
 // Endpoint to fetch all images
 router.get("/webimage", (req, res) => {
   const query = 'SELECT * FROM images';
@@ -118,4 +151,6 @@ router.get("/webimage", (req, res) => {
     res.json(results);
   });
 });
+
+
 module.exports = router;

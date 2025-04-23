@@ -284,60 +284,52 @@ router.get("/standards", checkAuth, (req, res) => {
   });
 });
 
-// Update fee details by idf
-// Update fee details by idf
-router.patch("/edit/:idf", checkAuth, async (req, res) => {
+router.patch("/collect/:idf", checkAuth, async (req, res) => {
   const idf = req.params.idf;
   const { 
-    monthly_fee, 
-    fine_fee, 
-    exam_fee, 
-    misc_fee, 
-    arrears, 
-    adm_fee,            
-    fine_arrears,       
-    adm_arrears,        
-    exam_arrears,       
-    misc_arrears        
+      monthly_fee_feetbl, 
+      collection, 
+      adm_collection,
+      fine_collection, 
+      exam_collection,
+      collection_by
+          
   } = req.body;
+  
 
   // Check if the fee has already been collected
-  const checkCollectionQuery = `SELECT collection_by FROM fee_tbl WHERE idf = ?`;
-  db.query(checkCollectionQuery, [idf], (error, results) => {
+const checkCollectionQuery = `SELECT collection_by FROM fee_tbl WHERE idf = ?`;
+db.query(checkCollectionQuery, [idf], (error, results) => {
     if (error) {
-      console.error("Database query error:", error);
-      return res.status(500).json({ error: "Database query failed" });
+        console.error("Database query error:", error);
+        return res.status(500).json({ error: "Database query failed" });
     }
 
-    if (results.length === 0 || results[0].collection_by === null) {
-      const query = `
-        UPDATE fee_tbl 
-        SET 
-          monthly_fee_feetbl = ?, 
-          fine_fee = ?, 
-          exam_fee = ?, 
-          misc_fee = ?, 
-          arrears = ?, 
-          adm_fee = ?, 
-          fine_arrears = ?, 
-          adm_arrears = ?, 
-          exam_arrears = ?, 
-          misc_arrears = ?
-        WHERE idf = ?
-      `;
+    // Remove the condition that checks if the fee has been collected
+    const query = `
+    UPDATE fee_tbl 
+    SET 
+        monthly_fee_feetbl = ?, 
+        collection = ?, 
+        adm_collection = ?,
+        fine_collection = ?, 
+        exam_collection = ?,
+        collection_by = ?
+    WHERE idf = ?
+    `;
 
-      db.query(query, [monthly_fee, fine_fee, exam_fee, misc_fee, arrears, adm_fee, fine_arrears, adm_arrears, exam_arrears, misc_arrears, idf], (error) => {
+    db.query(query, [monthly_fee_feetbl, collection, adm_collection, fine_collection, exam_collection, collection_by, idf], (error) => {
         if (error) {
-          console.error("Database query error:", error);
-          return res.status(500).json({ error: "Database query failed" });
+            console.error("Database query error:", error);
+            return res.status(500).json({ error: "Database query failed" });
         }
-        res.status(200).json({ success: true });
-      });
-    } else {
-      return res.status(400).json({ error: "Fee already collected; it cannot be edited." });
-    }
-  });
+        res.status(200).json({ success: true, message: "Fee details updated successfully." });
+    });
 });
+
+});
+
+
 
 
 
@@ -571,68 +563,60 @@ router.get("/collect/:idf", checkAuth, async (req, res) => {
   });
 });
 
-// Update data by idf
-router.patch("/:idf", checkAuth, async (req, res) => {
-  const idf = req.params.idf; // Get idf from URL parameter
-
-  const {
-    collection,
-    fine_collection,
-    exam_collection,
-    adm_collection,
-    misc_collection,
-    collection_by,
+// Update fee details edit fee detail
+router.patch("/edit/:idf", checkAuth, async (req, res) => {
+  const idf = req.params.idf;
+  const { 
+      monthly_fee_feetbl, 
+      fine_fee, 
+      exam_fee, 
+      arrears, 
+      adm_fee,            
+      fine_arrears,       
+      adm_arrears,        
+      exam_arrears,
+      misc_fee,           // Add misc_fee
+      misc_arrears        // Add misc_arrears
   } = req.body;
 
-  // Get current date
-  const currentDate = new Date();
-  const day = currentDate.getDate().toString().padStart(2, '0');
-  const month = currentDate.toLocaleString('default', { month: 'short' });
-  const year = currentDate.getFullYear();
-  const paymentAt = `${day}-${month}-${year}`;
-
-  // Check the current year and month from the database first
-  const checkQuery = `SELECT fyear, fmonth FROM fee_tbl WHERE idf = ?`;
-  db.query(checkQuery, [idf], (error, results) => {
-    if (error) {
-      console.error("Database query error:", error);
-      return res.status(500).json({ error: "Database query failed" });
-    }
-
-    if (results.length === 0) {
-      return res.status(404).json({ error: "No record found for this idf" });
-    }
-
-    const { fyear, fmonth } = results[0];
-
-    // Proceed with the update
-    const updateQuery = `
-      UPDATE fee_tbl
-      SET collection = ?, collection_by = ?, payment_at = ?, fine_collection = ?, exam_collection = ?, adm_collection = ?, misc_collection = ?
-      WHERE idf = ?
-    `;
-
-    db.query(
-      updateQuery,
-      [
-        collection,
-        collection_by,
-        paymentAt,
-        fine_collection,
-        exam_collection,
-        adm_collection,
-        misc_collection,
-        idf,
-      ],
-      (error) => {
-        if (error) {
+  // Check if the fee has already been collected
+  const checkCollectionQuery = `SELECT collection_by FROM fee_tbl WHERE idf = ?`;
+  db.query(checkCollectionQuery, [idf], (error, results) => {
+      if (error) {
           console.error("Database query error:", error);
           return res.status(500).json({ error: "Database query failed" });
-        }
-        res.status(200).json({ success: true });
       }
-    );
+
+      if (results.length === 0 || results[0].collection_by === null) {
+        const query = `
+        UPDATE fee_tbl 
+        SET 
+            monthly_fee_feetbl = ?, 
+            fine_fee = ?, 
+            exam_fee = ?, 
+            arrears = ?, 
+            adm_fee = ?, 
+            fine_arrears = ?, 
+            adm_arrears = ?, 
+            exam_arrears = ?,
+            misc_arrears = ?,
+            misc_fee = ?      
+        WHERE idf = ?
+      `;
+
+          db.query(query, [monthly_fee_feetbl, fine_fee, exam_fee, arrears, adm_fee, fine_arrears, adm_arrears, exam_arrears, misc_arrears, misc_fee, idf], (error) => {
+              if (error) {
+                  console.error("Database query error:", error);
+                  return res.status(500).json({ error: "Database query failed" });
+              }
+              res.status(200).json({ success: true, message: "Fee details updated successfully." });
+          });
+      } else {
+          return res.status(400).json({ error: "Fee already collected; it cannot be edited." });
+      }
   });
 });
+
+
 
 module.exports = router;

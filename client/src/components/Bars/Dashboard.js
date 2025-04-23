@@ -49,6 +49,10 @@ import StudentInactive from "../students/StudentInactive";
 import Studentpromote from "../students/Studentpromote";
 import Report from "../Bars/Report";
 import Expenses from "../Expenses/Expenses";
+import StaffAttendance from "../StaffAttendance/StaffAttendance";
+import StaffAttReport from "../StaffAttendance/StaffAttReport";
+import EditImage from "../Web Images/EditImage";
+import Reports from "../Reports/Reports";
 
 const Dashboard = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -107,6 +111,10 @@ const Dashboard = () => {
             <Route path="studentpromote" element={<Studentpromote />} />
             <Route path="report" element={<Report />} />
             <Route path="expenses" element={<Expenses />} />
+            <Route path="StaffAttendance" element={<StaffAttendance />} />
+            <Route path="staffattreport" element={<StaffAttReport />} />
+            <Route path="editimage/:id" element={<EditImage />} />
+            <Route path="reports" element={<Reports />} />
           </Routes>
         </div>
       </div>

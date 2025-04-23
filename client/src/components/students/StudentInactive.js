@@ -12,7 +12,7 @@ export default function StudentInactive() {
   const [search, setSearch] = useState("");
   const { token } = useContext(userContext);
   const [currentPage, setCurrentPage] = useState(1);
-  const recordsPerPage = 10;
+  const recordsPerPage = 100;
 
   const [showModal, setShowModal] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");

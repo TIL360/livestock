@@ -124,7 +124,7 @@ formData.append('fatherurdu', fatherurdu);
                 placeholder="Roll No..."
                 onChange={(e) => setRollNo(e.target.value)}
                 autoComplete="off"
-                required
+                
               />
             </div>
             <div className="col-md-4">
@@ -159,7 +159,7 @@ formData.append('fatherurdu', fatherurdu);
                 placeholder="Student Name (Urdu)..."
                 onChange={(e) => setNameurdu(e.target.value)}
                 autoComplete="off"
-                required
+                
               />
             </div>
             <div className="col-md-6">
@@ -170,7 +170,7 @@ formData.append('fatherurdu', fatherurdu);
                 placeholder="Father's Name..."
                 onChange={(e) => setFather(e.target.value)}
                 autoComplete="off"
-                required
+                
               />
             </div>
             <div className="col-md-6">
@@ -181,7 +181,7 @@ formData.append('fatherurdu', fatherurdu);
                 placeholder="Father's Name (Urdu)..."
                 onChange={(e) => setFatherurdu(e.target.value)}
                 autoComplete="off"
-                required
+                
               />
             </div>
           </div>
@@ -262,11 +262,11 @@ formData.append('fatherurdu', fatherurdu);
                 className="form-control"
                 placeholder="Mobile..."
                 onChange={(e) => setMobile(e.target.value)}
-                required
+                
               />
             </div>
             <div className="col-md-4">
-              <label><b>Email</b></label>
+              <label><b>Email (Optional)</b></label>
               <input
                 type="email"
                 className="form-control"
@@ -305,6 +305,7 @@ formData.append('fatherurdu', fatherurdu);
               <input
                 type="text"
                 className="form-control"
+                required
                 placeholder="Monthly Fee..."
                 onChange={(e) => setMonthlyFee(e.target.value)}
               />

@@ -65,6 +65,8 @@ const expRoutes = require('./api/routes/expenses/expenses');
 const applyRoutes = require('./api/routes/students/apply');
 const imageRoutes = require('./api/routes/webimages/image');
 const promoteRoutes = require('./api/routes/students/promote');
+const staffattRoutes = require('./api/routes/staffatt/staffatt');
+const staffattsheetRoutes = require('./api/routes/staffatt/staffattsheet');
 
 
 
@@ -92,6 +94,8 @@ app.use('/expenses', expRoutes);
 app.use('/apply', applyRoutes);
 app.use('/image', imageRoutes);
 app.use('/promote', promoteRoutes);
+app.use('/staffatt', staffattRoutes);
+app.use('/staffattsheet', staffattsheetRoutes);
 
 
 app.use((req, res, next) => {

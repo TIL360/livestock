@@ -124,7 +124,7 @@ const StudentPdf = ({ student }) => {
 
                 <View style={styles.headerContainer}> 
                     <Image style={styles.logo} src={logo} /> 
-                    <Text style={styles.header}>Rahbar Public School</Text> 
+                    <Text style={styles.header}>Pakistan International Public School, Murree</Text> 
                 </View>
                 <Text style={styles.title}>Admission Form</Text>
                 
@@ -190,8 +190,8 @@ const StudentPdf = ({ student }) => {
                         <Text>Signature of Parents / Guardian:____________________  Dated: ____________</Text>
 
                 <View style={styles.line} /> {/* Horizontal line */}
-                        <Text>Address: Garhi Habibullah, Tehsil Balakot, District Mansehra</Text>
-                        <Text>Contact: +92 3151436832 || Website: https://www.rahbarschool.com</Text>
+                        {/* <Text>Address: Garhi Habibullah, Tehsil Balakot, District Mansehra</Text> */}
+                        <Text>Contact: +92 370 5057482 || Website: https://www.pipsmurree.info</Text>
                     </View>
                 </View>
             </Page>

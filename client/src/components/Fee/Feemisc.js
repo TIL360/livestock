@@ -49,7 +49,7 @@ export default function Feemisc() {
                 standard: selectedStandard,
                 miscFee: miscFee,
                 remarks: remarks
-            }, {
+            }, { 
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -94,7 +94,7 @@ export default function Feemisc() {
                     <button className='btn btn-primary' onClick={handleAddExamFee}>Add Exam Fee</button>
                 </div>
                 <div className='col-md-3'>
-                    <input className='form-control mx-2 shadow p-2 rounded-pill border-3 border-info' type='text' placeholder='Add misc fee here...' value={miscFee} onChange={(e) => setMiscFee(e.target.value)} />
+                    <input className='form-control mx-2 shadow p-2 rounded-pill border-3 border-info' type='number' placeholder='Add misc fee here...' value={miscFee} onChange={(e) => setMiscFee(e.target.value)} />
                 </div>
                 <div className='col-md-3'>
                     <input className='form-control mx-2 shadow p-2 rounded-pill border-3 border-info' type='text' placeholder='Add remarks...' value={remarks} onChange={(e) => setRemarks(e.target.value)} />
