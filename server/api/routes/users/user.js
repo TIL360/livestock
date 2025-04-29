@@ -83,8 +83,8 @@ console.log(usertype);
       return res.status(500).json({ error: err.message });
     }
 
-    // Insert into the database
-    const sql = "INSERT INTO user_detail (username, password, usertype) VALUES (?, ?, ?)";
+    // Insert into the databaseconst 
+    sql = "INSERT INTO user_detail (username, password, usertype, created_at) VALUES (?, ?, ?, NOW())";
     db.query(sql, [username, hash, usertype], (err, result) => {
       if (err) {
         console.error("Error inserting user: ", err);

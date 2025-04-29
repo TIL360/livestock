@@ -85,7 +85,7 @@ router.post("/insert-fees", checkAuth, async (req, res) => {
   // Calculate the first day of the next month
   const nextMonthDate = new Date(nextYear, nextMonth - 1, 1); // Adjust for 0-based month
 
-  const queryBasicInfo = "SELECT adm_no, standard, section, monthly_fee FROM basicinfo";
+  const queryBasicInfo = "SELECT adm_no, standard, section, monthly_fee FROM basicinfo WHERE status = 'Active' AND monthly_fee > 0";
 
   db.query(queryBasicInfo, async (error, basicInfoResults) => {
     if (error) {
@@ -100,7 +100,7 @@ router.post("/insert-fees", checkAuth, async (req, res) => {
       // Check if monthly_fee is not "Free"
       if (info.monthly_fee !== "Free") {
         // Check for existing records in fee_tbl for the next month
-        const checkExistingQuery = "SELECT * FROM fee_tbl WHERE fee_adm_no = ? AND fyear = ? AND fmonth = ?";
+        const checkExistingQuery = "SELECT * FROM fee_tbl WHERE fee_adm_no = ? AND fyear = ? AND fmonth = ? ";
         
         db.query(checkExistingQuery, [info.adm_no, nextYear, nextMonth], (checkErr, existingRecord) => {
           if (checkErr) {
@@ -135,20 +135,42 @@ router.post("/insert-fees", checkAuth, async (req, res) => {
 
               // Insert new record with calculated arrears
               const insertSQL = `
-                INSERT INTO fee_tbl 
-                (fee_adm_no, FeeStandard, sec, monthly_fee_feetbl, created_at, arrears, fine_arrears, exam_arrears, adm_arrears, misc_arrears) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-              `;
-              db.query(insertSQL, [info.adm_no, info.standard, info.section, info.monthly_fee, nextMonthDate, feebalance, finebalance, exambalance, admbalance, miscbalance], (insertErr) => {
-                if (insertErr) {
-                  console.error("Insert fee record error:", insertErr);
-                } else {
-                  insertedRecords++;
-                }
+  INSERT INTO fee_tbl 
+  (fee_adm_no, FeeStandard, sec, monthly_fee_feetbl, created_at, arrears, fine_arrears, exam_arrears, adm_arrears, misc_arrears, 
+   exam_fee, collection, adm_fee, lab_fee, misc_fee, fine_fee, fine_collection, adm_collection, exam_collection, misc_collection) 
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+`;
+db.query(insertSQL, [
+  info.adm_no, 
+  info.standard, 
+  info.section, 
+  info.monthly_fee, 
+  nextMonthDate, 
+  feebalance, 
+  finebalance, 
+  exambalance, 
+  admbalance, 
+  miscbalance,
+  0, // exam_fee
+  0, // collection
+  0, // adm_fee
+  0, // lab_fee
+  0, // misc_fee
+  0, // fine_fee
+  0, // fine_collection
+  0, // adm_collection
+  0, // exam_collection
+  0  // misc_collection
+], (insertErr) => {
+  if (insertErr) {
+    console.error("Insert fee record error:", insertErr);
+  } else {
+    insertedRecords++;
+  }
 
-                if (--pendingQueries === 0) {
-                  return res.status(200).json({ success: true, insertedRecords });
-                }
+  if (--pendingQueries === 0) {
+    return res.status(200).json({ success: true, insertedRecords });
+  }
               });
             });
           } else {
