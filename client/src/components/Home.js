@@ -2,10 +2,8 @@ import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import fontfile from './Fonts/Poppins-BlackItalic.ttf';
 import fontfile2 from './Fonts/GreatVibes-Regular.ttf';
-import { Carousel } from 'react-bootstrap'; 
 import axios from 'axios'; 
-
-
+import hadithImage from "./Images/hadith.jpg"; 
 
 const Home = () => {
   const [images, setImages] = useState([]);
@@ -30,11 +28,13 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 3000); // Change image every 3 seconds
+    if (images.length > 0) {
+      const interval = setInterval(() => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+      }, 3000); // Change image every 3 seconds
 
-    return () => clearInterval(interval); // Cleanup on unmount
+      return () => clearInterval(interval); // Cleanup on unmount
+    }
   }, [images.length]);
 
   return (
@@ -45,115 +45,93 @@ const Home = () => {
             font-family: 'Trick';
             src: url(${fontfile}) format('truetype');
           }
-             @font-face {
+          @font-face {
             font-family: 'GreatVibes-Regular';
             src: url(${fontfile2}) format('truetype');
           }
 
-          .logo {
-            transition: all 1s ease-in-out;
-            transform: translateY(100px);
-            opacity: 0;
-          }
-
-          .logo.animate {
-            transform: translateY(0);
-            opacity: 1;
-          }
-
           .title {
             transition: all 1s ease-in-out;
-            transform: translateY(-100px);
             opacity: 0;
           }
-
           .title.animate {
-            transform: translateY(0);
             opacity: 1;
           }
 
           .content {
             transition: all 1s ease-in-out;
-            transform: translateY(100px);
             opacity: 0;
           }
-
           .content.animate {
-            transform: translateY(0);
             opacity: 1;
           }
 
+          /* Carousel animation */
           .carousel-item {
             transition: transform 1s ease, opacity 1s ease;
             position: relative;
             opacity: 0;
-            transform: translateX(100%); /* Start off-screen to the right */
+            transform: translateX(100%);
           }
-
           .carousel-item.active {
             opacity: 1;
-            transform: translateX(0); /* Slide in to the original position */
+            transform: translateX(0);
           }
-
-          .carousel-item-prev,
-          .carousel-item-next {
-            opacity: 0;
-            transform: translateX(100%); /* Start off-screen to the right */
-          }
-
-          .carousel-item-prev.active,
-          .carousel-item-next.active {
-            opacity: 1;
-            transform: translateX(0); /* Slide in */
-          }
-
-          .carousel-item:not(.active) {
-            opacity: 0.5; /* Make non-active items less visible */
+          /* Optional: style for image container */
+          .hadith-image {
+            width: 80%;
+            max-width: 1000px;
+            height: auto;
+            object-fit: cover;
+            margin: 30px auto;
+            display: block;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
           }
         `}
       </style>
-      <div style={{ height: "auto" }}>
-        <div>
-          <div style={{ textAlign: 'center' }}>
-            <br />
-            <h1 className={`title ${animateTitle ? 'animate' : ''}`} style={{ fontSize: '50px', fontFamily: "GreatVibes-Regular", color: '#031564', textShadow: '0px 10px 10px rgba(0, 0, 0, 0.5)' }}>
-              Welcome to
-            </h1>
-            <h1 className={`title ${animateTitle ? 'animate' : ''}`} style={{ fontSize: '50px', fontFamily: 'Trick', color: '#353535', textShadow: '0px 10px 10px rgba(0, 0, 0, 0.5)' }}>
-              PAKISTAN <br/> INTERNATIONAL PUBLIC SCHOOL, MURREE
-            </h1>
-            <div className={`content ${animateContent ? 'animate' : ''}`}>
-              <hr />
-            </div>
-          </div>
+      
+      <div className="container my-5" style={{ textAlign: 'center' }}>
+        {/* Title Section */}
+        
+        <h1
+          className={`title ${animateTitle ? 'animate' : ''}`}
+          style={{
+            fontSize: '50px',
+            fontFamily: 'GreatVibes-Regular',
+            color: '#031564',
+            textShadow: '0px 10px 10px rgba(0, 0, 0, 0.5)',
+            marginBottom: '20px',
+          }}
+        >
+          Welcome to
+        </h1>
+        <h1
+          className={`title ${animateTitle ? 'animate' : ''}`}
+          style={{
+            fontSize: '50px',
+            fontFamily: 'Trick',
+            color: '#284b63',
+            textShadow: '0px 10px 10px #000000',
+            marginBottom: '30px',
+          }}
+        >
+          RAZA & SONs <br /> Livestock, Murree
+        </h1>
 
-          <div className='container'>
-            <div className='mx-2 shadow p-2 '>
-
-              {/* Image Slider */}
-              <Carousel activeIndex={currentIndex} onSelect={setCurrentIndex} interval={null}>
-                {images.map((image, index) => (
-                  <Carousel.Item key={image.id} className={currentIndex === index ? 'active' : ''}>
-                    <img
-                      className="d-block w-100"
-                      src={`${process.env.REACT_APP_API_URL}/uploads/webimages/${image.photo}`} 
-                      alt={image.title}
-                      style={{ height: '500px', width: '80%', objectFit: 'cover' }} 
-                    />
-                    <Carousel.Caption>
-                      <h3 style={{ color: "black" }}>{image.title}</h3>
-                      <p style={{ color: "black" }}>{image.description}</p>
-                    </Carousel.Caption>
-                  </Carousel.Item>
-                ))}
-              </Carousel>
-            </div>
-            <br/><br/><br/><br/><br/><hr/><br/>
-          </div>
-
+        {/* Optional separator or content */}
+        <div className={`content ${animateContent ? 'animate' : ''}`}>
+          <hr style={{ maxWidth: '600px', margin: '0 auto' }} />
         </div>
-       
 
+        {/* Hadith Image Section */}
+        <div className="my-4">
+          <img
+            src={hadithImage}
+            alt="Hadith"
+            className="hadith-image"
+          />
+        </div>
       </div>
     </>
   );

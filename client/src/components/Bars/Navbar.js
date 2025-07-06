@@ -17,7 +17,7 @@ function NavBar() {
         <div className="nav-container">
           <img src={image1} width={80} height={80} alt="Logo" />
           <NavLink exact to="/" className="nav-logo">
-            <span>PIPS,<br/> Murree</span>
+            <span>R & S<br/> Livestock, Murree</span>
           </NavLink>
 
           <ul className={click ? "nav-menu active" : "nav-menu"}>
@@ -44,7 +44,7 @@ function NavBar() {
             {/* New Pages menu */}
             <li className="nav-item" onClick={togglePages}>
               <span className="nav-links" style={{ cursor: "pointer" }}>
-                Pages 
+                More 
               </span>
               {showPages && (
                 <ul className="sub-menu">
@@ -55,7 +55,7 @@ function NavBar() {
                       className="nav-links"
                       onClick={handleClick}
                     >
-                      PIPS App
+                      Application
                     </NavLink>
                   </li>
                   <li className="nav-item">
@@ -70,48 +70,21 @@ function NavBar() {
                   </li>
                   <li className="nav-item">
                     <NavLink
-                      to="/taskview"
+                      to="/display"
                       activeClassName="active"
                       className="nav-links"
                       onClick={handleClick}
                     >
-                      Diary
+                      For Sale
                     </NavLink>
                   </li>
-                  <li className="nav-item">
-                    <NavLink
-                      to="/invoicefee"
-                      activeClassName="active"
-                      className="nav-links"
-                      onClick={handleClick}
-                    >
-                      Fee
-                    </NavLink>
-                  </li>
-                  <li className="nav-item">
-                    <NavLink
-                      to="/result"
-                      activeClassName="active"
-                      className="nav-links"
-                      onClick={handleClick}
-                    >
-                      Result
-                    </NavLink>
-                  </li>
+                 
+                  
                  
                 </ul>
               )}
             </li>
-            {/* <li className="nav-item">
-              <NavLink
-                to="/programs"
-                activeClassName="active"
-                className="nav-links"
-                onClick={handleClick}
-              >
-                Programs
-              </NavLink>
-            </li> */}
+          
             <li className="nav-item">
               <NavLink
                 to="/applyonline"
@@ -120,7 +93,7 @@ function NavBar() {
                 className="nav-links"
                 onClick={handleClick}
               >
-                Apply Online
+                Contact Us
               </NavLink>
             </li>
             

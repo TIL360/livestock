@@ -42,60 +42,23 @@ app.use('/uploads', express.static('uploads'));
 
 
 // Your existing routes
-const studentRoutes = require('./api/routes/students/students');
-const feeRoutes = require('./api/routes/fee/fee');
+const animalsRoutes = require('./api/routes/livestock/animals');
 const userRoutes = require('./api/routes/users/user');
-const classesRoutes = require('./api/routes/classes/classes');
-const feePaidRoutes = require('./api/routes/fee/feepaid');
-const unpaidRoutes = require('./api/routes/fee/unpaid');
-const staffRoutes = require('./api/routes/staff/staff');
-const salaryRoutes = require('./api/routes/staff/salary');
-const resultprepRoutes = require('./api/routes/result/resultprep');
-const attendanceRoutes = require('./api/routes/attendance/attendance');
-const attsheetRoutes = require('./api/routes/attendance/attsheet');
-const resultRoutes = require('./api/routes/result/result');
-const datesheetRoutes = require('./api/routes/result/datesheet');
+const applyRoutes = require('./api/routes/livestock/apply');
+const expensesRoutes = require('./api/routes/expenses/expenses');
 const infoRoutes = require('./api/routes/info/info');
-const paperRoutes = require('./api/routes/question/paperserver');
-const feestatsRoutes = require('./api/routes/fee/feestats');
-const countRoutes = require('./api/routes/counter/count');
-const tasksRoutes = require('./api/routes/tasking/tasks');
-const invoiceRoutes = require('./api/routes/fee/invoicefee');
-const expRoutes = require('./api/routes/expenses/expenses');
-const applyRoutes = require('./api/routes/students/apply');
-const imageRoutes = require('./api/routes/webimages/image');
-const promoteRoutes = require('./api/routes/students/promote');
-const staffattRoutes = require('./api/routes/staffatt/staffatt');
-const staffattsheetRoutes = require('./api/routes/staffatt/staffattsheet');
+const statsRoutes = require('./api/routes/dynamicdb/stats');
 
 
 
-
-app.use('/students', studentRoutes);
-app.use('/fee', feeRoutes);
+// routes description
+app.use('/animals', animalsRoutes);
 app.use('/user', userRoutes);
-app.use('/classes', classesRoutes);
-app.use('/feepaid', feePaidRoutes);
-app.use('/unpaid', unpaidRoutes);
-app.use('/staff', staffRoutes);
-app.use('/salary', salaryRoutes);
-app.use('/resultprep', resultprepRoutes);
-app.use('/attendance', attendanceRoutes);
-app.use('/attsheet', attsheetRoutes);
-app.use('/result', resultRoutes);
-app.use('/tasks', tasksRoutes);
-app.use('/datesheet', datesheetRoutes);
-app.use('/info', infoRoutes);
-app.use('/paperserver', paperRoutes);
-app.use('/feestats', feestatsRoutes);
-app.use('/count', countRoutes);
-app.use('/invoicefee', invoiceRoutes);
-app.use('/expenses', expRoutes);
 app.use('/apply', applyRoutes);
-app.use('/image', imageRoutes);
-app.use('/promote', promoteRoutes);
-app.use('/staffatt', staffattRoutes);
-app.use('/staffattsheet', staffattsheetRoutes);
+app.use('/expenses', expensesRoutes);
+app.use('/info', infoRoutes);
+app.use('/stats', statsRoutes);
+
 
 
 app.use((req, res, next) => {
